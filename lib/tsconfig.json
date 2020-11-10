@@ -11,6 +11,7 @@
     "module": "esnext",
     "moduleResolution": "node",
   },
+  "files": ["lib/**/*"],
   "exclude": [
     "node_modules",
     "build"
