@@ -4,8 +4,5 @@
   "main": "index.js",
   "repository": "git@github.com:DmytroYeremieiev/ark-form.git",
   "author": "DmytroYeremieiev <dmytro.yeremieiev@gmail.com>",
-  "license": "MIT",
-  "devDependencies": {
-    "typescript": "^4.0.5"
-  }
+  "license": "MIT"
 }
