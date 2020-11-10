@@ -1,6 +1,13 @@
 {
   "name": "lib",
   "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT"
+  "main": "build/index.js",
+  "license": "MIT",
+  "types": "build/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "typescript": "^4.0.5"
+  }
 }
