@@ -9,5 +9,9 @@
   },
   "devDependencies": {
     "typescript": "^4.0.5"
+  },
+  "dependencies": {
+    "classnames": "^2.2.6",
+    "react": "^17.0.1"
   }
 }
