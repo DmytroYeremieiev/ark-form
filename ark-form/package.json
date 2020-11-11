@@ -1,9 +1,12 @@
 {
-  "name": "lib",
+  "name": "ark-form",
   "version": "1.0.0",
   "main": "build/index.js",
-  "license": "MIT",
   "types": "build/index.d.ts",
+  "files": [
+    "build"
+  ],
+  "license": "MIT",
   "scripts": {
     "build": "tsc"
   },
