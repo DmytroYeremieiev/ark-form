@@ -1,6 +1,8 @@
 import React from 'react';
-import { Field } from 'shared/components/Forms/Field/Field';
-import { TextInputInterface, ValidityStateInterface, FieldStateClassNames } from 'shared/interfaces/FormInterfaces';
+import { Field } from 'ark-form';
+import { TextInputInterface, FieldStateClassNames} from '../../types';
+import { ValidityStateInterface  } from 'ark-form';
+
 import classnames from 'classnames';
 
 import styles from '../txoInput.module.scss';
@@ -14,9 +16,7 @@ const checkValidity = (
   required?: boolean
 ): ValidityStateInterface => {
   const result: ValidityStateInterface = {
-    valid: true,
-    className: null,
-    errorMessage: null,
+    valid: true
   };
   if (required && !value) {
     result.className = FieldStateClassNames.requiredError;

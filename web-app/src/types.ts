@@ -18,3 +18,14 @@ export interface TextInputInterface<T> extends InputInterface<T> {
 export interface DateInputInterface<T> extends InputInterface<T> {
   required?: boolean;
 }
+
+export enum FieldStateClassNames {
+  filled = 'field-filled',
+  pristine = 'field-pristine',
+  dirty = 'field-dirty',
+  valid = 'field-valid',
+  invalid = 'field-invalid',
+  requiredError = 'required-error',
+  patternError = 'pattern-error',
+  forceValidation = 'force-validation',
+}

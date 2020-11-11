@@ -1,7 +1,8 @@
 import React from 'react';
 import classnames from 'classnames';
-import { Field } from 'shared/components/Forms/Field/Field';
-import { InputInterface, ValidityStateInterface, FieldStateClassNames } from 'shared/interfaces/FormInterfaces';
+import { Field } from 'ark-form';
+import { InputInterface, FieldStateClassNames } from '../../types';
+import { ValidityStateInterface } from 'ark-form';
 
 import styles from './SelectInput.module.scss';
 import txoInputStyles from '../txoInput.module.scss';
@@ -20,9 +21,7 @@ export interface TxoSelectInputInterface extends InputInterface<OptionValue> {
 
 const checkValidity = (value: OptionValue, required?: boolean): ValidityStateInterface => {
   const result: ValidityStateInterface = {
-    valid: true,
-    className: null,
-    errorMessage: null,
+    valid: true
   };
   if (required && !value) {
     result.className = FieldStateClassNames.requiredError;

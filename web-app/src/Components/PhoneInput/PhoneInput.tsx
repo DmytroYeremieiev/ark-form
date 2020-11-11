@@ -1,8 +1,8 @@
 import React from 'react';
-import { TextInputInterface } from 'shared/interfaces/FormInterfaces';
-import { TextInput } from 'shared/components/Forms/TextInput/TextInput';
+import { TextInputInterface } from '../../types';
+import { TextInput } from '../TextInput/TextInput';
 
-import { Patterns, ValidationMessages } from 'shared/services/constants';
+import { Patterns, ValidationMessages } from '../../constants';
 
 const pattern = { regexp: Patterns.phone, message: ValidationMessages.phone.patternMismatch };
 
