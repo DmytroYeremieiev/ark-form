@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import classnames from 'classnames';
 import DayPicker from 'react-day-picker';
-import { TextInputInterface } from 'shared/interfaces/FormInterfaces';
-import Forms from 'shared/components/Forms/Forms';
+import { TextInputInterface } from '../../types';
+import Forms from 'ark-form';
 import styles from './DatePicker.module.scss';
 
 export const DatePicker = ({ className, ...rest }: TextInputInterface<string>): JSX.Element => {

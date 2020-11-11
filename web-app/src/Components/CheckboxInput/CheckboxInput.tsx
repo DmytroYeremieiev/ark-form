@@ -1,6 +1,6 @@
 import React from 'react';
-import { Field } from '../../../../ark-form/build/Field';
-import { InputInterface } from 'shared/interfaces/FormInterfaces';
+import { Field } from 'ark-form';
+import { InputInterface } from '../../types';
 import classnames from 'classnames';
 
 import styles from './CheckboxInput.module.scss';
