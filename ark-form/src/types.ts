@@ -15,7 +15,7 @@ interface FieldState {
 }
 
 interface Field<ET> {
-  value?: InputType;
+  value?: string;
   ref: React.MutableRefObject<any>;
   onChange?: (event: React.ChangeEvent<ET>) => void;
   onBlur?: (event: React.SyntheticEvent<ET>) => void;
@@ -33,9 +33,9 @@ export type InputType = string | number | boolean | undefined;
 export interface BasicInput<ET> {
   name: string;
   initialValue?: InputType;
-  validate?: (value?: InputType) => ValidityStateInterface;
-  transformInput?: (input?: InputType, target?: ET) => InputType;
-  transformOutput?: (output?: InputType, target?: ET) => InputType;
+  validate?: (value?: string) => ValidityStateInterface;
+  transformInput?: (input?: string, target?: ET) => string | undefined;
+  transformOutput?: (output?: string, target?: ET) => any;
   onChange?: (event: React.ChangeEvent<ET>, value?: InputType) => void;
   onBlur?: (even: React.SyntheticEvent<ET>, value?: InputType) => void;
   onFocus?: (event: React.FocusEvent<ET>, value?: InputType) => void;

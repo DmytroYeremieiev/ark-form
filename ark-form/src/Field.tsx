@@ -24,7 +24,7 @@ export const Field = <ET extends inputTypes>(props: FieldInterface<ET>): JSX.Ele
   const formState = useFormContext();
   const _validateOnChange = validateOnChange || formState.validateOnChange;
 
-  const [value, setValue] = useState(initialValue);
+  const [value, setValue] = useState(initialValue?.toString());
   const [filled, setFilled] = useState(!!initialValue);
 
   const initialValidity = useMemo(() => {
@@ -51,12 +51,13 @@ export const Field = <ET extends inputTypes>(props: FieldInterface<ET>): JSX.Ele
   useEffect(() => {
     if (!didMountRef.current) return;
     const target = inputRef.current;
-    const transformedInput = transformInput(initialValue, target);
-    const transformedOutput = transformOutput(initialValue, target);
+    const _initialValue = initialValue?.toString();
+    const transformedInput = transformInput(_initialValue, target);
+    const transformedOutput = transformOutput(_initialValue, target);
     setValue(transformedInput);
     setFilled(!!transformedInput);
     setChanged(true);
-    const validity = validate(initialValue);
+    const validity = validate(_initialValue);
     setValidity(validity);
     setDirty(true);
     setPristine(false);
