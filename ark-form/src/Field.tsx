@@ -1,13 +1,14 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
-import { InputType, ValidityStateInterface, FieldInterface } from './types';
+import { ValidityStateInterface, FieldInterface } from './types';
 import { useFormContext } from './FormContext';
 
 const defaultValidity: ValidityStateInterface = {
-  valid: true
+  valid: true,
 };
+type inputTypes = HTMLInputElement | HTMLSelectElement;
 
 const getValidity = () => defaultValidity;
-export const Field = <T extends InputType, ET = HTMLInputElement>(props: FieldInterface<T, ET>): JSX.Element => {
+export const Field = <ET extends inputTypes>(props: FieldInterface<ET>): JSX.Element => {
   const {
     name,
     initialValue,
@@ -19,7 +20,7 @@ export const Field = <T extends InputType, ET = HTMLInputElement>(props: FieldIn
     validateOnChange,
     children,
     validate = getValidity,
-  }: FieldInterface<T, ET> = props;
+  }: FieldInterface<ET> = props;
   const formState = useFormContext();
   const _validateOnChange = validateOnChange || formState.validateOnChange;
 
@@ -37,7 +38,7 @@ export const Field = <T extends InputType, ET = HTMLInputElement>(props: FieldIn
   const [pristine, setPristine] = useState(true);
   const [dirty, setDirty] = useState(false);
 
-  const inputRef = useRef(null);
+  const inputRef = useRef<ET>();
   const didMountRef = useRef(false);
 
   useEffect(() => {
@@ -66,9 +67,9 @@ export const Field = <T extends InputType, ET = HTMLInputElement>(props: FieldIn
     // must be in  the latest effect
     didMountRef.current = true;
   });
-  const _onChange = event => {
+  const _onChange = (event: React.ChangeEvent<ET>) => {
     const target = inputRef.current;
-    const value = target.value;
+    const value = target!.value;
     const transformedInput = transformInput(value, target);
     const transformedOutput = transformOutput(value, target);
     setValue(transformedInput);
@@ -83,14 +84,14 @@ export const Field = <T extends InputType, ET = HTMLInputElement>(props: FieldIn
     formState.sendFieldData(name, transformedOutput, validity);
     onChange(event, transformedOutput);
   };
-  const _onBlur = event => {
+  const _onBlur = (event: React.SyntheticEvent<ET>) => {
     onBlur(event);
     if (!formState.validateOnBlur || !changed) return;
     setDirty(true);
     setPristine(false);
     setValidity(validate(value));
   };
-  const _onFocus = event => {
+  const _onFocus = (event: React.FocusEvent<ET>) => {
     onFocus(event);
   };
 

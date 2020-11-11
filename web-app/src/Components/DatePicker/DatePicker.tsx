@@ -16,7 +16,7 @@ export const DatePicker = ({ className, ...rest }: TextInputInterface<string>): 
   const onFocus = () => {
     setShowCalendar(true);
   };
-  const onBlur = (event: React.FocusEvent) => {
+  const onBlur = (event) => {
     if (!event.relatedTarget) {
       setShowCalendar(false);
     }
