@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import classnames from 'classnames';
 import DayPicker from 'react-day-picker';
 import { TextInputInterface } from '../../types';
-import Forms from 'ark-form';
+import {TextInput} from '../TextInput/TextInput';
 import styles from './DatePicker.module.scss';
 
 export const DatePicker = ({ className, ...rest }: TextInputInterface<string>): JSX.Element => {
@@ -26,14 +26,14 @@ export const DatePicker = ({ className, ...rest }: TextInputInterface<string>): 
   return (
     <div className={styles['date-picker']}>
       {
-        <Forms.TextInput
+        <TextInput
           {...rest}
           className={classnames(styles['date-picker-input'], className)}
           readOnly
           initialValue={selectedDay ? selectedDay.toISOString() : ''}
           onFocus={onFocus}
           onBlur={onBlur}
-        ></Forms.TextInput>
+        ></TextInput>
       }
       {showCalendar ? (
         <div className='date-picker-calendar'>
