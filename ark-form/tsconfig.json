@@ -2,14 +2,17 @@
   "compileOnSave": false,
   "compilerOptions": {
     "target": "es6",
-    "lib": ["es2017", "es7", "es6", "dom"],
-    "jsx": "preserve",
+    "module": "esnext",
+    "lib": ["dom", "esnext"],
+    "jsx": "react",
     "declaration": true,
     "outDir": "build",
     "strict": true,
     "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "importHelpers": true
   },
   "include": ["src"],
   "exclude": ["node_modules", "build"]
