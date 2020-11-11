@@ -6,7 +6,7 @@ import { Patterns, ValidationMessages } from '../../constants';
 
 const pattern = { regexp: Patterns.phone, message: ValidationMessages.phone.patternMismatch };
 
-export const PhoneInput = (props: TextInputInterface<string>): JSX.Element => {
+export const PhoneInput = (props: TextInputInterface): JSX.Element => {
   const transformInput = input => {
     if (/^\d{10}$/.test(input)) {
       const arr = input.split('');

@@ -5,6 +5,6 @@ import { Patterns, ValidationMessages } from '../../constants';
 
 const pattern = { regexp: Patterns.fullName, message: ValidationMessages.fullName.patternMismatch };
 
-export const FullNameInput = (props: TextInputInterface<string>): JSX.Element => {
+export const FullNameInput = (props: TextInputInterface): JSX.Element => {
   return <TextInput pattern={pattern} {...props}></TextInput>;
 };

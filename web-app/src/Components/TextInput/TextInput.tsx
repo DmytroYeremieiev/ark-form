@@ -8,7 +8,7 @@ import classnames from 'classnames';
 import styles from '../txoInput.module.scss';
 
 const checkValidity = (
-  value: string,
+  value?: string,
   pattern?: {
     regexp: RegExp;
     message?: string;
@@ -23,7 +23,7 @@ const checkValidity = (
     result.valid = false;
     return result;
   }
-  if (pattern && !pattern.regexp.test(value)) {
+  if (pattern && value && !pattern.regexp.test(value)) {
     result.className = FieldStateClassNames.patternError;
     result.valid = false;
     result.errorMessage = pattern.message || 'Invalid value';
@@ -41,9 +41,9 @@ export const TextInput = ({
   required,
   readOnly,
   ...rest
-}: TextInputInterface<string>): JSX.Element => {
+}: TextInputInterface): JSX.Element => {
   return (
-    <Field<string>
+    <Field
       name={name}
       validate={value => checkValidity(value, pattern, required)}
       initialValue={initialValue}

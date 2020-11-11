@@ -5,8 +5,8 @@ import classnames from 'classnames';
 
 import styles from './CheckboxInput.module.scss';
 
-const transformation = function (_input, target?: HTMLInputElement): boolean {
-  return target!.checked;
+const transformation = function (_input, target?: HTMLInputElement)  {
+  return target!.checked.toString();
 };
 
 export const CheckboxInput = ({
@@ -15,7 +15,7 @@ export const CheckboxInput = ({
   name,
   className,
   ...props
-}: InputInterface<boolean>): JSX.Element => {
+}: InputInterface): JSX.Element => {
   return (
     <Field
       name={name}
