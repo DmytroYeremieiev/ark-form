@@ -5,10 +5,11 @@ import { useFormContext } from './FormContext';
 const defaultValidity: ValidityStateInterface = {
   valid: true,
 };
-type inputTypes = HTMLInputElement | HTMLSelectElement;
 
 const getValidity = () => defaultValidity;
-export const Field = <ET extends inputTypes>(props: FieldInterface<ET>): JSX.Element => {
+export const Field = <ET extends HTMLElement & { value: string } = HTMLInputElement>(
+  props: FieldInterface<ET>
+): JSX.Element => {
   const {
     name,
     initialValue,
