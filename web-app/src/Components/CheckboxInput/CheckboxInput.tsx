@@ -27,10 +27,11 @@ export const CheckboxInput = ({
     >
       {({ field, fieldState, formState }) => {
         const id = formState.name + '-' + name;
+        console.log("field.value", field.value);
         return (
           <div className={classnames(styles['checkbox-input'], className)}>
             <div title={`${name} field`} className={`txo-input-container`}>
-              <input {...field} id={id} checked={Boolean(field.value)} value='true' type='checkbox' />
+              <input {...field} id={id} checked={field.value === 'true'} value='true' type='checkbox' />
               <label htmlFor={id}>{label}</label>
             </div>
           </div>
