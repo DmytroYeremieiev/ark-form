@@ -8,6 +8,8 @@ import {CheckboxInput} from './Components/CheckboxInput/CheckboxInput'
 import {DatePicker} from './Components/DatePicker/DatePicker'
 import {SelectInput} from './Components/SelectInput/SelectInput'
 
+import './App.scss'
+
 const App = (): JSX.Element => {
   const options = [
     { label: 'Faculty', value: 'faculty' },
