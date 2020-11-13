@@ -1,3 +1,7 @@
+@import-normalize;
+@import './reset.scss';
+@import './Global.scss';
+
 .App {
   margin: 200px auto;
   display: flex;

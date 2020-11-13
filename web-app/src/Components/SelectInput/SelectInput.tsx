@@ -14,12 +14,12 @@ type Option<OptionValue> = {
   value: OptionValue;
   label: string;
 };
-export interface TxoSelectInputInterface extends InputInterface<OptionValue> {
+export interface TxoSelectInputInterface extends InputInterface<HTMLSelectElement> {
   options: Array<Option<OptionValue>>;
   required?: boolean;
 }
 
-const checkValidity = (value: OptionValue, required?: boolean): ValidityStateInterface => {
+const checkValidity = (value?: string, required?: boolean): ValidityStateInterface => {
   const result: ValidityStateInterface = {
     valid: true
   };
@@ -44,7 +44,7 @@ export const SelectInput = ({
   const _options = options.map(o => <option label={o.label} value={o.value} key={o.value}></option>);
   _options.unshift(defaultOption);
   return (
-    <Field<OptionValue, HTMLSelectElement> name={name} validate={value => checkValidity(value, required)} {...rest}>
+    <Field<HTMLSelectElement> name={name} validate={value => checkValidity(value, required)} {...rest}>
       {({ field, fieldState, formState }) => {
         const id = (formState.name || '') + '-' + name;
         // console.log('field', name, fieldState, formState);

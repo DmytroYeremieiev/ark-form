@@ -14,8 +14,8 @@ interface FieldState {
   validity: ValidityStateInterface;
 }
 
-interface Field<T, ET> {
-  value: T;
+interface Field<ET> {
+  value?: string;
   ref: React.MutableRefObject<any>;
   onChange?: (event: React.ChangeEvent<ET>) => void;
   onBlur?: (event: React.SyntheticEvent<ET>) => void;
@@ -28,26 +28,26 @@ export interface ValidityStateInterface {
   errorMessage?: string;
 }
 
-export type InputType = string | number | boolean;
+export type InputType = string | number | boolean | undefined;
 
-export interface BasicInput<T> {
+export interface BasicInput<ET> {
   name: string;
-  initialValue?: T;
-  validate?: (value: T) => ValidityStateInterface;
-  transformInput?: (input: T, target?: HTMLInputElement) => T;
-  transformOutput?: (output: T, target?: HTMLInputElement) => T;
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>, value?: T) => void;
-  onBlur?: (event: React.FocusEvent<HTMLInputElement>, value?: T) => void;
-  onFocus?: (event: React.FocusEvent<HTMLInputElement>, value?: T) => void;
+  initialValue?: InputType;
+  validate?: (value?: string) => ValidityStateInterface;
+  transformInput?: (input?: string, target?: ET) => string | undefined;
+  transformOutput?: (output?: string, target?: ET) => any;
+  onChange?: (event: React.ChangeEvent<ET>, value?: InputType) => void;
+  onBlur?: (even: React.SyntheticEvent<ET>, value?: InputType) => void;
+  onFocus?: (event: React.FocusEvent<ET>, value?: InputType) => void;
 }
 
-interface FieldOuterProps<T, ET> {
-  field: Field<T, ET>;
+interface FieldOuterProps<ET> {
+  field: Field<ET>;
   formState: FormStateInterface;
   fieldState: FieldState;
 }
 
-export interface FieldInterface<T, ET> extends BasicInput<T> {
-  children: ({ field, formState, fieldState }: FieldOuterProps<T, ET>) => JSX.Element;
+export interface FieldInterface<ET> extends BasicInput<ET> {
+  children: ({ field, formState, fieldState }: FieldOuterProps<ET>) => JSX.Element;
   validateOnChange?: boolean;
 }

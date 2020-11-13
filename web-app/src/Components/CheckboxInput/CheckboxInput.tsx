@@ -5,8 +5,8 @@ import classnames from 'classnames';
 
 import styles from './CheckboxInput.module.scss';
 
-const transformation = function (_input, target: HTMLInputElement): boolean {
-  return target.checked;
+const transformation = function (_input, target?: HTMLInputElement)  {
+  return target!.checked.toString();
 };
 
 export const CheckboxInput = ({
@@ -15,9 +15,9 @@ export const CheckboxInput = ({
   name,
   className,
   ...props
-}: InputInterface<boolean>): JSX.Element => {
+}: InputInterface): JSX.Element => {
   return (
-    <Field<boolean>
+    <Field
       name={name}
       transformInput={transformation}
       transformOutput={transformation}
@@ -27,10 +27,11 @@ export const CheckboxInput = ({
     >
       {({ field, fieldState, formState }) => {
         const id = formState.name + '-' + name;
+        console.log("field.value", field.value);
         return (
           <div className={classnames(styles['checkbox-input'], className)}>
             <div title={`${name} field`} className={`txo-input-container`}>
-              <input {...field} id={id} checked={field.value} value='true' type='checkbox' />
+              <input {...field} id={id} checked={field.value === 'true'} value='true' type='checkbox' />
               <label htmlFor={id}>{label}</label>
             </div>
           </div>

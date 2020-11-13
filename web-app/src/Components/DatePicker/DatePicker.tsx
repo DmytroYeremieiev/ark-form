@@ -5,8 +5,8 @@ import { TextInputInterface } from '../../types';
 import {TextInput} from '../TextInput/TextInput';
 import styles from './DatePicker.module.scss';
 
-export const DatePicker = ({ className, ...rest }: TextInputInterface<string>): JSX.Element => {
-  const [selectedDay, setSelectedDay] = useState<Date>(null);
+export const DatePicker = ({ className, ...rest }: TextInputInterface): JSX.Element => {
+  const [selectedDay, setSelectedDay] = useState<Date>();
   const [showCalendar, setShowCalendar] = useState(false);
   const daySelected = day => {
     console.log('dat', day);
@@ -16,7 +16,7 @@ export const DatePicker = ({ className, ...rest }: TextInputInterface<string>): 
   const onFocus = () => {
     setShowCalendar(true);
   };
-  const onBlur = (event: React.FocusEvent) => {
+  const onBlur = (event) => {
     if (!event.relatedTarget) {
       setShowCalendar(false);
     }
