@@ -1,14 +1,15 @@
 import React from 'react';
-import {Form} from 'ark-form';
+import { Form } from 'ark-form';
 
-import {FullNameInput} from './Components/FullNameInput/FullNameInput'
-import {ZipCodeInput} from './Components/ZipCodeInput/ZipCodeInput'
-import {PhoneInput} from './Components/PhoneInput/PhoneInput'
-import {CheckboxInput} from './Components/CheckboxInput/CheckboxInput'
-import {DatePicker} from './Components/DatePicker/DatePicker'
-import {SelectInput} from './Components/SelectInput/SelectInput'
+import { FullNameInput } from './Components/FullNameInput/FullNameInput';
+import { ZipCodeInput } from './Components/ZipCodeInput/ZipCodeInput';
+import { PhoneInput } from './Components/PhoneInput/PhoneInput';
+import { CheckboxInput } from './Components/CheckboxInput/CheckboxInput';
+import { DatePicker } from './Components/DatePicker/DatePicker';
+import { SelectInput } from './Components/SelectInput/SelectInput';
+import { Button } from './Components/Button/Button';
 
-import './App.scss'
+import './App.scss';
 
 const App = (): JSX.Element => {
   const options = [
@@ -48,9 +49,7 @@ const App = (): JSX.Element => {
           onChange={onRoleSelected}
           required
         ></SelectInput>
-        <button className='button' type='submit'>
-          RENT THIS LOOK
-        </button>
+        <Button type='submit'>RENT THIS LOOK</Button>
       </Form>
     </div>
   );

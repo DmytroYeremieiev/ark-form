@@ -1,0 +1,15 @@
+.button {
+  background-color: rgb(0, 0, 0);
+  border: 1px solid #000000;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-block;
+  font-family: 'Roboto Condensed', 'Oswald', Roboto, Arial, sans-serif;
+  font-size: 16px;
+  letter-spacing: 2px;
+  line-height: normal;
+  outline: none;
+  padding: 16px 32px;
+  position: relative;
+  text-align: center;
+}
