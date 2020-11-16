@@ -1,19 +1,8 @@
 {
-  "compileOnSave": false,
-  "compilerOptions": {
-    "target": "es6",
-    "module": "esnext",
-    "lib": ["dom", "esnext"],
-    "jsx": "react",
-    "declaration": true,
-    "outDir": "build",
-    "strict": true,
-    "esModuleInterop": true,
-    "moduleResolution": "node",
-    "skipLibCheck": true,
-    "sourceMap": true,
-    "importHelpers": true
-  },
+  "extends": "../tsconfig.base.json",
   "include": ["src"],
-  "exclude": ["node_modules", "build"]
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./build"
+  }
 }
