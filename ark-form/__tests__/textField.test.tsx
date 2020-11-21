@@ -1,17 +1,16 @@
 import React from 'react';
-// import { render, fireEvent, screen } from '../utils/testUtils';
+// import { render, fireEvent, screen } from 'ark-form/utils/testUtils';
 import { render, fireEvent, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
-import { doesElemHaveExactClassList, doesFormFieldHaveExactClassList } from '../utils/formTestHelper';
+import { doesElemHaveExactClassList, doesFormFieldHaveExactClassList } from 'ark-form/utils/formTestHelper';
 
-import { Form } from '../src';
-import { ClassNames as FormClassNames } from '../src';
-import { FieldStateClassNames as FieldClassNames } from '../types';
+import { Form } from 'ark-form/src';
+import { ClassNames as FormClassNames } from 'ark-form/src';
+import { FieldStateClassNames as FieldClassNames } from 'ark-form/types';
 
-import { ValidationMessages, Patterns } from '../constants';
-import { TextInput } from '../components/TextInput/TextInput';
-import { FullNameInput } from '../components/FullNameInput/FullNameInput';
+import { ValidationMessages, Patterns } from 'ark-form/constants';
+import { TextInput } from 'ark-form/components/TextInput/TextInput';
 
 const onSubmit = (event, data) => void 0;
 
@@ -35,7 +34,14 @@ const ZipForm = (props: ZipFormInterface) => {
         required
         pattern={{ regexp: Patterns.zipCode, message: ValidationMessages.zipCode.patternMismatch }}
       ></TextInput>
-      <FullNameInput name='fullName' initialValue='' label='FULL NAME *' required></FullNameInput>
+      <TextInput
+        name='fullName'
+        initialValue={props.field.initialValue}
+        label='FULL NAME *'
+        forceValidation={props.field.forceValidation}
+        required
+        pattern={{ regexp: Patterns.fullName, message: ValidationMessages.fullName.patternMismatch }}
+      ></TextInput>
       <button className='button' type='submit'>
         RENT THIS LOOK
       </button>

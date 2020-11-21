@@ -1,3 +1,3 @@
 module.exports = {
-  projects: ['<rootDir>/web/jest.config.js'],
+  projects: ['<rootDir>/ark-form/jest.config.js', '<rootDir>/web/jest.config.js'],
 };
