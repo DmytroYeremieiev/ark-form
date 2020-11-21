@@ -16,5 +16,13 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true
-  }
+  },
+  "references": [
+    {
+      "path": "./ark-form/tsconfig.json"
+    },
+    {
+      "path": "./web/tsconfig.json"
+    }
+  ]
 }
