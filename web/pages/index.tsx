@@ -1,7 +1,9 @@
 import React from 'react';
 
 import './index.module.scss';
-import Forms from '../Components/Forms';
+import Forms from '@components/Forms';
+
+import { Button } from '@components/Button/Button';
 
 const IndexPage = (): JSX.Element => {
   const options = [
@@ -41,9 +43,7 @@ const IndexPage = (): JSX.Element => {
           onChange={onRoleSelected}
           required
         ></Forms.SelectInput>
-        <button className='button' type='submit'>
-          RENT THIS LOOK
-        </button>
+        <Button type='submit'>RENT THIS LOOK</Button>
       </Forms.Form>
     </div>
   );
