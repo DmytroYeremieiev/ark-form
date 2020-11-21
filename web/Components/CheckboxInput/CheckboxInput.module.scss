@@ -1,0 +1,62 @@
+.checkbox-input :global {
+  font-size: 14px;
+  display: block;
+  min-width: 300px;
+  margin: 0 0 16px 0;
+  .txo-input-container {
+    display: flex;
+    position: static;
+
+    input,
+    label {
+      position: static;
+      padding: 0;
+      cursor: pointer;
+      color: #000;
+    }
+    input {
+      margin: 0;
+      width: 18px;
+      height: 18px;
+      min-height: initial;
+      min-width: initial;
+      z-index: initial;
+      flex-shrink: 0;
+    }
+    &.field-filled label,
+    input:focus + label {
+      transform: none;
+    }
+    input:after {
+      content: '';
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      opacity: 1;
+      position: relative;
+      background: #fff;
+      border: solid 1px #cbcbcb;
+      display: inline-block;
+      vertical-align: middle;
+      width: 18px;
+      height: 18px;
+    }
+    input:checked:after {
+      content: '';
+      background-color: #000;
+      border: 1px solid #000;
+      background-image: url(./check-white.svg);
+    }
+    label {
+      line-height: 16px;
+      margin: 0;
+      font-size: 0.875rem;
+      display: inline-block;
+      padding-left: 8px;
+      white-space: initial;
+      letter-spacing: inherit;
+      line-height: inherit;
+    }
+  }
+}

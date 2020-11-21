@@ -1,0 +1,17 @@
+@import-normalize;
+@import './styles/reset.scss';
+@import './styles/global.scss';
+
+.App {
+  margin: 200px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.App form {
+  width: 300px;
+}
+
+.App .button {
+  width: 100%;
+}
