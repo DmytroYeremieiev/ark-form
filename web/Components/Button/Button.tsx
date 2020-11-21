@@ -4,7 +4,7 @@ import styles from './Button.module.css';
 import classname from 'classnames';
 
 type ButtonProps = {
-  children: JSX.Element;
+  children: JSX.Element | string;
   type?: 'button' | 'submit' | 'reset';
   classNames?: string | string[];
 };

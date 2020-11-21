@@ -12,6 +12,19 @@
       "web"
     ]
   },
+  "scripts": {
+    "lint": "eslint -c .eslintrc.js --ignore-pattern '**/build/*'",
+    "lint:all": "yarn lint -- '**/*.{ts,tsx}'",
+    "lint:all:fix": "yarn lint -- '**/*.{ts,tsx}' --fix",
+    "info": "yarn workspaces info",
+    "dev": "yarn workspace web dev",
+    "build": "yarn workspace web build",
+    "start": "yarn workspace web start",
+    "export": "yarn workspace web export",
+    "export-debug": "yarn workspace web export-debug",
+    "test": "jest",
+    "check-types": "yarn workspace web check-types & yarn workspace shared check-types"
+  },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.7.0",
     "@typescript-eslint/parser": "^4.7.0",

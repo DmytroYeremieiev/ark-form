@@ -5,13 +5,13 @@ import '@testing-library/jest-dom';
 
 import { doesElemHaveExactClassList, doesFormFieldHaveExactClassList } from '../utils/formTestHelper';
 
-import {Form} from 'ark-form';
-import { ClassNames as FormClassNames } from 'ark-form';
+import { Form } from 'ark-form/src';
+import { ClassNames as FormClassNames } from 'ark-form/src';
 import { FieldStateClassNames as FieldClassNames } from '../types';
 
 import { ValidationMessages } from '../constants';
-import { FullNameInput } from '../Components/FullNameInput/FullNameInput';
-import { ZipCodeInput } from '../Components/ZipCodeInput/ZipCodeInput';
+import { FullNameInput } from '../components/FullNameInput/FullNameInput';
+import { ZipCodeInput } from '../components/ZipCodeInput/ZipCodeInput';
 
 const onSubmit = (event, data) => void 0;
 
@@ -23,12 +23,7 @@ interface ZipFormInterface {
 const ZipForm = ({ form, zipCode, fullName }: ZipFormInterface) => {
   return (
     <Form name='tempForm' onSubmit={form.onSubmit} validateOnChange={form.validateOnChange}>
-      <FullNameInput
-        name='fullName'
-        initialValue={fullName.value}
-        label='FULL NAME *'
-        required
-      ></FullNameInput>
+      <FullNameInput name='fullName' initialValue={fullName.value} label='FULL NAME *' required></FullNameInput>
       <ZipCodeInput name='zip' initialValue={zipCode.value} label='ZIP CODE *' required></ZipCodeInput>
       <button className='button' type='submit'>
         RENT THIS LOOK

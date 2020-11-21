@@ -2,4 +2,7 @@
 // allows you to do things like:
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
-import '@testing-library/jest-dom';
+// beforeAll(() => console.log('beforeAll'));
+// afterAll(() => console.log('afterAll'));
+// beforeEach(() => console.log('beforeEach'));
+// afterEach(() => console.log('afterEach'));
