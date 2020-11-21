@@ -1,15 +1,15 @@
 import React from 'react';
 import { Form } from 'ark-form';
 
-import { FullNameInput } from './Components/FullNameInput/FullNameInput';
-import { ZipCodeInput } from './Components/ZipCodeInput/ZipCodeInput';
-import { PhoneInput } from './Components/PhoneInput/PhoneInput';
-import { CheckboxInput } from './Components/CheckboxInput/CheckboxInput';
-import { DatePicker } from './Components/DatePicker/DatePicker';
-import { SelectInput } from './Components/SelectInput/SelectInput';
-import { Button } from './Components/Button/Button';
+import { FullNameInput } from '../Components/FullNameInput/FullNameInput';
+import { ZipCodeInput } from '../Components/ZipCodeInput/ZipCodeInput';
+import { PhoneInput } from '../Components/PhoneInput/PhoneInput';
+import { CheckboxInput } from '../Components/CheckboxInput/CheckboxInput';
+import { DatePicker } from '../Components/DatePicker/DatePicker';
+import { SelectInput } from '../Components/SelectInput/SelectInput';
+import { Button } from '../Components/Button/Button';
 
-import './App.scss';
+import './App.module.scss';
 
 const App = (): JSX.Element => {
   const options = [

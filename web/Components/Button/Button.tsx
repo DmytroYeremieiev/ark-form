@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './Button.css';
+import './Button.module.css';
 
 export const Button = ({ children, type }): JSX.Element => {
   return (
