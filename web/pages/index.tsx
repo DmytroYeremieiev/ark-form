@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './index.module.scss';
+import styles from './index.module.scss';
 import Forms from '@components/Forms';
 
 import { Button } from '@components/Button/Button';
@@ -23,7 +23,7 @@ const IndexPage = (): JSX.Element => {
     console.log('onDateSelected', value);
   };
   return (
-    <div className='page-content'>
+    <div className={styles['page-content']}>
       <Forms.Form name='tempForm' onSubmit={onSubmit} validateOnChange={false}>
         <Forms.FullNameInput name='fullName' initialValue='' label='FULL NAME *' required></Forms.FullNameInput>
         <Forms.ZipCodeInput name='zip' label='ZIP CODE *' required></Forms.ZipCodeInput>

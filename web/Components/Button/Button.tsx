@@ -1,10 +1,16 @@
 import React from 'react';
 
-import './Button.module.css';
+import styles from './Button.module.css';
+import classname from 'classnames';
 
-export const Button = ({ children, type }): JSX.Element => {
+type ButtonProps = {
+  children: JSX.Element;
+  type?: 'button' | 'submit' | 'reset';
+  classNames?: string | string[];
+};
+export const Button = ({ children, type, classNames }: ButtonProps): JSX.Element => {
   return (
-    <button className='button' type={type}>
+    <button className={classname(styles['button'], classNames)} type={type}>
       {children}
     </button>
   );
