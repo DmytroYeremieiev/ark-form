@@ -1,7 +1,7 @@
 import React from 'react';
-import { Field } from 'ark-form';
-import { TextInputInterface, FieldStateClassNames} from '../../types';
-import { ValidityStateInterface  } from 'ark-form';
+import { Field } from 'ark-form/src';
+import { TextInputInterface, FieldStateClassNames } from '../../types';
+import { ValidityStateInterface } from 'ark-form/src';
 
 import classnames from 'classnames';
 
@@ -16,7 +16,7 @@ const checkValidity = (
   required?: boolean
 ): ValidityStateInterface => {
   const result: ValidityStateInterface = {
-    valid: true
+    valid: true,
   };
   if (required && !value) {
     result.className = FieldStateClassNames.requiredError;

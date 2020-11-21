@@ -1,0 +1,23 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": false, //esnext enforces use of noEmit & noEmit can't coexist with composite
+    "jsx": "preserve",
+    "sourceMap": true,
+    // "declaration": true,
+    // "declarationMap": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "outDir": "./build/",
+    "rootDir": ".",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "noEmit": true, //esnext enforces use of noEmit & noEmit can't coexist with composite
+    "allowJs": false,
+    "baseUrl": "./",
+    "paths": {
+      "@components/*": ["components/*"]
+    }
+  },
+  "include": ["next-env.d.ts", "declarations.d.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["public", ".next", "styles", "build", "**/__tests__"]
+}

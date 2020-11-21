@@ -9,7 +9,7 @@
   "workspaces": {
     "packages": [
       "ark-form",
-      "web-app"
+      "web"
     ]
   },
   "devDependencies": {
