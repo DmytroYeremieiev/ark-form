@@ -1,7 +1,7 @@
 import React from 'react';
 
 import './index.module.scss';
-import Forms from 'ark-form';
+import Forms from '../Components/Forms';
 
 const IndexPage = (): JSX.Element => {
   const options = [
