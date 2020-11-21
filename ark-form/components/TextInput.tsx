@@ -1,11 +1,9 @@
 import React from 'react';
 import { Field } from 'ark-form/src';
-import { TextInputInterface, FieldStateClassNames } from 'ark-form/types';
+import { TextInputInterface, FieldStateClassNames } from './types';
 import { ValidityStateInterface } from 'ark-form/src';
 
 import classnames from 'classnames';
-
-import styles from '../txoInput.module.scss';
 
 const checkValidity = (
   value?: string,
@@ -36,10 +34,10 @@ export const TextInput = ({
   forceValidation,
   name,
   label,
-  className,
   pattern,
   required,
   readOnly,
+  statesRef = { current: null },
   ...rest
 }: TextInputInterface): JSX.Element => {
   return (
@@ -49,11 +47,13 @@ export const TextInput = ({
       initialValue={initialValue}
       {...rest}
     >
-      {({ field, fieldState, formState }) => {
+      {props => {
+        statesRef.current = props;
+        const { field, fieldState, formState } = props;
         const id = (formState.name || '') + '-' + name;
         // console.log('field', name, field.value, fieldState, formState);
         return (
-          <div className={classnames(styles['txo-input'], className)}>
+          <div>
             <div
               title={`${name} field`}
               className={`txo-input-container ${classnames(

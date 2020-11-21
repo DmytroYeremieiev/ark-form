@@ -41,7 +41,7 @@ export interface BasicInput<ET> {
   onFocus?: (event: React.FocusEvent<ET>, value?: InputType) => void;
 }
 
-interface FieldOuterProps<ET> {
+export interface FieldOuterProps<ET> {
   field: Field<ET>;
   formState: FormStateInterface;
   fieldState: FieldState;

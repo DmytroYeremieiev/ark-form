@@ -7,10 +7,10 @@ import { doesElemHaveExactClassList, doesFormFieldHaveExactClassList } from 'ark
 
 import { Form } from 'ark-form/src';
 import { ClassNames as FormClassNames } from 'ark-form/src';
-import { FieldStateClassNames as FieldClassNames } from 'ark-form/types';
+import { FieldStateClassNames as FieldClassNames } from 'ark-form/components/types';
 
-import { ValidationMessages, Patterns } from 'ark-form/constants';
-import { TextInput } from 'ark-form/components/TextInput/TextInput';
+import { ValidationMessages, Patterns } from '../components/constants';
+import { TextInput } from 'ark-form/components/TextInput';
 
 const onSubmit = (event, data) => void 0;
 
