@@ -1,5 +1,5 @@
 {
-  "extends": "../tsconfig.json",
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
     "composite": false, //esnext enforces use of noEmit & noEmit can't coexist with composite
     "jsx": "preserve",
