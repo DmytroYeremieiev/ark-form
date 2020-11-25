@@ -1,5 +1,8 @@
 import { BasicInput, FieldOuterProps } from 'ark-form/src';
 
+export interface FieldInputInterface<ET = HTMLInputElement> extends BasicInput<ET> {
+  statesRef: { current: FieldOuterProps<ET> };
+}
 export interface InputInterface<ET = HTMLInputElement> extends BasicInput<ET> {
   label: string;
   className?: string;
@@ -8,16 +11,11 @@ export interface InputInterface<ET = HTMLInputElement> extends BasicInput<ET> {
 }
 
 export interface TextInputInterface<ET = HTMLInputElement> extends InputInterface<ET> {
-  statesRef: { current: FieldOuterProps<ET> };
   required?: boolean;
   pattern?: {
     regexp: RegExp;
     message?: string;
   };
-}
-
-export interface DateInputInterface<ET = HTMLInputElement> extends InputInterface<ET> {
-  required?: boolean;
 }
 
 export enum FieldStateClassNames {
