@@ -15,7 +15,8 @@
     "allowJs": false,
     "baseUrl": "./",
     "paths": {
-      "@components/*": ["components/*"]
+      "@components/*": ["components/*"],
+      "@root/*": ["*"]
     }
   },
   "include": ["next-env.d.ts", "declarations.d.ts", "**/*.ts", "**/*.tsx"],

@@ -2,55 +2,76 @@ import React from 'react';
 
 import styles from './index.module.scss';
 
-import { PhoneInput } from '@components/PhoneInput/PhoneInput';
-import { SelectInput } from '@components/SelectInput/SelectInput';
-import { FullNameInput } from '@components/FullNameInput/FullNameInput';
-import { CheckboxInput } from '@components/CheckboxInput/CheckboxInput';
-import { ZipCodeInput } from '@components/ZipCodeInput/ZipCodeInput';
-import { DatePicker } from '@components/DatePicker/DatePicker';
-
-import { Form } from 'ark-form/src';
+import { Field, Form, ValidityStateInterface } from 'ark-form/src';
 
 import { Button } from '@components/Button/Button';
+import { FieldStateClassNames } from 'types';
+import classnames from 'classnames';
 
+const checkValidity = (
+  value?: string,
+  pattern?: {
+    regexp: RegExp;
+    message?: string;
+  },
+  required?: boolean
+): ValidityStateInterface => {
+  const result: ValidityStateInterface = {
+    valid: true,
+  };
+  if (required && !value) {
+    result.className = FieldStateClassNames.requiredError;
+    result.valid = false;
+    return result;
+  }
+  if (pattern && value && !pattern.regexp.test(value)) {
+    result.className = FieldStateClassNames.patternError;
+    result.valid = false;
+    result.errorMessage = pattern.message || 'Invalid value';
+    return result;
+  }
+  return result;
+};
 const IndexPage = (): JSX.Element => {
-  const options = [
-    { label: 'Faculty', value: 'faculty' },
-    { label: 'Student', value: 'student' },
-  ];
   const onSubmit = (event, data) => {
     console.log('onSubmit', data);
   };
-  const onPhoneOptInChecked = (event, value) => {
-    console.log('onPhoneOptInChecked', value);
-  };
-  const onRoleSelected = (event, value) => {
-    console.log('onRoleSelected', value);
-  };
-  const onDateSelected = (event, value) => {
-    console.log('onDateSelected', value);
-  };
+  const pattern = { regexp: /(^\d{5}$)/, message: 'field code must be 5 digits only' };
+
   return (
     <div className={styles['page-content']}>
       <Form name='tempForm' onSubmit={onSubmit} validateOnChange={false}>
-        <FullNameInput name='fullName' initialValue='' label='FULL NAME *' required></FullNameInput>
-        <ZipCodeInput name='zip' label='ZIP CODE *' required></ZipCodeInput>
-        <PhoneInput name='phone' initialValue='123' label='PHONE *' required></PhoneInput>
-        <CheckboxInput
-          initialValue={true}
-          name='phoneOptIn'
-          onChange={onPhoneOptInChecked}
-          label='It’s OK for an expert style consultant to call me about my event or other promotional events I won’t want to miss.'
-        ></CheckboxInput>
-        <DatePicker name='date' label='SELECT DATE *' onChange={onDateSelected} required></DatePicker>
-        <SelectInput
-          initialValue={options[0].value}
-          name='role'
-          label='SELECT ROLE *'
-          options={options}
-          onChange={onRoleSelected}
-          required
-        ></SelectInput>
+        <Field name={name} validate={value => checkValidity(value, pattern, true)} initialValue={''} {...rest}>
+          {({ field, fieldState, formState }) => {
+            const id = (formState.name || '') + '-' + name;
+            // console.log('field', name, field.value, fieldState, formState);
+            return (
+              <div className={styles['txo-input']}>
+                <div
+                  title={`${name} field`}
+                  className={`txo-input-container ${classnames(
+                    {
+                      [FieldStateClassNames.filled]: fieldState.filled,
+                      [FieldStateClassNames.pristine]: fieldState.pristine,
+                      [FieldStateClassNames.dirty]: fieldState.dirty,
+                      [FieldStateClassNames.invalid]: !fieldState.validity.valid,
+                      [FieldStateClassNames.valid]: fieldState.validity.valid,
+                    },
+                    fieldState.validity.className
+                  )}`}
+                >
+                  <input id={id} type='text' readOnly={false} {...field} />
+                  <label htmlFor={id}>''</label>
+                </div>
+                {fieldState.validity.errorMessage &&
+                  !fieldState.validity.valid &&
+                  (fieldState.dirty || formState.submitted) && (
+                    <span className='error'>{fieldState.validity.errorMessage}</span>
+                  )}
+              </div>
+            );
+          }}
+        </Field>
         <Button type='submit'>RENT THIS LOOK</Button>
       </Form>
     </div>
