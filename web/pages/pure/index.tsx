@@ -1,12 +1,11 @@
 import React from 'react';
 
-import styles from './index.module.scss';
-
 import { Field, Form, ValidityStateInterface } from 'ark-form/src';
+import { Button } from '@components/Button/Button';
+
+import styles from './index.module.scss';
 import fieldStyles from '@components/txoInput.module.scss';
 
-import { Button } from '@components/Button/Button';
-import { FieldStateClassNames } from 'types';
 import classnames from 'classnames';
 
 const checkValidity = (
@@ -21,12 +20,12 @@ const checkValidity = (
     valid: true,
   };
   if (required && !value) {
-    result.className = FieldStateClassNames.requiredError;
+    result.className = 'required--error';
     result.valid = false;
     return result;
   }
   if (pattern && value && !pattern.regexp.test(value)) {
-    result.className = FieldStateClassNames.patternError;
+    result.className = 'pattern-error';
     result.valid = false;
     result.errorMessage = pattern.message || 'Invalid value';
     return result;
@@ -52,11 +51,11 @@ const IndexPage = (): JSX.Element => {
                   title={`${name} field`}
                   className={`txo-input-container ${classnames(
                     {
-                      [FieldStateClassNames.filled]: fieldState.filled,
-                      [FieldStateClassNames.pristine]: fieldState.pristine,
-                      [FieldStateClassNames.dirty]: fieldState.dirty,
-                      [FieldStateClassNames.invalid]: !fieldState.validity.valid,
-                      [FieldStateClassNames.valid]: fieldState.validity.valid,
+                      ['filled']: fieldState.filled,
+                      ['pristine']: fieldState.pristine,
+                      ['dirty']: fieldState.dirty,
+                      ['invalid']: !fieldState.validity.valid,
+                      ['valid']: fieldState.validity.valid,
                     },
                     fieldState.validity.className
                   )}`}
