@@ -3,6 +3,7 @@ import React from 'react';
 import styles from './index.module.scss';
 
 import { Field, Form, ValidityStateInterface } from 'ark-form/src';
+import fieldStyles from '@components/txoInput.module.scss';
 
 import { Button } from '@components/Button/Button';
 import { FieldStateClassNames } from 'types';
@@ -37,16 +38,16 @@ const IndexPage = (): JSX.Element => {
     console.log('onSubmit', data);
   };
   const pattern = { regexp: /(^\d{5}$)/, message: 'field code must be 5 digits only' };
+  const name = 'Field 1';
 
   return (
     <div className={styles['page-content']}>
       <Form name='tempForm' onSubmit={onSubmit} validateOnChange={false}>
-        <Field name={name} validate={value => checkValidity(value, pattern, true)} initialValue={''} {...rest}>
+        <Field name={name} validate={value => checkValidity(value, pattern, true)} initialValue={''}>
           {({ field, fieldState, formState }) => {
-            const id = (formState.name || '') + '-' + name;
-            // console.log('field', name, field.value, fieldState, formState);
+            const id = formState.name + '-' + name;
             return (
-              <div className={styles['txo-input']}>
+              <div className={fieldStyles['txo-input']}>
                 <div
                   title={`${name} field`}
                   className={`txo-input-container ${classnames(
@@ -61,7 +62,7 @@ const IndexPage = (): JSX.Element => {
                   )}`}
                 >
                   <input id={id} type='text' readOnly={false} {...field} />
-                  <label htmlFor={id}>''</label>
+                  <label htmlFor={id}>Field 1</label>
                 </div>
                 {fieldState.validity.errorMessage &&
                   !fieldState.validity.valid &&
@@ -72,7 +73,7 @@ const IndexPage = (): JSX.Element => {
             );
           }}
         </Field>
-        <Button type='submit'>RENT THIS LOOK</Button>
+        <Button type='submit'>SUBMIT</Button>
       </Form>
     </div>
   );

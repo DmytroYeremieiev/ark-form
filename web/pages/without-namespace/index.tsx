@@ -40,7 +40,7 @@ const IndexPage = (): JSX.Element => {
           initialValue={true}
           name='phoneOptIn'
           onChange={onPhoneOptInChecked}
-          label='It’s OK for an expert style consultant to call me about my event or other promotional events I won’t want to miss.'
+          label='It’s OK for an consultant to call me about my event or other promotional events I won’t want to miss.'
         ></CheckboxInput>
         <DatePicker name='date' label='SELECT DATE *' onChange={onDateSelected} required></DatePicker>
         <SelectInput
@@ -51,7 +51,7 @@ const IndexPage = (): JSX.Element => {
           onChange={onRoleSelected}
           required
         ></SelectInput>
-        <Button type='submit'>RENT THIS LOOK</Button>
+        <Button type='submit'>SUBMIT</Button>
       </Form>
     </div>
   );
