@@ -34,6 +34,15 @@
 </Form>
 ```
 
+| Props      | Description | Default Value     |
+| :---        |    :----   |          ---: |
+| name      | <form\/> name       | none   |
+| onSubmit   | onsubmit event handler        | none      |
+| onChange   | onchange event handler, <br>called on any inner field change        | none      |
+| validateOnBlur   | Runs fields validation on blur       | true      |
+| validateOnChange   | Runs fields validation on change          | false      |
+<br>
+
 > `<Field/>` component:
 
 - encapsulates input state
@@ -55,8 +64,20 @@ Hooking-up managed state with html input elem happens through setting-up `value`
 </Field>
 ```
 
+| Prop         | Description                  | Default |
+|--------------|------------------------------|---------|
+| name         | Field name                   | none    |
+| initialValue | Field initial value          | none    |
+| onChange     | onchange event handler       | none    |
+| onFocus      | onfocus event handler        | none    |
+| onBlur       | onblur event handler         | none    |
+| validate     | your own validator callback  | none    |
+<br>
+
+
+
 ## Example 1: 
-Using gluing `Form` & `Field` components together:
+Using `Form` & `Field` components together:
 
 ```
 ...
