@@ -11,7 +11,7 @@ export enum ClassNames {
 }
 
 const classnames = (obj): string => {
-  const classes: string[] = [];
+  const classes = [];
   for (const key in obj) {
     if (obj[key]) {
       classes.push(key);
@@ -22,10 +22,7 @@ const classnames = (obj): string => {
 
 export interface FormInterface {
   name: string;
-  onSubmit: (
-    event: React.FormEvent<HTMLFormElement>,
-    data: Map<string, FieldsData>
-  ) => void;
+  onSubmit: (event: React.FormEvent<HTMLFormElement>, data: Map<string, FieldsData>) => void;
   onChange?: () => void;
   children: React.ReactChild | React.ReactChild[];
   validateOnChange?: boolean;
@@ -72,11 +69,7 @@ export const Form = ({
     setValid(valid);
     return valid;
   };
-  const sendFieldData = (
-    name: string,
-    value: any,
-    validity: ValidityStateInterface
-  ) => {
+  const sendFieldData = (name: string, value: any, validity: ValidityStateInterface) => {
     fieldsData.current.set(name, { value, validity });
   };
   useEffect(() => {

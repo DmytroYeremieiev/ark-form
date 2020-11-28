@@ -1,0 +1,15 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compileOnSave": false,
+  "compilerOptions": {
+    "composite": false,
+    "jsx": "preserve",
+    "sourceMap": true,
+    "declarationMap": true,
+    "declaration": true,
+    "outDir": "./build/",
+    "rootDir": "."
+  },
+  "include": ["src"],
+  "exclude": ["build", "**/node_modules", "**/__tests__"]
+}
