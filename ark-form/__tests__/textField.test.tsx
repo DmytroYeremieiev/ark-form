@@ -26,31 +26,37 @@ const ZipForm = (props: ZipFormInterface) => {
       validateOnChange={props.form.validateOnChange}
       validateOnBlur={props.form.validateOnBlur}
     >
-      <TextInput
-        name='zip'
-        initialValue={props.field.initialValue}
-        label='ZIP CODE *'
-        forceValidation={props.field.forceValidation}
-        required
-        pattern={{
-          regexp: Patterns.zipCode,
-          message: ValidationMessages.zipCode.patternMismatch,
-        }}
-      ></TextInput>
-      <TextInput
-        name='fullName'
-        initialValue={props.field.initialValue}
-        label='FULL NAME *'
-        forceValidation={props.field.forceValidation}
-        required
-        pattern={{
-          regexp: Patterns.fullName,
-          message: ValidationMessages.fullName.patternMismatch,
-        }}
-      ></TextInput>
-      <button className='button' type='submit'>
-        RENT THIS LOOK
-      </button>
+      {() => {
+        return (
+          <React.Fragment>
+            <TextInput
+              name='zip'
+              initialValue={props.field.initialValue}
+              label='ZIP CODE *'
+              forceValidation={props.field.forceValidation}
+              required
+              pattern={{
+                regexp: Patterns.zipCode,
+                message: ValidationMessages.zipCode.patternMismatch,
+              }}
+            ></TextInput>
+            <TextInput
+              name='fullName'
+              initialValue={props.field.initialValue}
+              label='FULL NAME *'
+              forceValidation={props.field.forceValidation}
+              required
+              pattern={{
+                regexp: Patterns.fullName,
+                message: ValidationMessages.fullName.patternMismatch,
+              }}
+            ></TextInput>
+            <button className='button' type='submit'>
+              RENT THIS LOOK
+            </button>
+          </React.Fragment>
+        );
+      }}
     </Form>
   );
 };

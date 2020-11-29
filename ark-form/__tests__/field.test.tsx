@@ -5,7 +5,6 @@ import '@testing-library/jest-dom';
 
 import { Form, FieldOuterProps } from 'ark-form/src';
 
-import { ValidationMessages, Patterns } from '../components/constants';
 import { FieldInput } from 'ark-form/components/FieldInput';
 import { FieldInputInterface } from 'ark-form/components/types';
 
@@ -20,11 +19,17 @@ interface TestFormInterface {
 const TestForm = ({ form, field1, field2 }: TestFormInterface) => {
   return (
     <Form name='tempForm' onSubmit={form.onSubmit} validateOnChange={form.validateOnChange}>
-      <FieldInput name='field1' {...field1}></FieldInput>
-      <FieldInput name='field2' {...field2}></FieldInput>
-      <button className='button' type='submit'>
-        RENT THIS LOOK
-      </button>
+      {({ state, dispatch }) => {
+        return (
+          <React.Fragment>
+            <FieldInput name='field1' {...field1}></FieldInput>
+            <FieldInput name='field2' {...field2}></FieldInput>
+            <button className='button' type='submit'>
+              RENT THIS LOOK
+            </button>
+          </React.Fragment>
+        );
+      }}
     </Form>
   );
 };

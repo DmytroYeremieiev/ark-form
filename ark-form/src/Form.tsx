@@ -27,10 +27,6 @@ export interface FormState {
   valid: boolean;
   changed: boolean;
   blurred: number;
-  configuration: {
-    validateOnChange: boolean;
-    validateOnBlur: boolean;
-  };
 }
 const defaultFormState: FormState = {
   dirty: false,
@@ -40,18 +36,15 @@ const defaultFormState: FormState = {
   valid: false,
   changed: false,
   blurred: 0,
-  configuration: {
-    validateOnChange: false,
-    validateOnBlur: true,
-  },
 };
 type FormAction = {
   type: 'blur' | 'submit' | 'change' | 'validate';
+  configuration: FormConfiguration;
   fieldsData: Map<string, FieldsData>;
 };
 const handleBlur = (state: FormState, action: FormAction): FormState => {
   let newState: FormState = { ...state, blurred: state.blurred + 1 };
-  if (state.configuration.validateOnBlur && state.changed) {
+  if (action.configuration.validateOnBlur && state.changed) {
     newState.dirty = true;
     newState.pristine = false;
     newState = handleValidation(newState, action);
@@ -63,7 +56,7 @@ const handleSubmit = (state: FormState, action: FormAction): FormState => {
 };
 const handleChange = (state: FormState, action: FormAction): FormState => {
   let newState: FormState = { ...state, changed: true };
-  if (state.configuration.validateOnChange) {
+  if (action.configuration.validateOnChange) {
     newState.dirty = true;
     newState.pristine = false;
     newState = handleValidation(newState, action);
@@ -89,14 +82,21 @@ const formReducer = (state: FormState, action: FormAction) => {
       throw new Error();
   }
 };
-export interface FormInterface {
-  name: string;
-  onSubmit: (event: React.FormEvent<HTMLFormElement>, data: Map<string, FieldsData>) => void;
-  onChange?: () => void;
-  children: React.ReactChild | React.ReactChild[];
+interface FormConfiguration {
   validateOnChange?: boolean;
   validateOnBlur?: boolean;
   forceValidation?: boolean;
+  name: string;
+}
+export interface FormInterface extends FormConfiguration {
+  name: string;
+  onSubmit: (event: React.FormEvent<HTMLFormElement>, data: Map<string, FieldsData>) => void;
+  onChange?: () => void;
+  children: (props: {
+    state: FormState;
+    dispatch: React.Dispatch<FormAction>;
+    configuration: FormConfiguration;
+  }) => React.ReactChild | React.ReactChild[];
 }
 type FieldsData = {
   value: InputType;
@@ -119,11 +119,12 @@ export const Form = ({
   validateOnBlur = true,
 }: FormInterface): JSX.Element => {
   const formRef = useRef(null);
-  const [state, dispatch] = useReducer(formReducer, defaultFormState, state => {
-    state.configuration.validateOnBlur = validateOnBlur;
-    state.configuration.validateOnChange = validateOnChange;
-    return state;
-  });
+  const configuration = {
+    validateOnChange,
+    validateOnBlur,
+    name,
+  };
+  const [state, dispatch] = useReducer(formReducer, defaultFormState);
   const fieldsData = useRef(new Map<string, FieldsData>());
   console.log(
     'Form:',
@@ -134,18 +135,18 @@ export const Form = ({
     fieldsData.current.set(name, { value, validity });
   };
   useEffect(() => {
-    dispatch({ type: 'validate', fieldsData: fieldsData.current });
+    dispatch({ type: 'validate', fieldsData: fieldsData.current, configuration });
   }, []);
   const _onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    dispatch({ type: 'submit', fieldsData: fieldsData.current });
+    dispatch({ type: 'submit', fieldsData: fieldsData.current, configuration });
     if (state.valid) onSubmit(event, fieldsData.current);
   };
   const _onChange = () => {
-    dispatch({ type: 'change', fieldsData: fieldsData.current });
+    dispatch({ type: 'change', fieldsData: fieldsData.current, configuration });
   };
   const _onBlur = () => {
-    dispatch({ type: 'blur', fieldsData: fieldsData.current });
+    dispatch({ type: 'blur', fieldsData: fieldsData.current, configuration });
   };
 
   return (
@@ -176,7 +177,7 @@ export const Form = ({
               name,
             }}
           >
-            {children}
+            {children({ state, dispatch, configuration })}
           </FormProvider>
         ),
         [state.submitted, state.blurred]
