@@ -51,7 +51,7 @@ export const TextInput = ({
     >
       {({ field, fieldState, formState }) => {
         const id = (formState.name || '') + '-' + name;
-        // console.log('field', name, field.value, fieldState, formState);
+        console.log('field', name, field.value, fieldState, formState);
         return (
           <div className={classnames(styles['txo-input'], className)}>
             <div

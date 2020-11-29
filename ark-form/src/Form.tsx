@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useMemo } from 'react';
+import React, { useReducer, useRef, useEffect, useMemo } from 'react';
 import { ValidityStateInterface, InputType } from './types';
 import { FormProvider } from './FormContext';
 
@@ -19,13 +19,79 @@ const classnames = (obj): string => {
   }
   return classes.join(' ');
 };
+export interface FormState {
+  dirty: boolean;
+  submitted: boolean;
+  pristine: boolean;
+  invalid: boolean;
+  valid: boolean;
+  changed: boolean;
+  blurred: number;
+  configuration: {
+    validateOnChange: boolean;
+    validateOnBlur: boolean;
+  };
+}
+const defaultFormState: FormState = {
+  dirty: false,
+  submitted: false,
+  pristine: true,
+  invalid: true,
+  valid: false,
+  changed: false,
+  blurred: 0,
+  configuration: {
+    validateOnChange: false,
+    validateOnBlur: true,
+  },
+};
+type FormAction = {
+  type: 'blur' | 'submit' | 'change' | 'validate';
+  fieldsData: Map<string, FieldsData>;
+};
+const handleBlur = (state: FormState, action: FormAction): FormState => {
+  let newState: FormState = { ...state, blurred: Date.now() };
+  if (state.configuration.validateOnBlur && state.changed) {
+    newState.dirty = true;
+    newState.pristine = false;
+    newState = handleValidation(newState, action);
+  }
+  return newState;
+};
+const handleSubmit = (state: FormState, action: FormAction): FormState => {
+  return { ...state, ...handleValidation(state, action), submitted: true };
+};
+const handleChange = (state: FormState, action: FormAction): FormState => {
+  let newState: FormState = { ...state, changed: true };
+  if (state.configuration.validateOnChange) {
+    newState.dirty = true;
+    newState.pristine = false;
+    newState = handleValidation(newState, action);
+  }
+  return newState;
+};
 
+const handleValidation = (state: FormState, action: FormAction): FormState => {
+  const valid = isValid(action.fieldsData);
+  return { ...state, invalid: !valid, valid: valid };
+};
+const formReducer = (state: FormState, action: FormAction) => {
+  switch (action.type) {
+    case 'submit':
+      return handleSubmit(state, action);
+    case 'change':
+      return handleChange(state, action);
+    case 'blur':
+      return handleBlur(state, action);
+    case 'validate':
+      return handleValidation(state, action);
+    default:
+      throw new Error();
+  }
+};
 export interface FormInterface {
   name: string;
-  onSubmit: (
-    event: React.FormEvent<HTMLFormElement>,
-    data: Map<string, FieldsData>
-  ) => void;
+  onSubmit: (event: React.FormEvent<HTMLFormElement>, data: Map<string, FieldsData>) => void;
   onChange?: () => void;
   children: React.ReactChild | React.ReactChild[];
   validateOnChange?: boolean;
@@ -52,57 +118,35 @@ export const Form = ({
   validateOnChange = false,
   validateOnBlur = true,
 }: FormInterface): JSX.Element => {
-  const [dirty, setDirty] = useState(false);
-  const [pristine, setPristine] = useState(true);
-  const [submitted, setSubmitted] = useState(false);
-  const [blurred, setBlurred] = useState(Date.now());
-  const [invalid, setInvalid] = useState(true);
-  const [valid, setValid] = useState(false);
-  const [changed, setChanged] = useState(false);
   const formRef = useRef(null);
+  const [state, dispatch] = useReducer(formReducer, defaultFormState, state => {
+    state.configuration.validateOnBlur = validateOnBlur;
+    state.configuration.validateOnChange = validateOnChange;
+    return state;
+  });
   const fieldsData = useRef(new Map<string, FieldsData>());
-  // console.log(
-  //   'Form:',
-  //   `dirty ${dirty},  pristine: ${pristine}, submitted: ${submitted}, blurred: ${blurred}, invalid: ${invalid}, valid: ${valid}, changed: ${changed}`
-  // );
+  console.log(
+    'Form:',
+    `dirty ${state.dirty},  pristine: ${state.pristine}, submitted: ${state.submitted}, blurred: ${state.blurred}, invalid: ${state.invalid}, valid: ${state.valid}, changed: ${state.changed}`
+  );
 
-  const validate = () => {
-    const valid = isValid(fieldsData.current);
-    setInvalid(!valid);
-    setValid(valid);
-    return valid;
-  };
-  const sendFieldData = (
-    name: string,
-    value: any,
-    validity: ValidityStateInterface
-  ) => {
+  const sendFieldData = (name: string, value: any, validity: ValidityStateInterface) => {
     fieldsData.current.set(name, { value, validity });
   };
   useEffect(() => {
-    validate();
+    dispatch({ type: 'validate', fieldsData: fieldsData.current });
   }, []);
   const _onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setSubmitted(true);
-    const valid = validate();
-    if (valid) onSubmit(event, fieldsData.current);
+    dispatch({ type: 'submit', fieldsData: fieldsData.current });
+    console.log('_onSubmit', state);
+    if (state.valid) onSubmit(event, fieldsData.current);
   };
   const _onChange = () => {
-    setChanged(true);
-    if (validateOnChange) {
-      setDirty(true);
-      setPristine(false);
-      validate();
-    }
+    dispatch({ type: 'change', fieldsData: fieldsData.current });
   };
   const _onBlur = () => {
-    setBlurred(Date.now());
-    if (validateOnBlur && changed) {
-      setDirty(true);
-      setPristine(false);
-      validate();
-    }
+    dispatch({ type: 'blur', fieldsData: fieldsData.current });
   };
 
   return (
@@ -114,19 +158,19 @@ export const Form = ({
       onChange={_onChange}
       onBlur={_onBlur}
       className={classnames({
-        [ClassNames.dirty]: dirty,
-        [ClassNames.submitted]: submitted,
-        [ClassNames.pristine]: pristine,
-        [ClassNames.invalid]: invalid,
-        [ClassNames.valid]: valid,
+        [ClassNames.dirty]: state.dirty,
+        [ClassNames.submitted]: state.submitted,
+        [ClassNames.pristine]: state.pristine,
+        [ClassNames.invalid]: state.invalid,
+        [ClassNames.valid]: state.valid,
       })}
     >
       {useMemo(
         () => (
           <FormProvider
             value={{
-              submitted,
-              blurred,
+              submitted: state.submitted,
+              blurred: state.blurred,
               validateOnChange,
               validateOnBlur,
               sendFieldData,
@@ -136,7 +180,7 @@ export const Form = ({
             {children}
           </FormProvider>
         ),
-        [submitted, blurred]
+        [state.submitted, state.blurred]
       )}
     </form>
   );
