@@ -23,7 +23,12 @@ export const FieldInput = ({
         const { field, fieldState, formState } = props;
         const id = (formState.name || '') + '-' + name;
         // console.log('field', name, field.value, fieldState, formState);
-        return <input id={id} type='text' {...field} />;
+        return (
+          <div>
+            <input id={id} type='text' {...field} />
+            <label htmlFor={id}>{name}</label>
+          </div>
+        );
       }}
     </Field>
   );

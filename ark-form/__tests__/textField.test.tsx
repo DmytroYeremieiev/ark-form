@@ -3,10 +3,7 @@ import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
-import {
-  doesElemHaveExactClassList,
-  doesFormFieldHaveExactClassList,
-} from 'ark-form/utils/formTestHelper';
+import { doesElemHaveExactClassList, doesFormFieldHaveExactClassList } from 'ark-form/utils/formTestHelper';
 
 import { Form } from 'ark-form/src';
 import { ClassNames as FormClassNames } from 'ark-form/src';
@@ -24,15 +21,15 @@ interface ZipFormInterface {
 const ZipForm = (props: ZipFormInterface) => {
   return (
     <Form
-      name="tempForm"
+      name='tempForm'
       onSubmit={props.form.onSubmit}
       validateOnChange={props.form.validateOnChange}
       validateOnBlur={props.form.validateOnBlur}
     >
       <TextInput
-        name="zip"
+        name='zip'
         initialValue={props.field.initialValue}
-        label="ZIP CODE *"
+        label='ZIP CODE *'
         forceValidation={props.field.forceValidation}
         required
         pattern={{
@@ -41,9 +38,9 @@ const ZipForm = (props: ZipFormInterface) => {
         }}
       ></TextInput>
       <TextInput
-        name="fullName"
+        name='fullName'
         initialValue={props.field.initialValue}
-        label="FULL NAME *"
+        label='FULL NAME *'
         forceValidation={props.field.forceValidation}
         required
         pattern={{
@@ -51,7 +48,7 @@ const ZipForm = (props: ZipFormInterface) => {
           message: ValidationMessages.fullName.patternMismatch,
         }}
       ></TextInput>
-      <button className="button" type="submit">
+      <button className='button' type='submit'>
         RENT THIS LOOK
       </button>
     </Form>
@@ -71,9 +68,7 @@ describe('Zip Code - text field validation', () => {
       selector: 'input',
     }) as HTMLInputElement;
     expect(zipCodeInput.value).toBe('');
-    const error = screen.queryByText(
-      ValidationMessages.zipCode.patternMismatch
-    );
+    const error = screen.queryByText(ValidationMessages.zipCode.patternMismatch);
     expect(error).not.toBeInTheDocument();
   });
 
@@ -109,12 +104,7 @@ describe('Zip Code - text field validation', () => {
     }) as HTMLInputElement;
     const form = screen.getByRole('form');
     fireEvent.change(zipCodeInput, { target: { value: '' } });
-    expect(
-      doesElemHaveExactClassList(form, [
-        FormClassNames.dirty,
-        FormClassNames.invalid,
-      ])
-    ).toBeTruthy();
+    expect(doesElemHaveExactClassList(form, [FormClassNames.dirty, FormClassNames.invalid])).toBeTruthy();
   });
 
   test(`typing 123 will result in error: ${ValidationMessages.zipCode.patternMismatch}`, () => {
@@ -163,12 +153,7 @@ describe('Zip Code - text field validation', () => {
     }) as HTMLInputElement;
     const form = screen.getByRole('form');
     fireEvent.change(zipCodeInput, { target: { value: '123' } });
-    expect(
-      doesElemHaveExactClassList(form, [
-        FormClassNames.dirty,
-        FormClassNames.invalid,
-      ])
-    ).toBeTruthy();
+    expect(doesElemHaveExactClassList(form, [FormClassNames.dirty, FormClassNames.invalid])).toBeTruthy();
   });
 });
 
@@ -191,9 +176,7 @@ describe('Zip Code - text field validation ONLY ON BLUR', () => {
     fireEvent.change(zipCodeInput, { target: { value: '123' } });
     expect(zipCodeInput.value).toBe('123');
     expect(fullNameInput.value).toBe('');
-    const error = screen.queryByText(
-      ValidationMessages.zipCode.patternMismatch
-    );
+    const error = screen.queryByText(ValidationMessages.zipCode.patternMismatch);
     expect(error).not.toBeInTheDocument();
   });
 
@@ -205,12 +188,7 @@ describe('Zip Code - text field validation ONLY ON BLUR', () => {
     }) as HTMLInputElement;
     const form = screen.getByRole('form');
     fireEvent.change(zipCodeInput, { target: { value: '123' } });
-    expect(
-      doesElemHaveExactClassList(form, [
-        FormClassNames.pristine,
-        FormClassNames.invalid,
-      ])
-    ).toBeTruthy();
+    expect(doesElemHaveExactClassList(form, [FormClassNames.pristine, FormClassNames.invalid])).toBeTruthy();
   });
 
   test(`typing 123 into zip field and not blurring FIELDs classes check`, () => {
@@ -254,12 +232,7 @@ describe('Zip Code - text field validation ONLY ON BLUR', () => {
     }) as HTMLInputElement;
     const fullNameField = screen.getByTitle('fullName field');
 
-    expect(
-      doesElemHaveExactClassList(form, [
-        FormClassNames.pristine,
-        FormClassNames.invalid,
-      ])
-    ).toBeTruthy();
+    expect(doesElemHaveExactClassList(form, [FormClassNames.pristine, FormClassNames.invalid])).toBeTruthy();
     expect(
       doesFormFieldHaveExactClassList(zipCodeField, [
         FieldClassNames.pristine,
@@ -279,12 +252,7 @@ describe('Zip Code - text field validation ONLY ON BLUR', () => {
     fireEvent.blur(zipCodeInput);
     expect(zipCodeInput.value).toBe('123');
     expect(fullNameInput.value).toBe('');
-    expect(
-      doesElemHaveExactClassList(form, [
-        FormClassNames.dirty,
-        FormClassNames.invalid,
-      ])
-    ).toBeTruthy();
+    expect(doesElemHaveExactClassList(form, [FormClassNames.dirty, FormClassNames.invalid])).toBeTruthy();
     expect(
       doesFormFieldHaveExactClassList(zipCodeField, [
         FieldClassNames.dirty,

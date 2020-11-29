@@ -7,9 +7,7 @@ const defaultValidity: ValidityStateInterface = {
 };
 
 const getValidity = () => defaultValidity;
-export const Field = <
-  ET extends HTMLElement & { value: string } = HTMLInputElement
->(
+export const Field = <ET extends HTMLElement & { value: string } = HTMLInputElement>(
   props: FieldInterface<ET>
 ): JSX.Element => {
   const {
@@ -18,8 +16,8 @@ export const Field = <
     onChange = () => void 0,
     onFocus = () => void 0,
     onBlur = () => void 0,
-    transformInput = (input) => input,
-    transformOutput = (output) => output,
+    transformInput = input => input,
+    transformOutput = output => output,
     validateOnChange,
     children,
     validate = getValidity,
@@ -36,9 +34,7 @@ export const Field = <
     return validity;
   }, []);
 
-  const [validity, setValidity] = useState<ValidityStateInterface>(
-    initialValidity
-  );
+  const [validity, setValidity] = useState<ValidityStateInterface>(initialValidity);
   const [changed, setChanged] = useState(false);
   const [pristine, setPristine] = useState(true);
   const [dirty, setDirty] = useState(false);

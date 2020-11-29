@@ -2,11 +2,7 @@ export interface FormStateInterface {
   submitted: boolean;
   name: string;
   blurred: number;
-  sendFieldData: (
-    name: string,
-    value: any,
-    validity: ValidityStateInterface
-  ) => void;
+  sendFieldData: (name: string, value: any, validity: ValidityStateInterface) => void;
   validateOnBlur: boolean;
   validateOnChange: boolean;
 }
@@ -45,17 +41,13 @@ export interface BasicInput<ET> {
   onFocus?: (event: React.FocusEvent<ET>, value?: InputType) => void;
 }
 
-interface FieldOuterProps<ET> {
+export interface FieldOuterProps<ET> {
   field: Field<ET>;
   formState: FormStateInterface;
   fieldState: FieldState;
 }
 
 export interface FieldInterface<ET> extends BasicInput<ET> {
-  children: ({
-    field,
-    formState,
-    fieldState,
-  }: FieldOuterProps<ET>) => JSX.Element;
+  children: ({ field, formState, fieldState }: FieldOuterProps<ET>) => JSX.Element;
   validateOnChange?: boolean;
 }
