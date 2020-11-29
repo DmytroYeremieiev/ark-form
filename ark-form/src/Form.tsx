@@ -118,7 +118,6 @@ export const Form = ({
   validateOnChange = false,
   validateOnBlur = true,
 }: FormInterface): JSX.Element => {
-  const formRef = useRef(null);
   const configuration = {
     validateOnChange,
     validateOnBlur,
@@ -152,7 +151,6 @@ export const Form = ({
   return (
     <form
       noValidate
-      ref={formRef}
       name={name}
       onSubmit={_onSubmit}
       onChange={_onChange}
