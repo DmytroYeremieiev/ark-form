@@ -50,7 +50,7 @@ type FormAction = {
   fieldsData: Map<string, FieldsData>;
 };
 const handleBlur = (state: FormState, action: FormAction): FormState => {
-  let newState: FormState = { ...state, blurred: Date.now() };
+  let newState: FormState = { ...state, blurred: state.blurred + 1 };
   if (state.configuration.validateOnBlur && state.changed) {
     newState.dirty = true;
     newState.pristine = false;
@@ -139,7 +139,6 @@ export const Form = ({
   const _onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     dispatch({ type: 'submit', fieldsData: fieldsData.current });
-    console.log('_onSubmit', state);
     if (state.valid) onSubmit(event, fieldsData.current);
   };
   const _onChange = () => {
