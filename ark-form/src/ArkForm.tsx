@@ -1,42 +1,7 @@
 import React, { useReducer, useRef, useEffect, useMemo } from 'react';
-import { ValidityStateInterface, InputType } from './types';
+import { ValidityStateInterface, InputType, FormConfiguration, FormState, defaultFormState } from './types';
 import { FormProvider } from './FormContext';
 
-export enum ClassNames {
-  dirty = 'form-dirty',
-  submitted = 'form-submitted',
-  pristine = 'form-pristine',
-  invalid = 'form-invalid',
-  valid = 'form-valid',
-}
-
-const classnames = (obj): string => {
-  const classes: string[] = [];
-  for (const key in obj) {
-    if (obj[key]) {
-      classes.push(key);
-    }
-  }
-  return classes.join(' ');
-};
-export interface FormState {
-  dirty: boolean;
-  submitted: boolean;
-  pristine: boolean;
-  invalid: boolean;
-  valid: boolean;
-  changed: boolean;
-  blurred: number;
-}
-const defaultFormState: FormState = {
-  dirty: false,
-  submitted: false,
-  pristine: true,
-  invalid: true,
-  valid: false,
-  changed: false,
-  blurred: 0,
-};
 type FormAction = {
   type: 'blur' | 'submit' | 'change' | 'validate';
   configuration: FormConfiguration;
@@ -82,12 +47,7 @@ const formReducer = (state: FormState, action: FormAction) => {
       throw new Error();
   }
 };
-interface FormConfiguration {
-  validateOnChange?: boolean;
-  validateOnBlur?: boolean;
-  forceValidation?: boolean;
-  name: string;
-}
+
 interface FormHooks {
   name: string;
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
@@ -160,12 +120,9 @@ export const ArkForm = ({
     () => (
       <FormProvider
         value={{
-          submitted: state.submitted,
-          blurred: state.blurred,
-          validateOnChange,
-          validateOnBlur,
           sendFieldData,
-          name,
+          configuration,
+          state,
         }}
       >
         {children({ state, dispatch, configuration, formHooks })}

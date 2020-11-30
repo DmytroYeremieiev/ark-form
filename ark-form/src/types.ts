@@ -1,11 +1,32 @@
-export interface FormStateInterface {
-  submitted: boolean;
-  name: string;
-  blurred: number;
+export interface FormContextInterface {
+  configuration: FormConfiguration;
   sendFieldData: (name: string, value: any, validity: ValidityStateInterface) => void;
-  validateOnBlur: boolean;
-  validateOnChange: boolean;
+  state: FormState;
 }
+export interface FormConfiguration {
+  validateOnChange?: boolean;
+  validateOnBlur?: boolean;
+  forceValidation?: boolean;
+  name: string;
+}
+export interface FormState {
+  dirty: boolean;
+  submitted: boolean;
+  pristine: boolean;
+  invalid: boolean;
+  valid: boolean;
+  changed: boolean;
+  blurred: number;
+}
+export const defaultFormState: FormState = {
+  dirty: false,
+  submitted: false,
+  pristine: true,
+  invalid: true,
+  valid: false,
+  changed: false,
+  blurred: 0,
+};
 
 interface FieldState {
   filled: boolean;
