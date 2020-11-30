@@ -5,6 +5,7 @@ export interface InputInterface<ET = HTMLInputElement> extends BasicInput<ET> {
   className?: string;
   readOnly?: boolean;
   forceValidation?: boolean;
+  transformInput?: (input?: string, target?: ET) => string | undefined;
 }
 
 export interface TextInputInterface<ET = HTMLInputElement> extends InputInterface<ET> {

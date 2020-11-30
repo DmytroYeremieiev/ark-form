@@ -55,8 +55,6 @@ export interface BasicInput<ET> {
   name: string;
   initialValue?: InputType;
   validate?: (value?: string) => ValidityStateInterface;
-  transformInput?: (input?: string, target?: ET) => string | undefined;
-  transformOutput?: (output?: string, target?: ET) => any;
   onChange?: (event: React.ChangeEvent<ET>, value?: InputType) => void;
   onBlur?: (even: React.SyntheticEvent<ET>, value?: InputType) => void;
   onFocus?: (event: React.FocusEvent<ET>, value?: InputType) => void;

@@ -16,8 +16,6 @@ export const Field = <ET extends HTMLElement & { value: string } = HTMLInputElem
     onChange = () => void 0,
     onFocus = () => void 0,
     onBlur = () => void 0,
-    transformInput = input => input,
-    transformOutput = output => output,
     validateOnChange,
     children,
     validate = getValidity,
@@ -51,18 +49,15 @@ export const Field = <ET extends HTMLElement & { value: string } = HTMLInputElem
 
   useEffect(() => {
     if (!didMountRef.current) return;
-    const target = inputRef.current;
     const _initialValue = initialValue?.toString();
-    const transformedInput = transformInput(_initialValue, target);
-    const transformedOutput = transformOutput(_initialValue, target);
-    setValue(transformedInput);
-    setFilled(!!transformedInput);
+    setValue(_initialValue);
+    setFilled(!!_initialValue);
     setChanged(true);
     const validity = validate(_initialValue);
     setValidity(validity);
     setDirty(true);
     setPristine(false);
-    formContext.sendFieldData(name, transformedOutput, validity);
+    formContext.sendFieldData(name, _initialValue, validity);
   }, [initialValue]);
 
   useEffect(() => {
@@ -70,12 +65,9 @@ export const Field = <ET extends HTMLElement & { value: string } = HTMLInputElem
     didMountRef.current = true;
   });
   const _onChange = (event: React.ChangeEvent<ET>) => {
-    const target = inputRef.current;
-    const value = target!.value;
-    const transformedInput = transformInput(value, target);
-    const transformedOutput = transformOutput(value, target);
-    setValue(transformedInput);
-    setFilled(!!transformedInput);
+    const value = inputRef.current!.value;
+    setValue(value);
+    setFilled(!!value);
     setChanged(true);
     const validity = validate(value);
     if (_validateOnChange) {
@@ -83,8 +75,8 @@ export const Field = <ET extends HTMLElement & { value: string } = HTMLInputElem
       setDirty(true);
       setPristine(false);
     }
-    formContext.sendFieldData(name, transformedOutput, validity);
-    onChange(event, transformedOutput);
+    formContext.sendFieldData(name, value, validity);
+    onChange(event, value);
   };
   const _onBlur = (event: React.SyntheticEvent<ET>) => {
     onBlur(event);

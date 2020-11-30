@@ -5,8 +5,12 @@ import classnames from 'classnames';
 
 import styles from './CheckboxInput.module.scss';
 
-const transformation = function (_input, target?: HTMLInputElement) {
-  return target!.checked.toString();
+const transformation = function (fieldProps) {
+  if (fieldProps.ref.current) {
+    return fieldProps.ref.current.checked;
+  } else {
+    return fieldProps.value === 'true';
+  }
 };
 
 export const CheckboxInput = ({
@@ -17,23 +21,17 @@ export const CheckboxInput = ({
   ...props
 }: InputInterface): JSX.Element => {
   return (
-    <Field
-      name={name}
-      transformInput={transformation}
-      transformOutput={transformation}
-      initialValue={initialValue}
-      {...props}
-      validateOnChange={true}
-    >
+    <Field name={name} initialValue={initialValue} {...props} validateOnChange={true}>
       {({ fieldProps, fieldState, formContext }) => {
         const id = formContext.configuration.name + '-' + name;
         if (process.env.NODE_ENV !== 'production') {
           console.log('field', name, fieldProps.value, fieldState, formContext);
         }
+        const value = transformation(fieldProps);
         return (
           <div className={classnames(styles['checkbox-input'], className)}>
             <div title={`${name} field`} className={`txo-input-container`}>
-              <input {...fieldProps} id={id} checked={fieldProps.value === 'true'} value='true' type='checkbox' />
+              <input {...fieldProps} id={id} checked={value} value={value} type='checkbox' />
               <label htmlFor={id}>{label}</label>
             </div>
           </div>

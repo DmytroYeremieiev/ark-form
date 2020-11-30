@@ -40,6 +40,7 @@ export const TextInput = ({
   pattern,
   required,
   readOnly,
+  transformInput = value => value,
   ...rest
 }: TextInputInterface): JSX.Element => {
   return (
@@ -70,7 +71,7 @@ export const TextInput = ({
                 fieldState.validity.className
               )}`}
             >
-              <input id={id} type='text' readOnly={readOnly} {...fieldProps} />
+              <input id={id} type='text' readOnly={readOnly} {...fieldProps} value={transformInput(fieldProps.value)} />
               <label htmlFor={id}>{label}</label>
             </div>
             {fieldState.validity.errorMessage &&
