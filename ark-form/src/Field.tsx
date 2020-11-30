@@ -97,7 +97,7 @@ export const Field = <ET extends HTMLElement & { value: string } = HTMLInputElem
     onFocus(event);
   };
 
-  const field = {
+  const fieldProps = {
     value: value,
     ref: inputRef,
     onChange: _onChange,
@@ -115,7 +115,7 @@ export const Field = <ET extends HTMLElement & { value: string } = HTMLInputElem
   // }
 
   return children({
-    field,
+    fieldProps,
     fieldState,
     formContext,
   });

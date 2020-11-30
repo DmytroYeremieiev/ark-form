@@ -48,7 +48,7 @@ const formReducer = (state: FormState, action: FormAction) => {
   }
 };
 
-interface FormHooks {
+interface FormProps {
   name: string;
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   onChange?: (event: React.FormEvent<HTMLFormElement>) => void;
@@ -63,7 +63,7 @@ export interface FormInterface extends FormConfiguration {
     state: FormState;
     dispatch: React.Dispatch<FormAction>;
     configuration: FormConfiguration;
-    formHooks: FormHooks;
+    formProps: FormProps;
   }) => React.ReactChild | React.ReactChild[];
 }
 type FieldsData = {
@@ -117,7 +117,7 @@ export const ArkForm = ({
   const _onBlur = () => {
     dispatch({ type: 'blur', fieldsData: fieldsData.current, configuration });
   };
-  const formHooks = { name, onSubmit: _onSubmit, onBlur: _onBlur, onChange: _onChange };
+  const formProps = { name, onSubmit: _onSubmit, onBlur: _onBlur, onChange: _onChange };
   return useMemo(
     () => (
       <FormProvider
@@ -127,7 +127,7 @@ export const ArkForm = ({
           state,
         }}
       >
-        {children({ state, dispatch, configuration, formHooks })}
+        {children({ state, dispatch, configuration, formProps })}
       </FormProvider>
     ),
     [state.submitted, state.blurred, state.dirty, state.valid, state.changed]

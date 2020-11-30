@@ -35,7 +35,7 @@ interface FieldState {
   validity: ValidityStateInterface;
 }
 
-interface Field<ET> {
+interface FieldProps<ET> {
   value?: string;
   ref: React.MutableRefObject<any>;
   onChange?: (event: React.ChangeEvent<ET>) => void;
@@ -63,12 +63,12 @@ export interface BasicInput<ET> {
 }
 
 export interface FieldOuterProps<ET> {
-  field: Field<ET>;
+  fieldProps: FieldProps<ET>;
   formContext: FormContextInterface;
   fieldState: FieldState;
 }
 
 export interface FieldInterface<ET> extends BasicInput<ET> {
-  children: ({ field, formContext, fieldState }: FieldOuterProps<ET>) => JSX.Element;
+  children: ({ fieldProps, formContext, fieldState }: FieldOuterProps<ET>) => JSX.Element;
   validateOnChange?: boolean;
 }

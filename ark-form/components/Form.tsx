@@ -30,7 +30,7 @@ export const Form = ({
 }: FormInterface): JSX.Element => {
   return (
     <ArkForm name={name} onSubmit={onSubmit} validateOnChange={validateOnChange} validateOnBlur={validateOnBlur}>
-      {({ state, formHooks }) => {
+      {({ state, formProps }) => {
         if (process.env.NODE_ENV !== 'production') {
           console.log('<ArkForm/>', state);
         }
@@ -44,7 +44,7 @@ export const Form = ({
               [ClassNames.invalid]: state.invalid,
               [ClassNames.valid]: state.valid,
             })}
-            {...formHooks}
+            {...formProps}
           >
             {children}
           </FormElem>

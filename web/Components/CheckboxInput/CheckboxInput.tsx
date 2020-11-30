@@ -25,15 +25,15 @@ export const CheckboxInput = ({
       {...props}
       validateOnChange={true}
     >
-      {({ field, fieldState, formContext }) => {
+      {({ fieldProps, fieldState, formContext }) => {
         const id = formContext.configuration.name + '-' + name;
         if (process.env.NODE_ENV !== 'production') {
-          console.log('field', name, field.value, fieldState, formContext);
+          console.log('field', name, fieldProps.value, fieldState, formContext);
         }
         return (
           <div className={classnames(styles['checkbox-input'], className)}>
             <div title={`${name} field`} className={`txo-input-container`}>
-              <input {...field} id={id} checked={field.value === 'true'} value='true' type='checkbox' />
+              <input {...fieldProps} id={id} checked={fieldProps.value === 'true'} value='true' type='checkbox' />
               <label htmlFor={id}>{label}</label>
             </div>
           </div>
