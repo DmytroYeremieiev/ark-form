@@ -27,7 +27,7 @@ export const CheckboxInput = ({
     >
       {({ field, fieldState, formState }) => {
         const id = formState.name + '-' + name;
-        console.log('field.value', field.value);
+        console.log('field.value', name, field.value, fieldState, formState);
         return (
           <div className={classnames(styles['checkbox-input'], className)}>
             <div title={`${name} field`} className={`txo-input-container`}>

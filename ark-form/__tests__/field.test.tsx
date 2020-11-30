@@ -3,7 +3,8 @@ import React, { useRef } from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
-import { Form, FieldOuterProps } from 'ark-form/src';
+import { FieldOuterProps } from 'ark-form/src';
+import { Form } from 'ark-form/components/Form';
 
 import { FieldInput } from 'ark-form/components/FieldInput';
 import { FieldInputInterface } from 'ark-form/components/types';
@@ -19,17 +20,11 @@ interface TestFormInterface {
 const TestForm = ({ form, field1, field2 }: TestFormInterface) => {
   return (
     <Form name='tempForm' onSubmit={form.onSubmit} validateOnChange={form.validateOnChange}>
-      {({ state, dispatch }) => {
-        return (
-          <React.Fragment>
-            <FieldInput name='field1' {...field1}></FieldInput>
-            <FieldInput name='field2' {...field2}></FieldInput>
-            <button className='button' type='submit'>
-              RENT THIS LOOK
-            </button>
-          </React.Fragment>
-        );
-      }}
+      <FieldInput name='field1' {...field1}></FieldInput>
+      <FieldInput name='field2' {...field2}></FieldInput>
+      <button className='button' type='submit'>
+        RENT THIS LOOK
+      </button>
     </Form>
   );
 };

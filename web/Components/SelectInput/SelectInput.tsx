@@ -47,7 +47,7 @@ export const SelectInput = ({
     <Field<HTMLSelectElement> name={name} validate={value => checkValidity(value, required)} {...rest}>
       {({ field, fieldState, formState }) => {
         const id = (formState.name || '') + '-' + name;
-        // console.log('field', name, fieldState, formState);
+        console.log('field', name, fieldState, formState);
         return (
           <div className={classnames(styles['select-input'], txoInputStyles['txo-input'], className)}>
             <div
