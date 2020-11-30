@@ -1,4 +1,4 @@
-import { Form } from 'ark-form/src';
+import { Form } from './Form';
 
 import { TextInput } from './TextInput/TextInput';
 import { PhoneInput } from './PhoneInput/PhoneInput';

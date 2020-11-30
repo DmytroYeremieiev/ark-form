@@ -3,13 +3,10 @@ import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
-import {
-  doesElemHaveExactClassList,
-  doesFormFieldHaveExactClassList,
-} from 'ark-form/utils/formTestHelper';
+import { doesElemHaveExactClassList, doesFormFieldHaveExactClassList } from 'ark-form/utils/formTestHelper';
 
-import { Form } from 'ark-form/src';
-import { ClassNames as FormClassNames } from 'ark-form/src';
+import { Form, ClassNames as FormClassNames } from 'ark-form/components/Form';
+
 import { FieldStateClassNames as FieldClassNames } from 'ark-form/components/types';
 
 import { ValidationMessages, Patterns } from 'ark-form/components/constants';
@@ -24,15 +21,11 @@ interface ZipFormInterface {
 }
 const ZipForm = ({ form, zipCode, fullName }: ZipFormInterface) => {
   return (
-    <Form
-      name="tempForm"
-      onSubmit={form.onSubmit}
-      validateOnChange={form.validateOnChange}
-    >
+    <Form name='tempForm' onSubmit={form.onSubmit} validateOnChange={form.validateOnChange}>
       <TextInput
-        name="zip"
+        name='zip'
         initialValue={zipCode.value}
-        label="ZIP CODE *"
+        label='ZIP CODE *'
         required
         pattern={{
           regexp: Patterns.zipCode,
@@ -40,16 +33,16 @@ const ZipForm = ({ form, zipCode, fullName }: ZipFormInterface) => {
         }}
       ></TextInput>
       <TextInput
-        name="fullName"
+        name='fullName'
         initialValue={fullName.value}
-        label="FULL NAME *"
+        label='FULL NAME *'
         required
         pattern={{
           regexp: Patterns.fullName,
           message: ValidationMessages.fullName.patternMismatch,
         }}
       ></TextInput>
-      <button className="button" type="submit">
+      <button className='button' type='submit'>
         RENT THIS LOOK
       </button>
     </Form>
@@ -72,11 +65,7 @@ describe('Submitting validation', () => {
     const submitButton = screen.getByRole('button');
     fireEvent.click(submitButton);
     expect(
-      doesElemHaveExactClassList(form, [
-        FormClassNames.submitted,
-        FormClassNames.invalid,
-        FormClassNames.pristine,
-      ])
+      doesElemHaveExactClassList(form, [FormClassNames.submitted, FormClassNames.invalid, FormClassNames.pristine])
     ).toBeTruthy();
     expect(
       doesFormFieldHaveExactClassList(zipCodeField, [
@@ -101,12 +90,7 @@ describe('Submitting validation', () => {
       submitted = true;
       data = _data;
     };
-    render(
-      <ZipForm
-        {...props}
-        form={{ ...props.form, onSubmit: _onSubmit }}
-      ></ZipForm>
-    );
+    render(<ZipForm {...props} form={{ ...props.form, onSubmit: _onSubmit }}></ZipForm>);
     const form = screen.getByRole('form');
     const zipCodeField = screen.getByTitle('zip field', { exact: false });
     const zipCodeInput = screen.getByLabelText('zip', {
@@ -121,12 +105,7 @@ describe('Submitting validation', () => {
 
     fireEvent.change(zipCodeInput, { target: { value: '12341' } });
     fireEvent.change(fullNameInput, { target: { value: 'asdas sadasd' } });
-    expect(
-      doesElemHaveExactClassList(form, [
-        FormClassNames.valid,
-        FormClassNames.dirty,
-      ])
-    ).toBeTruthy();
+    expect(doesElemHaveExactClassList(form, [FormClassNames.valid, FormClassNames.dirty])).toBeTruthy();
     expect(
       doesFormFieldHaveExactClassList(zipCodeField, [
         FieldClassNames.valid,
@@ -145,11 +124,7 @@ describe('Submitting validation', () => {
     const submitButton = screen.getByRole('button');
     fireEvent.click(submitButton);
     expect(
-      doesElemHaveExactClassList(form, [
-        FormClassNames.valid,
-        FormClassNames.dirty,
-        FormClassNames.submitted,
-      ])
+      doesElemHaveExactClassList(form, [FormClassNames.valid, FormClassNames.dirty, FormClassNames.submitted])
     ).toBeTruthy();
     expect(submitted).toBeTruthy();
     expect(data.get('fullName').value).toEqual('asdas sadasd');
@@ -183,11 +158,7 @@ describe('Submitting validation with ONLY ON BLUR validation', () => {
     }) as HTMLInputElement;
 
     expect(
-      doesElemHaveExactClassList(form, [
-        FormClassNames.submitted,
-        FormClassNames.invalid,
-        FormClassNames.pristine,
-      ])
+      doesElemHaveExactClassList(form, [FormClassNames.submitted, FormClassNames.invalid, FormClassNames.pristine])
     ).toBeTruthy();
     expect(
       doesFormFieldHaveExactClassList(zipCodeField, [
@@ -209,11 +180,7 @@ describe('Submitting validation with ONLY ON BLUR validation', () => {
     expect(zipCodeInput.value).toEqual('12341');
     expect(fullNameInput.value).toEqual('asdas sadasd');
     expect(
-      doesElemHaveExactClassList(form, [
-        FormClassNames.submitted,
-        FormClassNames.invalid,
-        FormClassNames.pristine,
-      ])
+      doesElemHaveExactClassList(form, [FormClassNames.submitted, FormClassNames.invalid, FormClassNames.pristine])
     ).toBeTruthy();
     expect(
       doesFormFieldHaveExactClassList(zipCodeField, [
@@ -235,11 +202,7 @@ describe('Submitting validation with ONLY ON BLUR validation', () => {
     fireEvent.blur(zipCodeInput);
     fireEvent.blur(form);
     expect(
-      doesElemHaveExactClassList(form, [
-        FormClassNames.submitted,
-        FormClassNames.valid,
-        FormClassNames.dirty,
-      ])
+      doesElemHaveExactClassList(form, [FormClassNames.submitted, FormClassNames.valid, FormClassNames.dirty])
     ).toBeTruthy();
     expect(
       doesFormFieldHaveExactClassList(zipCodeField, [
@@ -274,11 +237,7 @@ describe('Submitting validation with ONLY ON BLUR validation', () => {
     }) as HTMLInputElement;
 
     expect(
-      doesElemHaveExactClassList(form, [
-        FormClassNames.submitted,
-        FormClassNames.invalid,
-        FormClassNames.pristine,
-      ])
+      doesElemHaveExactClassList(form, [FormClassNames.submitted, FormClassNames.invalid, FormClassNames.pristine])
     ).toBeTruthy();
     expect(
       doesFormFieldHaveExactClassList(zipCodeField, [
@@ -300,11 +259,7 @@ describe('Submitting validation with ONLY ON BLUR validation', () => {
     expect(zipCodeInput.value).toEqual('123');
     expect(fullNameInput.value).toEqual('asdas s');
     expect(
-      doesElemHaveExactClassList(form, [
-        FormClassNames.submitted,
-        FormClassNames.invalid,
-        FormClassNames.pristine,
-      ])
+      doesElemHaveExactClassList(form, [FormClassNames.submitted, FormClassNames.invalid, FormClassNames.pristine])
     ).toBeTruthy();
     expect(
       doesFormFieldHaveExactClassList(zipCodeField, [
@@ -325,21 +280,13 @@ describe('Submitting validation with ONLY ON BLUR validation', () => {
 
     fireEvent.blur(form);
 
-    const zipCodeErrorMessage = screen.queryByText(
-      ValidationMessages.zipCode.patternMismatch
-    );
+    const zipCodeErrorMessage = screen.queryByText(ValidationMessages.zipCode.patternMismatch);
     expect(zipCodeErrorMessage).toBeInTheDocument();
-    const fullNameErrorMessage = screen.queryByText(
-      ValidationMessages.fullName.patternMismatch
-    );
+    const fullNameErrorMessage = screen.queryByText(ValidationMessages.fullName.patternMismatch);
     expect(fullNameErrorMessage).toBeInTheDocument();
 
     expect(
-      doesElemHaveExactClassList(form, [
-        FormClassNames.submitted,
-        FormClassNames.invalid,
-        FormClassNames.dirty,
-      ])
+      doesElemHaveExactClassList(form, [FormClassNames.submitted, FormClassNames.invalid, FormClassNames.dirty])
     ).toBeTruthy();
     expect(
       doesFormFieldHaveExactClassList(zipCodeField, [

@@ -22,15 +22,15 @@ export const Field = <ET extends HTMLElement & { value: string } = HTMLInputElem
     children,
     validate = getValidity,
   }: FieldInterface<ET> = props;
-  const formState = useFormContext();
-  const _validateOnChange = validateOnChange || formState.validateOnChange;
+  const formContext = useFormContext();
+  const _validateOnChange = validateOnChange || formContext.configuration.validateOnChange;
 
   const [value, setValue] = useState(initialValue?.toString());
   const [filled, setFilled] = useState(!!initialValue);
 
   const initialValidity = useMemo(() => {
     const validity = validate(value);
-    formState.sendFieldData(name, initialValue, validity);
+    formContext.sendFieldData(name, initialValue, validity);
     return validity;
   }, []);
 
@@ -47,7 +47,7 @@ export const Field = <ET extends HTMLElement & { value: string } = HTMLInputElem
     setDirty(true);
     setPristine(false);
     setValidity(validate(value));
-  }, [formState.blurred]);
+  }, [formContext.state.blurred]);
 
   useEffect(() => {
     if (!didMountRef.current) return;
@@ -62,7 +62,7 @@ export const Field = <ET extends HTMLElement & { value: string } = HTMLInputElem
     setValidity(validity);
     setDirty(true);
     setPristine(false);
-    formState.sendFieldData(name, transformedOutput, validity);
+    formContext.sendFieldData(name, transformedOutput, validity);
   }, [initialValue]);
 
   useEffect(() => {
@@ -83,12 +83,12 @@ export const Field = <ET extends HTMLElement & { value: string } = HTMLInputElem
       setDirty(true);
       setPristine(false);
     }
-    formState.sendFieldData(name, transformedOutput, validity);
+    formContext.sendFieldData(name, transformedOutput, validity);
     onChange(event, transformedOutput);
   };
   const _onBlur = (event: React.SyntheticEvent<ET>) => {
     onBlur(event);
-    if (!formState.validateOnBlur || !changed) return;
+    if (!formContext.configuration.validateOnBlur || !changed) return;
     setDirty(true);
     setPristine(false);
     setValidity(validate(value));
@@ -97,7 +97,7 @@ export const Field = <ET extends HTMLElement & { value: string } = HTMLInputElem
     onFocus(event);
   };
 
-  const field = {
+  const fieldProps = {
     value: value,
     ref: inputRef,
     onChange: _onChange,
@@ -110,11 +110,13 @@ export const Field = <ET extends HTMLElement & { value: string } = HTMLInputElem
     dirty,
     validity: validity,
   };
-  // console.log('field', name, value, fieldState, formState);
+  // if (process.env.NODE_ENV !== 'production') {
+  //    console.log('field', name, value, fieldState, formState);
+  // }
 
   return children({
-    field: field,
-    fieldState: fieldState,
-    formState: formState,
+    fieldProps,
+    fieldState,
+    formContext,
   });
 };

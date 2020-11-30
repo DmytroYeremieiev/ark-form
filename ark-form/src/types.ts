@@ -1,11 +1,32 @@
-export interface FormStateInterface {
-  submitted: boolean;
-  name: string;
-  blurred: number;
+export interface FormContextInterface {
+  configuration: FormConfiguration;
   sendFieldData: (name: string, value: any, validity: ValidityStateInterface) => void;
-  validateOnBlur: boolean;
-  validateOnChange: boolean;
+  state: FormState;
 }
+export interface FormConfiguration {
+  validateOnChange?: boolean;
+  validateOnBlur?: boolean;
+  forceValidation?: boolean;
+  name: string;
+}
+export interface FormState {
+  dirty: boolean;
+  submitted: boolean;
+  pristine: boolean;
+  invalid: boolean;
+  valid: boolean;
+  changed: boolean;
+  blurred: number;
+}
+export const defaultFormState: FormState = {
+  dirty: false,
+  pristine: true,
+  invalid: true,
+  valid: false,
+  submitted: false,
+  changed: false,
+  blurred: 0,
+};
 
 interface FieldState {
   filled: boolean;
@@ -14,7 +35,7 @@ interface FieldState {
   validity: ValidityStateInterface;
 }
 
-interface Field<ET> {
+interface FieldProps<ET> {
   value?: string;
   ref: React.MutableRefObject<any>;
   onChange?: (event: React.ChangeEvent<ET>) => void;
@@ -42,12 +63,12 @@ export interface BasicInput<ET> {
 }
 
 export interface FieldOuterProps<ET> {
-  field: Field<ET>;
-  formState: FormStateInterface;
+  fieldProps: FieldProps<ET>;
+  formContext: FormContextInterface;
   fieldState: FieldState;
 }
 
 export interface FieldInterface<ET> extends BasicInput<ET> {
-  children: ({ field, formState, fieldState }: FieldOuterProps<ET>) => JSX.Element;
+  children: ({ fieldProps, formContext, fieldState }: FieldOuterProps<ET>) => JSX.Element;
   validateOnChange?: boolean;
 }

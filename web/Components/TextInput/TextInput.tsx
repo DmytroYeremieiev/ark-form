@@ -49,9 +49,11 @@ export const TextInput = ({
       initialValue={initialValue}
       {...rest}
     >
-      {({ field, fieldState, formState }) => {
-        const id = (formState.name || '') + '-' + name;
-        // console.log('field', name, field.value, fieldState, formState);
+      {({ fieldProps, fieldState, formContext }) => {
+        const id = (formContext.configuration.name || '') + '-' + name;
+        if (process.env.NODE_ENV !== 'production') {
+          console.log('field', name, fieldProps.value, fieldState, formContext);
+        }
         return (
           <div className={classnames(styles['txo-input'], className)}>
             <div
@@ -68,12 +70,12 @@ export const TextInput = ({
                 fieldState.validity.className
               )}`}
             >
-              <input id={id} type='text' readOnly={readOnly} {...field} />
+              <input id={id} type='text' readOnly={readOnly} {...fieldProps} />
               <label htmlFor={id}>{label}</label>
             </div>
             {fieldState.validity.errorMessage &&
               !fieldState.validity.valid &&
-              (fieldState.dirty || formState.submitted) && (
+              (fieldState.dirty || formContext.state.submitted) && (
                 <span className='error'>{fieldState.validity.errorMessage}</span>
               )}
           </div>

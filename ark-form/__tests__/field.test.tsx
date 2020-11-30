@@ -3,9 +3,9 @@ import React, { useRef } from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
-import { Form, FieldOuterProps } from 'ark-form/src';
+import { FieldOuterProps } from 'ark-form/src';
+import { Form } from 'ark-form/components/Form';
 
-import { ValidationMessages, Patterns } from '../components/constants';
 import { FieldInput } from 'ark-form/components/FieldInput';
 import { FieldInputInterface } from 'ark-form/components/types';
 
@@ -63,13 +63,13 @@ describe('testing states, validateOnChange:false ', () => {
     }) as HTMLInputElement;
     fireEvent.change(field1Input, { target: { value: '123' } });
     fireEvent.blur(field1Input);
-    expect(field1Ref.current.field.value).toBe('123');
+    expect(field1Ref.current.fieldProps.value).toBe('123');
     expect(field1Ref.current.fieldState.filled).toBeTruthy();
     expect(field1Ref.current.fieldState.dirty).toBeTruthy();
     expect(field1Ref.current.fieldState.pristine).toBeFalsy();
     expect(field1Ref.current.fieldState.validity.valid).toBeFalsy();
 
-    expect(field2Ref.current.field.value).toBe('');
+    expect(field2Ref.current.fieldProps.value).toBe('');
     expect(field2Ref.current.fieldState.filled).toBeFalsy();
     expect(field2Ref.current.fieldState.dirty).toBeFalsy();
     expect(field2Ref.current.fieldState.pristine).toBeTruthy();
