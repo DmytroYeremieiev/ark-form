@@ -3,14 +3,14 @@ import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
-import { doesElemHaveExactClassList, doesFormFieldHaveExactClassList } from 'ark-form/utils/formTestHelper';
+import { doesElemHaveExactClassList, doesFormFieldHaveExactClassList } from 'ark-forms/utils/formTestHelper';
 
-import { Form, ClassNames as FormClassNames } from 'ark-form/components/Form';
+import { Form, ClassNames as FormClassNames } from 'ark-forms/components/Form';
 
-import { FieldStateClassNames as FieldClassNames } from 'ark-form/components/types';
+import { FieldStateClassNames as FieldClassNames } from 'ark-forms/components/types';
 
 import { ValidationMessages, Patterns } from '../components/constants';
-import { TextInput } from 'ark-form/components/TextInput';
+import { TextInput } from 'ark-forms/components/TextInput';
 
 const onSubmit = (event, data) => void 0;
 

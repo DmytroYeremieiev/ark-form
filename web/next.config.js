@@ -1,4 +1,4 @@
-const withTM = require('next-transpile-modules')(['ark-form']);
+const withTM = require('next-transpile-modules')(['ark-forms']);
 const path = require('path');
 
 const baseConfig = {

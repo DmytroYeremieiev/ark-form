@@ -1,7 +1,7 @@
 import React from 'react';
-import { Field } from 'ark-form/src';
+import { Field } from 'ark-forms/src';
 import { TextInputInterface, FieldStateClassNames } from './types';
-import { ValidityStateInterface } from 'ark-form/src';
+import { ValidityStateInterface } from 'ark-forms/src';
 
 import classnames from 'classnames';
 

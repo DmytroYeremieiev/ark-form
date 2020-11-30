@@ -1,8 +1,8 @@
 import React from 'react';
 import classnames from 'classnames';
-import { Field } from 'ark-form/src';
+import { Field } from 'ark-forms/src';
 import { InputInterface, FieldStateClassNames } from '../../types';
-import { ValidityStateInterface } from 'ark-form/src';
+import { ValidityStateInterface } from 'ark-forms/src';
 
 import styles from './SelectInput.module.scss';
 import txoInputStyles from '../txoInput.module.scss';

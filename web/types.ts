@@ -1,4 +1,4 @@
-import { BasicInput } from 'ark-form/src';
+import { BasicInput } from 'ark-forms/src';
 
 export interface InputInterface<ET = HTMLInputElement> extends BasicInput<ET> {
   label: string;

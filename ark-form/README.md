@@ -1,103 +1,160 @@
-# TSDX User Guide
+# ark-forms
 
-Congrats! You just saved yourself hours of work by bootstrapping this project with TSDX. Let’s get you oriented with what’s here and how to use it.
 
-> This TSDX setup is meant for developing libraries (not apps!) that can be published to NPM. If you’re looking to build a Node app, you could use `ts-node-dev`, plain `ts-node`, or simple `tsc`.
+## Installation:
 
-> If you’re new to TypeScript, checkout [this handy cheatsheet](https://devhints.io/typescript)
 
-## Commands
+ `npm install ark-form --save`
 
-TSDX scaffolds your new library inside `/src`.
+ or 
 
-To run TSDX, use:
+ `yarn add ark-form`
 
-```bash
-npm start # or yarn start
+
+, `ark-form` is compatible with `React v16.8+`.
+
+
+## Concept:
+`ark-from` based on 2 main components: `<Form/>` & `<Field>`:
+
+### `<Form/>` component:
+-  wraps all input elements withing the form  
+- `<Form/>` is translated into html `<form/>`
+- Tracks the form state.
+- shares top level configuration between elements: `validateOnBlur`, `validateOnChange`.
+
+```
+<Form name='tempForm' 
+  onSubmit={onSubmit} 
+  onChange={onChange} 
+  validateOnBlur={true} 
+  validateOnChange={true}
+>
+  ....
+</Form>
 ```
 
-This builds to `/dist` and runs the project in watch mode so any edits you save inside `src` causes a rebuild to `/dist`.
+| Props      | Description | Default Value     |
+| :---        |    :----   |          ---: |
+| name      | <form\/> name       | none   |
+| onSubmit   | onsubmit event handler        | none      |
+| onChange   | onchange event handler, <br>called on any inner field change        | none      |
+| validateOnBlur   | Runs fields validation on blur       | true      |
+| validateOnChange   | Runs fields validation on change          | false      |
+<br>
 
-To do a one-off build, use `npm run build` or `yarn build`.
+### `<Field/>` component:
 
-To run tests, use `npm test` or `yarn test`.
+- encapsulates input state
+- uses children render prop technique in order to share managed state with user's components
+- implicitly connected to parent `<Form/>` component
 
-## Configuration
+Hooking-up managed state with html input elem happens through setting-up `value`, `ref`, `onChange`, `onBlur`, `onFocus` props on your input elem. However there's shortcut, through spread operator `{...field}`: 
 
-Code quality is set up for you with `prettier`, `husky`, and `lint-staged`. Adjust the respective fields in `package.json` accordingly.
-
-### Jest
-
-Jest tests are set up to run with `npm test` or `yarn test`.
-
-### Bundle Analysis
-
-[`size-limit`](https://github.com/ai/size-limit) is set up to calculate the real cost of your library with `npm run size` and visualize the bundle with `npm run analyze`.
-
-#### Setup Files
-
-This is the folder structure we set up for you:
-
-```txt
-/src
-  index.tsx       # EDIT THIS
-/test
-  blah.test.tsx   # EDIT THIS
-.gitignore
-package.json
-README.md         # EDIT THIS
-tsconfig.json
+```
+<Field name={name} initialValue={''} validate={checkValidity} >
+  {({ field, fieldState, formState }) => {
+    return (
+      <div>
+          <input id='field1' type='text' {...field} />
+          <label htmlFor='field1'>Field 1</label>
+      </div>
+    );
+  }}
+</Field>
 ```
 
-### Rollup
+| Prop         | Description                  | Default |
+|--------------|------------------------------|---------|
+| name         | Field name                   | none    |
+| initialValue | Field initial value          | none    |
+| onChange     | onchange event handler       | none    |
+| onFocus      | onfocus event handler        | none    |
+| onBlur       | onblur event handler         | none    |
+| validate     | your own validator callback  | none    |
+<br>
 
-TSDX uses [Rollup](https://rollupjs.org) as a bundler and generates multiple rollup configs for various module formats and build settings. See [Optimizations](#optimizations) for details.
 
-### TypeScript
 
-`tsconfig.json` is set up to interpret `dom` and `esnext` types, as well as `react` for `jsx`. Adjust according to your needs.
+## Example 1: 
+Using `Form` & `Field` components together:
 
-## Continuous Integration
-
-### GitHub Actions
-
-Two actions are added by default:
-
-- `main` which installs deps w/ cache, lints, tests, and builds on all pushes against a Node and OS matrix
-- `size` which comments cost comparison of your library on every pull request using [`size-limit`](https://github.com/ai/size-limit)
-
-## Optimizations
-
-Please see the main `tsdx` [optimizations docs](https://github.com/palmerhq/tsdx#optimizations). In particular, know that you can take advantage of development-only optimizations:
-
-```js
-// ./types/index.d.ts
-declare var __DEV__: boolean;
-
-// inside your code...
-if (__DEV__) {
-  console.log('foo');
-}
 ```
+...
 
-You can also choose to install and use [invariant](https://github.com/palmerhq/tsdx#invariant) and [warning](https://github.com/palmerhq/tsdx#warning) functions.
+import { Field, Form, ValidityStateInterface } from 'ark-form/src';
+import { Button } from '@components/Button/Button';
 
-## Module Formats
+...
 
-CJS, ESModules, and UMD module formats are supported.
+const checkValidity = (
+  value?: string,
+  pattern?: {
+    regexp: RegExp;
+    message?: string;
+  },
+  required?: boolean
+): ValidityStateInterface => {
+  const result: ValidityStateInterface = {
+    valid: true,
+  };
+  if (required && !value) {
+    result.className = 'required--error';
+    result.valid = false;
+    return result;
+  }
+  if (pattern && value && !pattern.regexp.test(value)) {
+    result.className = 'pattern-error';
+    result.valid = false;
+    result.errorMessage = pattern.message || 'Invalid value';
+    return result;
+  }
+  return result;
+};
 
-The appropriate paths are configured in `package.json` and `dist/index.js` accordingly. Please report if any issues are found.
+const IndexPage = (): JSX.Element => {
+  const onSubmit = (event, data) => {
+    console.log('onSubmit', data);
+  };
+  const pattern = { regexp: /(^\d{5}$)/, message: 'field code must be 5 digits only' };
+  const name = 'Field 1';
 
-## Named Exports
-
-Per Palmer Group guidelines, [always use named exports.](https://github.com/palmerhq/typescript#exports) Code split inside your React app instead of your React library.
-
-## Including Styles
-
-There are many ways to ship styles, including with CSS-in-JS. TSDX has no opinion on this, configure how you like.
-
-For vanilla CSS, you can include it at the root directory and add it to the `files` section in your `package.json`, so that it can be imported separately by your users and run through their bundler's loader.
-
-## Publishing to NPM
-
-We recommend using [np](https://github.com/sindresorhus/np).
+  return (
+    <div className={styles['page-content']}>
+      <Form name='tempForm' onSubmit={onSubmit} validateOnChange={false}>
+        <Field name={name} validate={value => checkValidity(value, pattern, true)} initialValue={''}>
+          {({ field, fieldState, formState }) => {
+            const id = formState.name + '-' + name;
+            return (
+              <div className={fieldStyles['txo-input']}>
+                <div
+                  title={`${name} field`}
+                  className={`txo-input-container ${classnames(
+                    {
+                      ['filled']: fieldState.filled,
+                      ['pristine']: fieldState.pristine,
+                      ['dirty']: fieldState.dirty,
+                      ['invalid']: !fieldState.validity.valid,
+                      ['valid']: fieldState.validity.valid,
+                    },
+                    fieldState.validity.className
+                  )}`}
+                >
+                  <input id={id} type='text' readOnly={false} {...field} />
+                  <label htmlFor={id}>Field 1</label>
+                </div>
+                {fieldState.validity.errorMessage &&
+                  !fieldState.validity.valid &&
+                  (fieldState.dirty || formState.submitted) && (
+                    <span className='error'>{fieldState.validity.errorMessage}</span>
+                  )}
+              </div>
+            );
+          }}
+        </Field>
+        <Button type='submit'>SUBMIT</Button>
+      </Form>
+    </div>
+  );
+};
+```

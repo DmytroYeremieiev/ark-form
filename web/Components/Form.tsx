@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArkForm, Form as FormElem } from 'ark-form/src';
+import { ArkForm, Form as FormElem } from 'ark-forms/src';
 import classnames from 'classnames';
 
 export interface FormInterface {
