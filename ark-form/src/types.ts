@@ -64,11 +64,11 @@ export interface BasicInput<ET> {
 
 export interface FieldOuterProps<ET> {
   field: Field<ET>;
-  formState: FormStateInterface;
+  formContext: FormContextInterface;
   fieldState: FieldState;
 }
 
 export interface FieldInterface<ET> extends BasicInput<ET> {
-  children: ({ field, formState, fieldState }: FieldOuterProps<ET>) => JSX.Element;
+  children: ({ field, formContext, fieldState }: FieldOuterProps<ET>) => JSX.Element;
   validateOnChange?: boolean;
 }

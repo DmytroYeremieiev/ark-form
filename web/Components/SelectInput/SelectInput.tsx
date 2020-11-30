@@ -45,9 +45,11 @@ export const SelectInput = ({
   _options.unshift(defaultOption);
   return (
     <Field<HTMLSelectElement> name={name} validate={value => checkValidity(value, required)} {...rest}>
-      {({ field, fieldState, formState }) => {
-        const id = (formState.name || '') + '-' + name;
-        console.log('field', name, fieldState, formState);
+      {({ field, fieldState, formContext }) => {
+        const id = (formContext.configuration.name || '') + '-' + name;
+        if (process.env.NODE_ENV !== 'production') {
+          console.log('field', name, field.value, fieldState, formContext);
+        }
         return (
           <div className={classnames(styles['select-input'], txoInputStyles['txo-input'], className)}>
             <div

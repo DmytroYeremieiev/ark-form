@@ -110,11 +110,13 @@ export const Field = <ET extends HTMLElement & { value: string } = HTMLInputElem
     dirty,
     validity: validity,
   };
-  // console.log('field', name, value, fieldState, formState);
+  // if (process.env.NODE_ENV !== 'production') {
+  //    console.log('field', name, value, fieldState, formState);
+  // }
 
   return children({
-    field: field,
-    fieldState: fieldState,
-    formState: formContext.state,
+    field,
+    fieldState,
+    formContext,
   });
 };

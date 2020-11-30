@@ -49,9 +49,11 @@ export const TextInput = ({
       initialValue={initialValue}
       {...rest}
     >
-      {({ field, fieldState, formState }) => {
-        const id = (formState.name || '') + '-' + name;
-        console.log('field', name, field.value, fieldState, formState);
+      {({ field, fieldState, formContext }) => {
+        const id = (formContext.configuration.name || '') + '-' + name;
+        if (process.env.NODE_ENV !== 'production') {
+          console.log('field', name, field.value, fieldState, formContext);
+        }
         return (
           <div className={classnames(styles['txo-input'], className)}>
             <div
@@ -73,7 +75,7 @@ export const TextInput = ({
             </div>
             {fieldState.validity.errorMessage &&
               !fieldState.validity.valid &&
-              (fieldState.dirty || formState.submitted) && (
+              (fieldState.dirty || formContext.state.submitted) && (
                 <span className='error'>{fieldState.validity.errorMessage}</span>
               )}
           </div>

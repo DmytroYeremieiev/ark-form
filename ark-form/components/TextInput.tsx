@@ -49,9 +49,9 @@ export const TextInput = ({
     >
       {props => {
         statesRef.current = props;
-        const { field, fieldState, formState } = props;
-        const id = (formState.name || '') + '-' + name;
-        // console.log('field', name, field.value, fieldState, formState);
+        const { field, fieldState, formContext } = props;
+        const id = (formContext.configuration.name || '') + '-' + name;
+        // console.log('field', name, field.value, fieldState, formContext.state);
         return (
           <div>
             <div
@@ -73,7 +73,7 @@ export const TextInput = ({
             </div>
             {fieldState.validity.errorMessage &&
               !fieldState.validity.valid &&
-              (fieldState.dirty || formState.submitted) && (
+              (fieldState.dirty || formContext.state.submitted) && (
                 <span className='error'>{fieldState.validity.errorMessage}</span>
               )}
           </div>

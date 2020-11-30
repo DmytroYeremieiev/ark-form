@@ -93,10 +93,12 @@ export const ArkForm = ({
   };
   const [state, dispatch] = useReducer(formReducer, defaultFormState);
   const fieldsData = useRef(new Map<string, FieldsData>());
-  console.log(
-    'Form:',
-    `dirty ${state.dirty},  pristine: ${state.pristine}, submitted: ${state.submitted}, blurred: ${state.blurred}, invalid: ${state.invalid}, valid: ${state.valid}, changed: ${state.changed}`
-  );
+  if (process.env.NODE_ENV !== 'production') {
+    console.log(
+      'Form:',
+      `dirty ${state.dirty},  pristine: ${state.pristine}, submitted: ${state.submitted}, blurred: ${state.blurred}, invalid: ${state.invalid}, valid: ${state.valid}, changed: ${state.changed}`
+    );
+  }
 
   const sendFieldData = (name: string, value: any, validity: ValidityStateInterface) => {
     fieldsData.current.set(name, { value, validity });

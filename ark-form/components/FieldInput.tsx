@@ -20,9 +20,9 @@ export const FieldInput = ({
     <Field name={name} validate={value => validate(value)} initialValue={initialValue} {...rest}>
       {props => {
         statesRef.current = props;
-        const { field, fieldState, formState } = props;
-        const id = (formState.name || '') + '-' + name;
-        // console.log('field', name, field.value, fieldState, formState);
+        const { field, fieldState, formContext } = props;
+        const id = (formContext.configuration.name || '') + '-' + name;
+        // console.log('field', name, field.value, fieldState, formContext);
         return (
           <div>
             <input id={id} type='text' {...field} />
