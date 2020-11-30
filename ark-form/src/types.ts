@@ -20,10 +20,10 @@ export interface FormState {
 }
 export const defaultFormState: FormState = {
   dirty: false,
-  submitted: false,
   pristine: true,
   invalid: true,
   valid: false,
+  submitted: false,
   changed: false,
   blurred: 0,
 };

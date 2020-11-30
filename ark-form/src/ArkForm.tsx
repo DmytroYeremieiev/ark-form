@@ -128,6 +128,6 @@ export const ArkForm = ({
         {children({ state, dispatch, configuration, formHooks })}
       </FormProvider>
     ),
-    [state.submitted, state.blurred, state.dirty, state.valid]
+    [state.submitted, state.blurred, state.dirty, state.valid, state.changed]
   );
 };
