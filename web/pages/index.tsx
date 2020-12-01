@@ -45,7 +45,6 @@ const IndexPage = (): JSX.Element => {
           label='SELECT ROLE *'
           options={options}
           onChange={onRoleSelected}
-          required
         ></Forms.SelectInput>
         <Button type='submit'>SUBMIT</Button>
       </Forms.Form>

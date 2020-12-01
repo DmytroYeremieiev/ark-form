@@ -44,7 +44,12 @@ export const SelectInput = ({
   const _options = options.map(o => <option label={o.label} value={o.value} key={o.value}></option>);
   _options.unshift(defaultOption);
   return (
-    <Field<HTMLSelectElement> name={name} validate={value => checkValidity(value, required)} {...rest}>
+    <Field<HTMLSelectElement>
+      name={name}
+      validate={value => checkValidity(value, required)}
+      {...rest}
+      validateOnChange={true}
+    >
       {({ fieldProps, fieldState, formContext }) => {
         const id = (formContext.configuration.name || '') + '-' + name;
         if (process.env.NODE_ENV !== 'production') {

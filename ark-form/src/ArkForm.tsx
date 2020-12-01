@@ -121,19 +121,16 @@ export const ArkForm = ({
     dispatch({ type: 'blur', fieldsData: fieldsData.current, configuration });
   };
   const formProps = { name, onSubmit: _onSubmit, onBlur: _onBlur, onChange: _onChange };
-  return useMemo(
-    () => (
-      <FormProvider
-        value={{
-          setFieldData,
-          deleteFieldData,
-          configuration,
-          state,
-        }}
-      >
-        {children({ state, dispatch, configuration, formProps })}
-      </FormProvider>
-    ),
-    [state.submitted, state.blurred, state.dirty, state.valid, state.changed]
+  return (
+    <FormProvider
+      value={{
+        setFieldData,
+        deleteFieldData,
+        configuration,
+        state,
+      }}
+    >
+      {children({ state, dispatch, configuration, formProps })}
+    </FormProvider>
   );
 };

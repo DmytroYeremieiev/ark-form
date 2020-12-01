@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
-import { ValidityStateInterface, FieldInterface } from './types';
+import { ValidityStateInterface, FieldInterface, FormContextInterface } from './types';
 import { useFormContext } from './FormContext';
 
 const defaultValidity: ValidityStateInterface = {
@@ -10,6 +10,28 @@ const getValidity = () => defaultValidity;
 export const Field = <ET extends HTMLElement & { value: string } = HTMLInputElement>(
   props: FieldInterface<ET>
 ): JSX.Element => {
+  const formContext = useFormContext();
+  const formState = formContext.state;
+  return useMemo(() => <_Field {...props} formContext={formContext}></_Field>, [
+    // list all state props manually, since form context generates new state obj each time(immutable)
+    formState.blurred, // blurred - used to signal when using autocomplete(fill-up) on entire form with validateOnChange=false
+    formState.submitted,
+    formState.valid,
+    formState.dirty,
+    formState.changed,
+    // <Field> must only concern about its initialValue, validate props change,
+    // there's no value in changing other 'configurational' props and event handlers, such as 'name', 'validateOnChange', etc...
+    props.initialValue,
+    props.validate,
+  ]);
+};
+
+type _FieldInterface<ET> = FieldInterface<ET> & {
+  formContext: FormContextInterface;
+};
+const _Field = <ET extends HTMLElement & { value: string } = HTMLInputElement>(
+  props: _FieldInterface<ET>
+): JSX.Element => {
   const {
     name,
     initialValue,
@@ -19,8 +41,8 @@ export const Field = <ET extends HTMLElement & { value: string } = HTMLInputElem
     validateOnChange,
     children,
     validate = getValidity,
-  }: FieldInterface<ET> = props;
-  const formContext = useFormContext();
+    formContext,
+  }: _FieldInterface<ET> = props;
   const _validateOnChange = validateOnChange || formContext.configuration.validateOnChange;
 
   const [value, setValue] = useState(initialValue?.toString());
@@ -66,7 +88,8 @@ export const Field = <ET extends HTMLElement & { value: string } = HTMLInputElem
     return () => {
       formContext.deleteFieldData(name);
     };
-  });
+  }, []);
+
   const _onChange = (event: React.ChangeEvent<ET>) => {
     const value = inputRef.current!.value;
     setValue(value);
