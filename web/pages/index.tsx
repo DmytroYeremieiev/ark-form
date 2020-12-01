@@ -32,7 +32,7 @@ const IndexPage = (): JSX.Element => {
           initialValue={true}
           name='phoneOptIn'
           onChange={onPhoneOptInChecked}
-          label='It’s OK for an consultant to call me about my event or other promotional events I won’t want to miss.'
+          label='Pellentesque pulvinar dolor vitae augue facilisis ultrices. Donec at tristique leo. Integer a velit pharetra risus suscipit dictum.'
         ></Forms.CheckboxInput>
         {/* <Forms.DatePicker name='date' label='SELECT DATE *' onChange={onDateSelected} required></Forms.DatePicker>
         <Forms.SelectInput
