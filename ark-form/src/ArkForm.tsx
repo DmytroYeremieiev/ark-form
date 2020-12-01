@@ -100,11 +100,17 @@ export const ArkForm = ({
     );
   }
 
-  const setFieldData = (name: string, value: any, validity: ValidityStateInterface) => {
+  const setFieldData = (name: string, value: any, validity: ValidityStateInterface, revalidate = false) => {
     fieldsData.current.set(name, { value, validity });
+    if (revalidate) {
+      dispatch({ type: 'validate', fieldsData: fieldsData.current, configuration });
+    }
   };
-  const deleteFieldData = (name: string) => {
+  const deleteFieldData = (name: string, revalidate = false) => {
     fieldsData.current.delete(name);
+    if (revalidate) {
+      dispatch({ type: 'validate', fieldsData: fieldsData.current, configuration });
+    }
   };
   useEffect(() => {
     dispatch({ type: 'validate', fieldsData: fieldsData.current, configuration });

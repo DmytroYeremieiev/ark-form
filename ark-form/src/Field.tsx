@@ -48,11 +48,7 @@ const _Field = <ET extends HTMLElement & { value: string } = HTMLInputElement>(
   const [value, setValue] = useState(initialValue?.toString());
   const [filled, setFilled] = useState(!!initialValue);
 
-  const initialValidity = useMemo(() => {
-    const validity = validate(value);
-    formContext.setFieldData(name, initialValue, validity);
-    return validity;
-  }, []);
+  const initialValidity = useMemo(() => validate(value), []);
 
   const [validity, setValidity] = useState<ValidityStateInterface>(initialValidity);
   const [changed, setChanged] = useState(false);
@@ -85,8 +81,9 @@ const _Field = <ET extends HTMLElement & { value: string } = HTMLInputElement>(
   useEffect(() => {
     // must be in  the latest effect
     didMountRef.current = true;
+    formContext.setFieldData(name, initialValue, validity, true);
     return () => {
-      formContext.deleteFieldData(name);
+      formContext.deleteFieldData(name, true);
     };
   }, []);
 
