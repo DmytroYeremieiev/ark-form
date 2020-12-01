@@ -100,8 +100,11 @@ export const ArkForm = ({
     );
   }
 
-  const sendFieldData = (name: string, value: any, validity: ValidityStateInterface) => {
+  const setFieldData = (name: string, value: any, validity: ValidityStateInterface) => {
     fieldsData.current.set(name, { value, validity });
+  };
+  const deleteFieldData = (name: string) => {
+    fieldsData.current.delete(name);
   };
   useEffect(() => {
     dispatch({ type: 'validate', fieldsData: fieldsData.current, configuration });
@@ -122,7 +125,8 @@ export const ArkForm = ({
     () => (
       <FormProvider
         value={{
-          sendFieldData,
+          setFieldData,
+          deleteFieldData,
           configuration,
           state,
         }}

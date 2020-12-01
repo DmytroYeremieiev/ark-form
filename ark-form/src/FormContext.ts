@@ -3,7 +3,8 @@ import { FormContextInterface, defaultFormState } from './types';
 
 export const FormContext = createContext<FormContextInterface>({
   state: defaultFormState,
-  sendFieldData: (name, value, validity) => console.log('sendFieldData', name, value, validity),
+  setFieldData: () => void 0,
+  deleteFieldData: () => void 0,
   configuration: {
     validateOnChange: true,
     validateOnBlur: true,

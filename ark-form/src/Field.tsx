@@ -28,7 +28,7 @@ export const Field = <ET extends HTMLElement & { value: string } = HTMLInputElem
 
   const initialValidity = useMemo(() => {
     const validity = validate(value);
-    formContext.sendFieldData(name, initialValue, validity);
+    formContext.setFieldData(name, initialValue, validity);
     return validity;
   }, []);
 
@@ -57,12 +57,15 @@ export const Field = <ET extends HTMLElement & { value: string } = HTMLInputElem
     setValidity(validity);
     setDirty(true);
     setPristine(false);
-    formContext.sendFieldData(name, _initialValue, validity);
+    formContext.setFieldData(name, _initialValue, validity);
   }, [initialValue]);
 
   useEffect(() => {
     // must be in  the latest effect
     didMountRef.current = true;
+    return () => {
+      formContext.deleteFieldData(name);
+    };
   });
   const _onChange = (event: React.ChangeEvent<ET>) => {
     const value = inputRef.current!.value;
@@ -75,7 +78,7 @@ export const Field = <ET extends HTMLElement & { value: string } = HTMLInputElem
       setDirty(true);
       setPristine(false);
     }
-    formContext.sendFieldData(name, value, validity);
+    formContext.setFieldData(name, value, validity);
     onChange(event, value);
   };
   const _onBlur = (event: React.SyntheticEvent<ET>) => {

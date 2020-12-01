@@ -1,6 +1,7 @@
 export interface FormContextInterface {
   configuration: FormConfiguration;
-  sendFieldData: (name: string, value: any, validity: ValidityStateInterface) => void;
+  setFieldData: (name: string, value: any, validity: ValidityStateInterface) => void;
+  deleteFieldData: (name: string) => void;
   state: FormState;
 }
 export interface FormConfiguration {

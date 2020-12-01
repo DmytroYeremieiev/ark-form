@@ -1,15 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import styles from './index.module.scss';
 import Forms from '@components/Forms';
 
 import { Button } from '@components/Button/Button';
-
+const options = [
+  { label: 'Faculty', value: 'faculty' },
+  { label: 'Student', value: 'student' },
+];
 const IndexPage = (): JSX.Element => {
-  const options = [
-    { label: 'Faculty', value: 'faculty' },
-    { label: 'Student', value: 'student' },
-  ];
+  const [role, setRole] = useState(options[0].value);
+
   const onSubmit = (event, data) => {
     console.log('onSubmit', data);
   };
@@ -18,6 +19,7 @@ const IndexPage = (): JSX.Element => {
   };
   const onRoleSelected = (event, value) => {
     console.log('onRoleSelected', value);
+    setRole(value);
   };
   const onDateSelected = (event, value) => {
     console.log('onDateSelected', value);
@@ -34,7 +36,9 @@ const IndexPage = (): JSX.Element => {
           onChange={onPhoneOptInChecked}
           label='Pellentesque pulvinar dolor vitae augue facilisis ultrices. Donec at tristique leo. Integer a velit pharetra risus suscipit dictum.'
         ></Forms.CheckboxInput>
-        {/* <Forms.DatePicker name='date' label='SELECT DATE *' onChange={onDateSelected} required></Forms.DatePicker>
+        {!role ? (
+          <Forms.DatePicker name='date' label='SELECT DATE *' onChange={onDateSelected} required></Forms.DatePicker>
+        ) : null}
         <Forms.SelectInput
           initialValue={options[0].value}
           name='role'
@@ -42,7 +46,7 @@ const IndexPage = (): JSX.Element => {
           options={options}
           onChange={onRoleSelected}
           required
-        ></Forms.SelectInput> */}
+        ></Forms.SelectInput>
         <Button type='submit'>SUBMIT</Button>
       </Forms.Form>
     </div>
