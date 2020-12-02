@@ -1,8 +1,20 @@
+export type FieldData = {
+  value: InputType;
+  validity: ValidityStateInterface;
+};
+
+export type FormAction = {
+  type: 'blur' | 'submit' | 'change' | 'validate';
+  configuration: FormConfiguration;
+  fieldsData: Map<string, FieldData>;
+};
 export interface FormContextInterface {
   configuration: FormConfiguration;
+  fieldsData: Map<string, FieldData>;
   setFieldData: (name: string, value: any, validity: ValidityStateInterface, revalidate?: boolean) => void;
   deleteFieldData: (name: string, revalidate?: boolean) => void;
   state: FormState;
+  dispatch: React.Dispatch<FormAction>;
 }
 export interface FormConfiguration {
   validateOnChange?: boolean;

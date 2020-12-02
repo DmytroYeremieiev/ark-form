@@ -1,12 +1,15 @@
-import React, { useReducer, useRef, useEffect, useMemo } from 'react';
-import { ValidityStateInterface, InputType, FormConfiguration, FormState, defaultFormState } from './types';
+import React, { useReducer, useRef, useEffect } from 'react';
+import {
+  ValidityStateInterface,
+  FieldData,
+  FormConfiguration,
+  FormState,
+  defaultFormState,
+  FormContextInterface,
+  FormAction,
+} from './types';
 import { FormProvider } from './FormContext';
 
-type FormAction = {
-  type: 'blur' | 'submit' | 'change' | 'validate';
-  configuration: FormConfiguration;
-  fieldsData: Map<string, FieldsData>;
-};
 const handleBlur = (state: FormState, action: FormAction): FormState => {
   let newState: FormState = { ...state, blurred: state.blurred + 1 };
   if (action.configuration.validateOnBlur && state.changed) {
@@ -56,21 +59,17 @@ interface FormProps {
 }
 export interface FormInterface extends FormConfiguration {
   name: string;
-  onSubmit: (event: React.FormEvent<HTMLFormElement>, data: Map<string, FieldsData>) => void;
-  onChange?: (event: React.FormEvent<HTMLFormElement>, data: Map<string, FieldsData>) => void;
-  onBlur?: (event: React.FormEvent<HTMLFormElement>, data: Map<string, FieldsData>) => void;
-  children: (props: {
-    state: FormState;
-    dispatch: React.Dispatch<FormAction>;
-    configuration: FormConfiguration;
-    formProps: FormProps;
-  }) => React.ReactChild | React.ReactChild[];
+  onSubmit: (event: React.FormEvent<HTMLFormElement>, data: Map<string, FieldData>) => void;
+  onChange?: (event: React.FormEvent<HTMLFormElement>, data: Map<string, FieldData>) => void;
+  onBlur?: (event: React.FormEvent<HTMLFormElement>, data: Map<string, FieldData>) => void;
+  children: (
+    props: FormContextInterface & {
+      formProps: FormProps;
+    }
+  ) => React.ReactChild | React.ReactChild[];
 }
-type FieldsData = {
-  value: InputType;
-  validity: ValidityStateInterface;
-};
-const isValid = (fieldsData: Map<string, FieldsData>) => {
+
+const isValid = (fieldsData: Map<string, FieldData>) => {
   if (!fieldsData) return false;
   for (const [, field] of fieldsData) {
     if (!field.validity.valid) {
@@ -92,7 +91,7 @@ export const ArkForm = ({
     name,
   };
   const [state, dispatch] = useReducer(formReducer, defaultFormState);
-  const fieldsData = useRef(new Map<string, FieldsData>());
+  const fieldsData = useRef(new Map<string, FieldData>());
   if (process.env.NODE_ENV !== 'production') {
     console.log(
       'Form:',
@@ -103,12 +102,14 @@ export const ArkForm = ({
   const setFieldData = (name: string, value: any, validity: ValidityStateInterface, revalidate = false) => {
     fieldsData.current.set(name, { value, validity });
     if (revalidate) {
+      fieldsData.current = new Map(fieldsData.current);
       dispatch({ type: 'validate', fieldsData: fieldsData.current, configuration });
     }
   };
   const deleteFieldData = (name: string, revalidate = false) => {
     fieldsData.current.delete(name);
     if (revalidate) {
+      fieldsData.current = new Map(fieldsData.current);
       dispatch({ type: 'validate', fieldsData: fieldsData.current, configuration });
     }
   };
@@ -127,16 +128,13 @@ export const ArkForm = ({
     dispatch({ type: 'blur', fieldsData: fieldsData.current, configuration });
   };
   const formProps = { name, onSubmit: _onSubmit, onBlur: _onBlur, onChange: _onChange };
-  return (
-    <FormProvider
-      value={{
-        setFieldData,
-        deleteFieldData,
-        configuration,
-        state,
-      }}
-    >
-      {children({ state, dispatch, configuration, formProps })}
-    </FormProvider>
-  );
+  const formContext = {
+    setFieldData,
+    deleteFieldData,
+    configuration,
+    state,
+    dispatch,
+    fieldsData: fieldsData.current,
+  };
+  return <FormProvider value={formContext}>{children({ ...formContext, formProps })}</FormProvider>;
 };

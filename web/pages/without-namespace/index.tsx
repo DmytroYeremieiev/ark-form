@@ -9,9 +9,8 @@ import { CheckboxInput } from '@components/CheckboxInput/CheckboxInput';
 import { ZipCodeInput } from '@components/ZipCodeInput/ZipCodeInput';
 import { DatePicker } from '@components/DatePicker/DatePicker';
 
-import { Form } from 'ark-form/src';
-
 import { Button } from '@components/Button/Button';
+import { ArkForm, Form } from 'ark-forms/src';
 
 const IndexPage = (): JSX.Element => {
   const options = [
@@ -30,29 +29,45 @@ const IndexPage = (): JSX.Element => {
   const onDateSelected = (event, value) => {
     console.log('onDateSelected', value);
   };
+
   return (
     <div className={styles['page-content']}>
-      <Form name='tempForm' onSubmit={onSubmit} validateOnChange={false}>
-        <FullNameInput name='fullName' initialValue='' label='FULL NAME *' required></FullNameInput>
-        <ZipCodeInput name='zip' label='ZIP CODE *' required></ZipCodeInput>
-        <PhoneInput name='phone' initialValue='123' label='PHONE *' required></PhoneInput>
-        <CheckboxInput
-          initialValue={true}
-          name='phoneOptIn'
-          onChange={onPhoneOptInChecked}
-          label='It’s OK for an consultant to call me about my event or other promotional events I won’t want to miss.'
-        ></CheckboxInput>
-        <DatePicker name='date' label='SELECT DATE *' onChange={onDateSelected} required></DatePicker>
-        <SelectInput
-          initialValue={options[0].value}
-          name='role'
-          label='SELECT ROLE *'
-          options={options}
-          onChange={onRoleSelected}
-          required
-        ></SelectInput>
-        <Button type='submit'>SUBMIT</Button>
-      </Form>
+      <ArkForm name='tempForm' onSubmit={onSubmit} validateOnChange={false}>
+        {({ state, formProps, setFieldData }) => {
+          console.log('<ArkForm/>', state);
+          return (
+            <Form {...formProps}>
+              <FullNameInput name='fullName' initialValue='' label='FULL NAME *' required></FullNameInput>
+              <ZipCodeInput name='zip' label='ZIP CODE *' required></ZipCodeInput>
+              <PhoneInput name='phone' initialValue='123' label='PHONE *' required></PhoneInput>
+              <CheckboxInput
+                initialValue={true}
+                name='phoneOptIn'
+                onChange={onPhoneOptInChecked}
+                label='It’s OK for an consultant to call me about my event or other promotional events I won’t want to miss.'
+              ></CheckboxInput>
+              <DatePicker name='date' label='SELECT DATE *' onChange={onDateSelected} required></DatePicker>
+              <Button
+                onClick={() => {
+                  setFieldData('date', null, { valid: true });
+                }}
+              >
+                SET DATA VALID
+              </Button>
+
+              <SelectInput
+                initialValue={options[0].value}
+                name='role'
+                label='SELECT ROLE *'
+                options={options}
+                onChange={onRoleSelected}
+                required
+              ></SelectInput>
+              <Button type='submit'>SUBMIT</Button>
+            </Form>
+          );
+        }}
+      </ArkForm>
     </div>
   );
 };
