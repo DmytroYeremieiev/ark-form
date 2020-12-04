@@ -55,9 +55,9 @@ const IndexPage = (): JSX.Element => {
                 [ClassNames.valid]: state.valid,
               })}
             >
-              <FullNameInput name='fullName' initialValue='' label='FULL NAME *' required></FullNameInput>
+              {/* <FullNameInput name='fullName' initialValue='' label='FULL NAME *' required></FullNameInput>
               <ZipCodeInput name='zip' label='ZIP CODE *' required></ZipCodeInput>
-              <PhoneInput name='phone' initialValue='123' label='PHONE *' required></PhoneInput>
+              <PhoneInput name='phone' initialValue='123' label='PHONE *' required></PhoneInput> */}
               {/* <CheckboxInput
                 initialValue={true}
                 name='phoneOptIn'

@@ -7,12 +7,12 @@ const defaultValidity: ValidityStateInterface = {
 };
 
 const getValidity = () => defaultValidity;
+
 export const Field = <ET extends HTMLElement & { value: string } = HTMLInputElement>(
   props: FieldInterface<ET>
 ): JSX.Element => {
   const formContext = useFormContext();
   const formState = formContext.state;
-  // console.log('formContext', formContext.fieldsData.size, formContext.fieldsData);
   return useMemo(() => <_Field {...props} formContext={formContext}></_Field>, [
     // list all state props manually, since form context generates new state obj each time(immutable)
     formState.blurred, // blurred - used to signal when using autocomplete(fill-up) on entire form with validateOnChange=false
@@ -24,7 +24,6 @@ export const Field = <ET extends HTMLElement & { value: string } = HTMLInputElem
     // there's no value in changing other 'configurational' props and event handlers, such as 'name', 'validateOnChange', etc...
     props.initialValue,
     props.validate,
-    formContext.fieldsData,
   ]);
 };
 
