@@ -1,8 +1,8 @@
 export interface FormContextInterface {
   configuration: FormConfiguration;
   fieldsData: Map<string, FieldState>;
-  setFieldData: (name: string, fieldState: FieldState, revalidate?: boolean) => void;
-  deleteFieldData: (name: string, revalidate?: boolean) => void;
+  setFieldData: (name: string, fieldState: FieldState, dispatch: React.Dispatch<FieldAction>) => void;
+  deleteFieldData: (name: string) => void;
   state: FormState;
   dispatch: React.Dispatch<FormAction>;
 }
@@ -52,7 +52,11 @@ export interface FieldState {
   validity: ValidityStateInterface;
   configuration: FieldConfiguration;
 }
-
+export type FieldAction = {
+  type: 'change' | 'blur';
+  configuration?: Partial<FieldConfiguration>;
+  value?: string;
+};
 interface FieldProps<ET> {
   value?: string;
   ref: React.MutableRefObject<any>;

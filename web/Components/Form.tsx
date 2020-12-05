@@ -31,9 +31,6 @@ export const Form = ({
   return (
     <ArkForm name={name} onSubmit={onSubmit} validateOnChange={validateOnChange} validateOnBlur={validateOnBlur}>
       {({ state, formProps }) => {
-        if (process.env.NODE_ENV !== 'production') {
-          console.log('<ArkForm/>', state);
-        }
         return (
           <FormElem
             name={name}

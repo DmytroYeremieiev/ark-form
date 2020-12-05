@@ -1,4 +1,4 @@
-import { ValidityStateInterface, FieldConfiguration, FieldState } from './types';
+import { ValidityStateInterface, FieldAction, FieldState } from './types';
 
 const defaultValidity: ValidityStateInterface = {
   valid: true,
@@ -21,12 +21,6 @@ export const defaultFieldState: FieldState = {
     validate: getValidity,
     name: '',
   },
-};
-
-type FieldAction = {
-  type: 'change' | 'blur';
-  configuration?: Partial<FieldConfiguration>;
-  value?: string;
 };
 
 const handleChange = (state: FieldState, action: FieldAction): FieldState => {

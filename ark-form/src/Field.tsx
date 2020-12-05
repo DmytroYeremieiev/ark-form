@@ -13,7 +13,8 @@ export const Field = <ET extends HTMLElement & { value: string } = HTMLInputElem
   props: FieldInterface<ET>
 ): JSX.Element => {
   const formContext = useFormContext();
-  const field = formContext.state;
+  const formState = formContext.state;
+  const field = formContext.fieldsData.get(props.name);
   return <_Field {...props} formContext={formContext}></_Field>;
   return useMemo(() => <_Field {...props} formContext={formContext}></_Field>, [
     // list all state props manually, since form context generates new state obj each time(immutable)
@@ -26,6 +27,7 @@ export const Field = <ET extends HTMLElement & { value: string } = HTMLInputElem
     // there's no value in changing other 'configurational' props and event handlers, such as 'name', 'validateOnChange', etc...
     props.initialValue,
     props.validate,
+    field?.changed,
   ]);
 };
 
@@ -58,27 +60,31 @@ const _Field = <ET extends HTMLElement & { value: string } = HTMLInputElement>(
     state.filled = !!state.value;
     return state;
   });
-  formContext.setFieldData(name, state);
 
   const inputRef = useRef<ET>();
   const didMountRef = useRef(false);
 
-  useEffect(() => {
-    if (!didMountRef.current) return;
-    dispatch({ type: 'blur', configuration: { validateOnBlur: true } });
-  }, [formContext.state.blurred]);
+  // useEffect(() => {
+  //   if (!didMountRef.current) return;
+  //   dispatch({ type: 'blur', configuration: { validateOnBlur: true } });
+  // }, [formContext.state.blurred]);
 
   useEffect(() => {
     if (!didMountRef.current) return;
     const _initialValue = initialValue?.toString() ?? '';
-    dispatch({ value: _initialValue, type: 'change', configuration: { validateOnChange: true } });
+    dispatch({
+      value: _initialValue,
+      type: 'change',
+      configuration: { validateOnChange: true },
+    });
   }, [initialValue]);
 
   useEffect(() => {
     // must be in  the latest effect
     didMountRef.current = true;
+    formContext.setFieldData(name, state, dispatch);
     return () => {
-      formContext.deleteFieldData(name, true);
+      formContext.deleteFieldData(name);
     };
   }, []);
 
