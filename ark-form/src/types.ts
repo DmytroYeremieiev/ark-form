@@ -57,7 +57,7 @@ export interface FieldState {
   configuration: FieldConfiguration;
 }
 export type FieldAction = {
-  type: 'change' | 'blur';
+  type: 'change' | 'blur' | 'validate';
   configuration?: Partial<FieldConfiguration>;
   value?: string;
 };

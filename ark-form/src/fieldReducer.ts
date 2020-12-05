@@ -44,12 +44,20 @@ const handleBlur = (state: FieldState, action: FieldAction): FieldState => {
   return { ...state, dirty: true, pristine: false, validity };
 };
 
+const handleValidation = (state: FieldState, action: FieldAction): FieldState => {
+  const validate = action.configuration?.validate ?? state.configuration.validate;
+  const validity = validate(state.value);
+  return { ...state, validity };
+};
+
 export const fieldReducer = (state: FieldState, action: FieldAction) => {
   switch (action.type) {
     case 'change':
       return handleChange(state, action);
     case 'blur':
       return handleBlur(state, action);
+    case 'validate':
+      return handleValidation(state, action);
     default:
       throw new Error('Invalid action type');
   }

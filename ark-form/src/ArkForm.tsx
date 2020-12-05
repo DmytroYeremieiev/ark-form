@@ -9,6 +9,7 @@ import {
   FieldData,
 } from './types';
 import { FormProvider } from './FormContext';
+import { fieldReducer } from './fieldReducer';
 
 const handleBlur = (state: FormState, action: FormAction): FormState => {
   let newState: FormState = { ...state, blurred: state.blurred + 1 };
@@ -36,6 +37,18 @@ const handleValidation = (state: FormState, action: FormAction): FormState => {
   const valid = isValid(action.fieldsData);
   return { ...state, invalid: !valid, valid: valid };
 };
+
+const isValid = (fieldsData: Map<string, FieldData>) => {
+  if (!fieldsData) return false;
+  for (const [, field] of fieldsData) {
+    field.state = fieldReducer(field.state, { type: 'validate' });
+    if (!field.state.validity.valid) {
+      return false;
+    }
+  }
+  return true;
+};
+
 const formReducer = (state: FormState, action: FormAction) => {
   switch (action.type) {
     case 'submit':
@@ -69,15 +82,6 @@ export interface FormInterface extends FormConfiguration {
   ) => React.ReactChild | React.ReactChild[];
 }
 
-const isValid = (fieldsData: Map<string, FieldData>) => {
-  if (!fieldsData) return false;
-  for (const [, field] of fieldsData) {
-    if (!field.state.validity.valid) {
-      return false;
-    }
-  }
-  return true;
-};
 export const ArkForm = ({
   name,
   onSubmit,
