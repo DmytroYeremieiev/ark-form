@@ -3,25 +3,26 @@ export type FieldData = {
   validity: ValidityStateInterface;
 };
 
-export type FormAction = {
-  type: 'blur' | 'submit' | 'change' | 'validate';
-  configuration: FormConfiguration;
-  fieldsData: Map<string, FieldData>;
-};
 export interface FormContextInterface {
   configuration: FormConfiguration;
   fieldsData: Map<string, FieldData>;
-  setFieldData: (name: string, value: any, validity: ValidityStateInterface, revalidate?: boolean) => void;
+  setFieldData: (name: string, fieldState: FieldState, revalidate?: boolean) => void;
   deleteFieldData: (name: string, revalidate?: boolean) => void;
   state: FormState;
   dispatch: React.Dispatch<FormAction>;
 }
 export interface FormConfiguration {
-  validateOnChange?: boolean;
-  validateOnBlur?: boolean;
+  validateOnChange: boolean;
+  validateOnBlur: boolean;
   forceValidation?: boolean;
   name: string;
 }
+
+export type FormAction = {
+  type: 'blur' | 'submit' | 'change' | 'validate';
+  configuration: FormConfiguration;
+  fieldsData: Map<string, FieldData>;
+};
 export interface FormState {
   dirty: boolean;
   submitted: boolean;
@@ -41,11 +42,19 @@ export const defaultFormState: FormState = {
   blurred: 0,
 };
 
-interface FieldState {
-  filled: boolean;
-  pristine: boolean;
+export interface FieldConfiguration {
+  validateOnChange: boolean;
+  validateOnBlur: boolean;
+  validate: (value?: string) => ValidityStateInterface;
+}
+export interface FieldState {
+  changed: number;
   dirty: boolean;
+  pristine: boolean;
+  filled: boolean;
+  value: string;
   validity: ValidityStateInterface;
+  configuration: FieldConfiguration;
 }
 
 interface FieldProps<ET> {

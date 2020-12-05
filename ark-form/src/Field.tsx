@@ -1,6 +1,7 @@
-import React, { useState, useRef, useEffect, useMemo } from 'react';
+import React, { useRef, useEffect, useMemo, useReducer } from 'react';
 import { ValidityStateInterface, FieldInterface, FormContextInterface } from './types';
 import { useFormContext } from './FormContext';
+import { fieldReducer, defaultFieldState } from './fieldReducer';
 
 const defaultValidity: ValidityStateInterface = {
   valid: true,
@@ -44,38 +45,27 @@ const _Field = <ET extends HTMLElement & { value: string } = HTMLInputElement>(
     validate = getValidity,
     formContext,
   }: _FieldInterface<ET> = props;
-  const _validateOnChange = validateOnChange || formContext.configuration.validateOnChange;
 
-  const [value, setValue] = useState(initialValue?.toString());
-  const [filled, setFilled] = useState(!!initialValue);
-
-  const initialValidity = useMemo(() => validate(value), []);
-
-  const [validity, setValidity] = useState<ValidityStateInterface>(initialValidity);
-  const [changed, setChanged] = useState(false);
-  const [pristine, setPristine] = useState(true);
-  const [dirty, setDirty] = useState(false);
+  const [state, dispatch] = useReducer(fieldReducer, defaultFieldState, state => {
+    state.configuration.validateOnChange = validateOnChange ?? formContext.configuration.validateOnChange;
+    state.configuration.validateOnBlur = formContext.configuration.validateOnBlur;
+    state.configuration.validate = validate;
+    state.value = initialValue?.toString() ?? '';
+    return state;
+  });
 
   const inputRef = useRef<ET>();
   const didMountRef = useRef(false);
 
   useEffect(() => {
-    if (!didMountRef.current || _validateOnChange || !changed) return;
-    setDirty(true);
-    setPristine(false);
-    setValidity(validate(value));
+    if (!didMountRef.current) return;
+    dispatch({ type: 'blur', configuration: { validateOnBlur: true } });
   }, [formContext.state.blurred]);
 
   useEffect(() => {
     if (!didMountRef.current) return;
-    const _initialValue = initialValue?.toString();
-    setValue(_initialValue);
-    setFilled(!!_initialValue);
-    setChanged(true);
-    const validity = validate(_initialValue);
-    setValidity(validity);
-    setDirty(true);
-    setPristine(false);
+    const _initialValue = initialValue?.toString() ?? '';
+    dispatch({ value: _initialValue, type: 'change', configuration: { validateOnChange: true } });
     formContext.setFieldData(name, _initialValue, validity);
   }, [initialValue]);
 
@@ -90,41 +80,25 @@ const _Field = <ET extends HTMLElement & { value: string } = HTMLInputElement>(
 
   const _onChange = (event: React.ChangeEvent<ET>) => {
     const value = inputRef.current!.value;
-    setValue(value);
-    setFilled(!!value);
-    setChanged(true);
-    const validity = validate(value);
-    if (_validateOnChange) {
-      setValidity(validity);
-      setDirty(true);
-      setPristine(false);
-    }
+    dispatch({ value: value, type: 'change' });
     formContext.setFieldData(name, value, validity);
     onChange(event, value);
   };
   const _onBlur = (event: React.SyntheticEvent<ET>) => {
     onBlur(event);
-    if (!formContext.configuration.validateOnBlur || !changed) return;
-    setDirty(true);
-    setPristine(false);
-    setValidity(validate(value));
+    if (!formContext.configuration.validateOnBlur || state.changed === 0) return;
+    dispatch({ type: 'blur' });
   };
   const _onFocus = (event: React.FocusEvent<ET>) => {
     onFocus(event);
   };
 
   const fieldProps = {
-    value: value,
+    value: state.value,
     ref: inputRef,
     onChange: _onChange,
     onBlur: _onBlur,
     onFocus: _onFocus,
-  };
-  const fieldState = {
-    filled,
-    pristine,
-    dirty,
-    validity: validity,
   };
   // if (process.env.NODE_ENV !== 'production') {
   //    console.log('field', name, value, fieldState, formState);
@@ -132,7 +106,7 @@ const _Field = <ET extends HTMLElement & { value: string } = HTMLInputElement>(
 
   return children({
     fieldProps,
-    fieldState,
+    fieldState: state,
     formContext,
   });
 };
