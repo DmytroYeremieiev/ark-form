@@ -13,7 +13,8 @@ export const Field = <ET extends HTMLElement & { value: string } = HTMLInputElem
   props: FieldInterface<ET>
 ): JSX.Element => {
   const formContext = useFormContext();
-  const formState = formContext.state;
+  const field = formContext.state;
+  return <_Field {...props} formContext={formContext}></_Field>;
   return useMemo(() => <_Field {...props} formContext={formContext}></_Field>, [
     // list all state props manually, since form context generates new state obj each time(immutable)
     formState.blurred, // blurred - used to signal when using autocomplete(fill-up) on entire form with validateOnChange=false
@@ -46,13 +47,18 @@ const _Field = <ET extends HTMLElement & { value: string } = HTMLInputElement>(
     formContext,
   }: _FieldInterface<ET> = props;
 
-  const [state, dispatch] = useReducer(fieldReducer, defaultFieldState, state => {
-    state.configuration.validateOnChange = validateOnChange ?? formContext.configuration.validateOnChange;
-    state.configuration.validateOnBlur = formContext.configuration.validateOnBlur;
-    state.configuration.validate = validate;
+  const [state, dispatch] = useReducer(fieldReducer, { ...defaultFieldState }, state => {
+    state.configuration = {
+      validateOnChange: validateOnChange ?? formContext.configuration.validateOnChange,
+      validateOnBlur: formContext.configuration.validateOnBlur,
+      validate,
+      name,
+    };
     state.value = initialValue?.toString() ?? '';
+    state.filled = !!state.value;
     return state;
   });
+  formContext.setFieldData(name, state);
 
   const inputRef = useRef<ET>();
   const didMountRef = useRef(false);
@@ -66,13 +72,11 @@ const _Field = <ET extends HTMLElement & { value: string } = HTMLInputElement>(
     if (!didMountRef.current) return;
     const _initialValue = initialValue?.toString() ?? '';
     dispatch({ value: _initialValue, type: 'change', configuration: { validateOnChange: true } });
-    formContext.setFieldData(name, _initialValue);
   }, [initialValue]);
 
   useEffect(() => {
     // must be in  the latest effect
     didMountRef.current = true;
-    formContext.setFieldData(name, initialValue, true);
     return () => {
       formContext.deleteFieldData(name, true);
     };
@@ -81,7 +85,6 @@ const _Field = <ET extends HTMLElement & { value: string } = HTMLInputElement>(
   const _onChange = (event: React.ChangeEvent<ET>) => {
     const value = inputRef.current!.value;
     dispatch({ value: value, type: 'change' });
-    formContext.setFieldData(name, value);
     onChange(event, value);
   };
   const _onBlur = (event: React.SyntheticEvent<ET>) => {

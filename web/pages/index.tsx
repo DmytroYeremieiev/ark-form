@@ -28,9 +28,9 @@ const IndexPage = (): JSX.Element => {
     <div className={styles['page-content']}>
       <Forms.Form name='tempForm' onSubmit={onSubmit} validateOnChange={false}>
         <Forms.FullNameInput name='fullName' initialValue='' label='FULL NAME *' required></Forms.FullNameInput>
-        <Forms.ZipCodeInput name='zip' label='ZIP CODE *' required></Forms.ZipCodeInput>
+        {/* <Forms.ZipCodeInput name='zip' label='ZIP CODE *' required></Forms.ZipCodeInput> */}
         <Forms.PhoneInput name='phone' initialValue='123' label='PHONE *' required></Forms.PhoneInput>
-        <Forms.CheckboxInput
+        {/* <Forms.CheckboxInput
           initialValue={true}
           name='phoneOptIn'
           onChange={onPhoneOptInChecked}
@@ -45,7 +45,7 @@ const IndexPage = (): JSX.Element => {
           label='SELECT ROLE *'
           options={options}
           onChange={onRoleSelected}
-        ></Forms.SelectInput>
+        ></Forms.SelectInput> */}
         <Button type='submit'>SUBMIT</Button>
       </Forms.Form>
     </div>

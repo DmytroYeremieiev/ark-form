@@ -41,6 +41,7 @@ export interface FieldConfiguration {
   validateOnChange: boolean;
   validateOnBlur: boolean;
   validate: (value?: string) => ValidityStateInterface;
+  name: string;
 }
 export interface FieldState {
   changed: number;

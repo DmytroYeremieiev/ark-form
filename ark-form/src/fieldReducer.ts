@@ -19,6 +19,7 @@ export const defaultFieldState: FieldState = {
     validateOnChange: false,
     validateOnBlur: true,
     validate: getValidity,
+    name: '',
   },
 };
 
@@ -29,7 +30,7 @@ type FieldAction = {
 };
 
 const handleChange = (state: FieldState, action: FieldAction): FieldState => {
-  const newState: FieldState = { ...state, changed: state.changed + 1, value: action.value!, filled: !action.value };
+  const newState: FieldState = { ...state, changed: state.changed + 1, value: action.value!, filled: !!action.value };
   const validateOnChange = action.configuration?.validateOnChange ?? state.configuration.validateOnChange;
   const validate = action.configuration?.validate ?? state.configuration.validate;
   if (validateOnChange) {
