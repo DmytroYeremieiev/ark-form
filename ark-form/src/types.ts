@@ -1,7 +1,7 @@
 export interface FormContextInterface {
   configuration: FormConfiguration;
-  fieldsData: Map<string, FieldState>;
-  setFieldData: (name: string, fieldState: FieldState, dispatch: React.Dispatch<FieldAction>) => void;
+  fieldsData: Map<string, FieldData>;
+  setFieldData: (name: string, fieldData: FieldData) => void;
   deleteFieldData: (name: string) => void;
   state: FormState;
   dispatch: React.Dispatch<FormAction>;
@@ -16,7 +16,7 @@ export interface FormConfiguration {
 export type FormAction = {
   type: 'blur' | 'submit' | 'change' | 'validate';
   configuration: FormConfiguration;
-  fieldsData: Map<string, FieldState>;
+  fieldsData: Map<string, FieldData>;
 };
 export interface FormState {
   dirty: boolean;
@@ -42,6 +42,10 @@ export interface FieldConfiguration {
   validateOnBlur: boolean;
   validate: (value?: string) => ValidityStateInterface;
   name: string;
+}
+export interface FieldData {
+  state: FieldState;
+  dispatch: React.Dispatch<FieldAction>;
 }
 export interface FieldState {
   changed: number;

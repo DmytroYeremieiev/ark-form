@@ -1,5 +1,13 @@
 import React, { useReducer, useRef, useEffect } from 'react';
-import { FormConfiguration, FormState, defaultFormState, FormContextInterface, FormAction, FieldState } from './types';
+import {
+  FormConfiguration,
+  FormState,
+  defaultFormState,
+  FormContextInterface,
+  FormAction,
+  FieldState,
+  FieldData,
+} from './types';
 import { FormProvider } from './FormContext';
 
 const handleBlur = (state: FormState, action: FormAction): FormState => {
@@ -61,10 +69,10 @@ export interface FormInterface extends FormConfiguration {
   ) => React.ReactChild | React.ReactChild[];
 }
 
-const isValid = (fieldsData: Map<string, FieldState>) => {
+const isValid = (fieldsData: Map<string, FieldData>) => {
   if (!fieldsData) return false;
   for (const [, field] of fieldsData) {
-    if (!field.validity.valid) {
+    if (!field.state.validity.valid) {
       return false;
     }
   }
@@ -83,7 +91,7 @@ export const ArkForm = ({
     name,
   };
   const [state, dispatch] = useReducer(formReducer, defaultFormState);
-  const fieldsData = useRef(new Map<string, FieldState>());
+  const fieldsData = useRef(new Map<string, FieldData>());
   if (process.env.NODE_ENV !== 'production') {
     console.log(
       'Form:',
@@ -91,19 +99,19 @@ export const ArkForm = ({
     );
   }
 
-  const setFieldData = (name: string, fieldState: FieldState, revalidate = false) => {
-    fieldsData.current.set(name, fieldState);
-    if (revalidate) {
-      fieldsData.current = new Map(fieldsData.current);
-      dispatch({ type: 'validate', fieldsData: fieldsData.current, configuration });
-    }
+  const setFieldData = (name: string, fieldData: FieldData) => {
+    fieldsData.current.set(name, fieldData);
+    // if (revalidate) {
+    //   fieldsData.current = new Map(fieldsData.current);
+    //   dispatch({ type: 'validate', fieldsData: fieldsData.current, configuration });
+    // }
   };
-  const deleteFieldData = (name: string, revalidate = false) => {
+  const deleteFieldData = (name: string) => {
     fieldsData.current.delete(name);
-    if (revalidate) {
-      fieldsData.current = new Map(fieldsData.current);
-      dispatch({ type: 'validate', fieldsData: fieldsData.current, configuration });
-    }
+    // if (revalidate) {
+    //   fieldsData.current = new Map(fieldsData.current);
+    //   dispatch({ type: 'validate', fieldsData: fieldsData.current, configuration });
+    // }
   };
   useEffect(() => {
     dispatch({ type: 'validate', fieldsData: fieldsData.current, configuration });

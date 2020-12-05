@@ -82,7 +82,7 @@ const _Field = <ET extends HTMLElement & { value: string } = HTMLInputElement>(
   useEffect(() => {
     // must be in  the latest effect
     didMountRef.current = true;
-    formContext.setFieldData(name, state, dispatch);
+    formContext.setFieldData(name, { state, dispatch });
     return () => {
       formContext.deleteFieldData(name);
     };
