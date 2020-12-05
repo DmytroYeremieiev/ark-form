@@ -1,11 +1,6 @@
-export type FieldData = {
-  value: InputType;
-  validity: ValidityStateInterface;
-};
-
 export interface FormContextInterface {
   configuration: FormConfiguration;
-  fieldsData: Map<string, FieldData>;
+  fieldsData: Map<string, FieldState>;
   setFieldData: (name: string, fieldState: FieldState, revalidate?: boolean) => void;
   deleteFieldData: (name: string, revalidate?: boolean) => void;
   state: FormState;
@@ -21,7 +16,7 @@ export interface FormConfiguration {
 export type FormAction = {
   type: 'blur' | 'submit' | 'change' | 'validate';
   configuration: FormConfiguration;
-  fieldsData: Map<string, FieldData>;
+  fieldsData: Map<string, FieldState>;
 };
 export interface FormState {
   dirty: boolean;

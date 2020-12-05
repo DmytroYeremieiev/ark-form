@@ -1,13 +1,5 @@
 import React, { useReducer, useRef, useEffect } from 'react';
-import {
-  ValidityStateInterface,
-  FieldData,
-  FormConfiguration,
-  FormState,
-  defaultFormState,
-  FormContextInterface,
-  FormAction,
-} from './types';
+import { FormConfiguration, FormState, defaultFormState, FormContextInterface, FormAction, FieldState } from './types';
 import { FormProvider } from './FormContext';
 
 const handleBlur = (state: FormState, action: FormAction): FormState => {
@@ -59,9 +51,9 @@ interface FormProps {
 }
 export interface FormInterface extends FormConfiguration {
   name: string;
-  onSubmit: (event: React.FormEvent<HTMLFormElement>, data: Map<string, FieldData>) => void;
-  onChange?: (event: React.FormEvent<HTMLFormElement>, data: Map<string, FieldData>) => void;
-  onBlur?: (event: React.FormEvent<HTMLFormElement>, data: Map<string, FieldData>) => void;
+  onSubmit: (event: React.FormEvent<HTMLFormElement>, data: Map<string, FieldState>) => void;
+  onChange?: (event: React.FormEvent<HTMLFormElement>, data: Map<string, FieldState>) => void;
+  onBlur?: (event: React.FormEvent<HTMLFormElement>, data: Map<string, FieldState>) => void;
   children: (
     props: FormContextInterface & {
       formProps: FormProps;
@@ -69,7 +61,7 @@ export interface FormInterface extends FormConfiguration {
   ) => React.ReactChild | React.ReactChild[];
 }
 
-const isValid = (fieldsData: Map<string, FieldData>) => {
+const isValid = (fieldsData: Map<string, FieldState>) => {
   if (!fieldsData) return false;
   for (const [, field] of fieldsData) {
     if (!field.validity.valid) {
@@ -91,7 +83,7 @@ export const ArkForm = ({
     name,
   };
   const [state, dispatch] = useReducer(formReducer, defaultFormState);
-  const fieldsData = useRef(new Map<string, FieldData>());
+  const fieldsData = useRef(new Map<string, FieldState>());
   if (process.env.NODE_ENV !== 'production') {
     console.log(
       'Form:',
@@ -99,8 +91,8 @@ export const ArkForm = ({
     );
   }
 
-  const setFieldData = (name: string, value: any, validity: ValidityStateInterface, revalidate = false) => {
-    fieldsData.current.set(name, { value, validity });
+  const setFieldData = (name: string, fieldState: FieldState, revalidate = false) => {
+    fieldsData.current.set(name, fieldState);
     if (revalidate) {
       fieldsData.current = new Map(fieldsData.current);
       dispatch({ type: 'validate', fieldsData: fieldsData.current, configuration });

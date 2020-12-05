@@ -66,13 +66,13 @@ const _Field = <ET extends HTMLElement & { value: string } = HTMLInputElement>(
     if (!didMountRef.current) return;
     const _initialValue = initialValue?.toString() ?? '';
     dispatch({ value: _initialValue, type: 'change', configuration: { validateOnChange: true } });
-    formContext.setFieldData(name, _initialValue, validity);
+    formContext.setFieldData(name, _initialValue);
   }, [initialValue]);
 
   useEffect(() => {
     // must be in  the latest effect
     didMountRef.current = true;
-    formContext.setFieldData(name, initialValue, validity, true);
+    formContext.setFieldData(name, initialValue, true);
     return () => {
       formContext.deleteFieldData(name, true);
     };
@@ -81,7 +81,7 @@ const _Field = <ET extends HTMLElement & { value: string } = HTMLInputElement>(
   const _onChange = (event: React.ChangeEvent<ET>) => {
     const value = inputRef.current!.value;
     dispatch({ value: value, type: 'change' });
-    formContext.setFieldData(name, value, validity);
+    formContext.setFieldData(name, value);
     onChange(event, value);
   };
   const _onBlur = (event: React.SyntheticEvent<ET>) => {
