@@ -1,8 +1,4 @@
 export interface FormContextInterface {
-  configuration: FormConfiguration;
-  fieldsData: Map<string, FieldData>;
-  setFieldData: (name: string, fieldData: FieldData) => void;
-  deleteFieldData: (name: string) => void;
   state: FormState;
   dispatch: React.Dispatch<FormAction>;
 }
@@ -11,12 +7,12 @@ export interface FormConfiguration {
   validateOnBlur: boolean;
   forceValidation?: boolean;
   name: string;
+  fieldsData: Map<string, FieldState>;
 }
 
 export type FormAction = {
-  type: 'blur' | 'submit' | 'change' | 'validate';
-  configuration: FormConfiguration;
-  fieldsData: Map<string, FieldData>;
+  type: 'blur' | 'submit' | 'change' | 'validate' | 'registerField' | 'unregisterField';
+  fieldState: FieldState;
 };
 export interface FormState {
   dirty: boolean;
@@ -26,6 +22,7 @@ export interface FormState {
   valid: boolean;
   changed: boolean;
   blurred: number;
+  configuration: FormConfiguration;
 }
 export const defaultFormState: FormState = {
   dirty: false,
@@ -35,6 +32,12 @@ export const defaultFormState: FormState = {
   submitted: false,
   changed: false,
   blurred: 0,
+  configuration: {
+    name: '',
+    validateOnBlur: true,
+    validateOnChange: false,
+    fieldsData: new Map<string, FieldState>(),
+  },
 };
 
 export interface FieldConfiguration {

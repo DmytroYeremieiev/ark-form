@@ -1,5 +1,5 @@
-import React, { useRef, useEffect, useMemo, useReducer } from 'react';
-import { ValidityStateInterface, FieldInterface, FormContextInterface } from './types';
+import React, { useRef, useEffect, useMemo, useReducer, useState } from 'react';
+import { ValidityStateInterface, FieldInterface, FormContextInterface, FormConfiguration } from './types';
 import { useFormContext } from './FormContext';
 import { fieldReducer, defaultFieldState } from './fieldReducer';
 
@@ -34,6 +34,21 @@ export const Field = <ET extends HTMLElement & { value: string } = HTMLInputElem
 type _FieldInterface<ET> = FieldInterface<ET> & {
   formContext: FormContextInterface;
 };
+
+const initializeFieldState = <ET extends HTMLElement & { value: string } = HTMLInputElement>(
+  fieldProps: _FieldInterface<ET>,
+  formConfiguration: FormConfiguration
+) => {
+  const value = fieldProps.initialValue?.toString() ?? '';
+  const newState = { ...defaultFieldState, value, filled: !!value };
+  newState.configuration = {
+    validateOnChange: fieldProps.validateOnChange ?? formConfiguration.validateOnChange,
+    validateOnBlur: formConfiguration.validateOnBlur,
+    validate: fieldProps.validate ?? getValidity,
+    name: fieldProps.name,
+  };
+  return newState;
+};
 const _Field = <ET extends HTMLElement & { value: string } = HTMLInputElement>(
   props: _FieldInterface<ET>
 ): JSX.Element => {
@@ -43,23 +58,22 @@ const _Field = <ET extends HTMLElement & { value: string } = HTMLInputElement>(
     onChange = () => void 0,
     onFocus = () => void 0,
     onBlur = () => void 0,
-    validateOnChange,
     children,
-    validate = getValidity,
     formContext,
   }: _FieldInterface<ET> = props;
-
-  const [state, dispatch] = useReducer(fieldReducer, { ...defaultFieldState }, state => {
-    state.configuration = {
-      validateOnChange: validateOnChange ?? formContext.configuration.validateOnChange,
-      validateOnBlur: formContext.configuration.validateOnBlur,
-      validate,
-      name,
-    };
-    state.value = initialValue?.toString() ?? '';
-    state.filled = !!state.value;
-    return state;
-  });
+  const { dispatch } = formContext;
+  const [state] = useState(initializeFieldState(props, formContext.state.configuration));
+  // const [state, dispatch] = useReducer(fieldReducer, { ...defaultFieldState }, state => {
+  //   state.configuration = {
+  //     validateOnChange: validateOnChange ?? formContext.configuration.validateOnChange,
+  //     validateOnBlur: formContext.configuration.validateOnBlur,
+  //     validate,
+  //     name,
+  //   };
+  //   state.value = initialValue?.toString() ?? '';
+  //   state.filled = !!state.value;
+  //   return state;
+  // });
 
   const inputRef = useRef<ET>();
   const didMountRef = useRef(false);
@@ -73,30 +87,45 @@ const _Field = <ET extends HTMLElement & { value: string } = HTMLInputElement>(
     if (!didMountRef.current) return;
     const _initialValue = initialValue?.toString() ?? '';
     dispatch({
-      value: _initialValue,
       type: 'change',
-      configuration: { validateOnChange: true },
+      fieldState: fieldReducer(state, {
+        value: _initialValue,
+        type: 'change',
+        configuration: { validateOnChange: true },
+      }),
     });
   }, [initialValue]);
 
   useEffect(() => {
     // must be in  the latest effect
     didMountRef.current = true;
-    formContext.setFieldData(name, { state, dispatch });
+    dispatch({
+      type: 'registerField',
+      fieldState: state,
+    });
     return () => {
-      formContext.deleteFieldData(name);
+      dispatch({
+        type: 'unregisterField',
+        fieldState: state,
+      });
     };
   }, []);
 
   const _onChange = (event: React.ChangeEvent<ET>) => {
     const value = inputRef.current!.value;
-    dispatch({ value: value, type: 'change' });
+    dispatch({
+      type: 'change',
+      fieldState: fieldReducer(state, { value: value, type: 'change' }),
+    });
     onChange(event, value);
   };
   const _onBlur = (event: React.SyntheticEvent<ET>) => {
     onBlur(event);
-    if (!formContext.configuration.validateOnBlur || state.changed === 0) return;
-    dispatch({ type: 'blur' });
+    // if (!formContext.state.configuration.validateOnBlur || state.changed === 0) return;
+    dispatch({
+      type: 'blur',
+      fieldState: fieldReducer(state, { type: 'blur' }),
+    });
   };
   const _onFocus = (event: React.FocusEvent<ET>) => {
     onFocus(event);

@@ -25,7 +25,7 @@ const handleSubmit = (state: FormState, action: FormAction): FormState => {
 };
 const handleChange = (state: FormState, action: FormAction): FormState => {
   let newState: FormState = { ...state, changed: true };
-  if (action.configuration.validateOnChange) {
+  if (state.configuration.validateOnChange) {
     newState.dirty = true;
     newState.pristine = false;
     newState = handleValidation(newState, action);
@@ -36,6 +36,17 @@ const handleChange = (state: FormState, action: FormAction): FormState => {
 const handleValidation = (state: FormState, action: FormAction): FormState => {
   const valid = isValid(action.fieldsData);
   return { ...state, invalid: !valid, valid: valid };
+};
+
+const registerField = (state: FormState, action: FormAction): FormState => {
+  state.configuration.fieldsData = new Map<string, FieldState>(state.configuration.fieldsData);
+  state.configuration.fieldsData.set(action.fieldState.configuration.name, action.fieldState);
+  return { ...state };
+};
+const unregisterField = (state: FormState, action: FormAction): FormState => {
+  state.configuration.fieldsData = new Map<string, FieldState>(state.configuration.fieldsData);
+  state.configuration.fieldsData.delete(action.fieldState.configuration.name);
+  return { ...state };
 };
 
 const isValid = (fieldsData: Map<string, FieldData>) => {
@@ -59,6 +70,10 @@ const formReducer = (state: FormState, action: FormAction) => {
       return handleBlur(state, action);
     case 'validate':
       return handleValidation(state, action);
+    case 'registerField':
+      return registerField(state, action);
+    case 'unregisterField':
+      return unregisterField(state, action);
     default:
       throw new Error();
   }
@@ -89,13 +104,15 @@ export const ArkForm = ({
   validateOnChange = false,
   validateOnBlur = true,
 }: FormInterface): JSX.Element => {
-  const configuration = {
-    validateOnChange,
-    validateOnBlur,
-    name,
-  };
-  const [state, dispatch] = useReducer(formReducer, defaultFormState);
-  const fieldsData = useRef(new Map<string, FieldData>());
+  const [state, dispatch] = useReducer(formReducer, defaultFormState, state => {
+    state.configuration = {
+      validateOnChange,
+      validateOnBlur,
+      name,
+      fieldsData: new Map<string, FieldState>(),
+    };
+    return state;
+  });
   if (process.env.NODE_ENV !== 'production') {
     console.log(
       'Form:',
@@ -103,42 +120,19 @@ export const ArkForm = ({
     );
   }
 
-  const setFieldData = (name: string, fieldData: FieldData) => {
-    fieldsData.current.set(name, fieldData);
-    // if (revalidate) {
-    //   fieldsData.current = new Map(fieldsData.current);
-    //   dispatch({ type: 'validate', fieldsData: fieldsData.current, configuration });
-    // }
-  };
-  const deleteFieldData = (name: string) => {
-    fieldsData.current.delete(name);
-    // if (revalidate) {
-    //   fieldsData.current = new Map(fieldsData.current);
-    //   dispatch({ type: 'validate', fieldsData: fieldsData.current, configuration });
-    // }
-  };
   useEffect(() => {
-    dispatch({ type: 'validate', fieldsData: fieldsData.current, configuration });
+    // dispatch({ type: 'validate', fieldsData: fieldsData.current });
   }, []);
   const _onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    dispatch({ type: 'submit', fieldsData: fieldsData.current, configuration });
-    if (state.valid) onSubmit(event, fieldsData.current);
+    // dispatch({ type: 'submit', fieldsData: fieldsData.current });
+    // if (state.valid) onSubmit(event, fieldsData.current);
   };
-  const _onChange = () => {
-    dispatch({ type: 'change', fieldsData: fieldsData.current, configuration });
-  };
-  const _onBlur = () => {
-    dispatch({ type: 'blur', fieldsData: fieldsData.current, configuration });
-  };
-  const formProps = { name, onSubmit: _onSubmit, onBlur: _onBlur, onChange: _onChange };
+
+  const formProps = { name, onSubmit: _onSubmit };
   const formContext = {
-    setFieldData,
-    deleteFieldData,
-    configuration,
     state,
     dispatch,
-    fieldsData: fieldsData.current,
   };
   return <FormProvider value={formContext}>{children({ ...formContext, formProps })}</FormProvider>;
 };
