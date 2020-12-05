@@ -26,7 +26,7 @@ const IndexPage = (): JSX.Element => {
   };
   return (
     <div className={styles['page-content']}>
-      <Forms.Form name='tempForm' onSubmit={onSubmit} validateOnChange={true}>
+      <Forms.Form name='tempForm' onSubmit={onSubmit} validateOnChange={false}>
         <Forms.FullNameInput name='fullName' initialValue='' label='FULL NAME *' required></Forms.FullNameInput>
         {/* <Forms.ZipCodeInput name='zip' label='ZIP CODE *' required></Forms.ZipCodeInput> */}
         <Forms.PhoneInput name='phone' initialValue='123' label='PHONE *' required></Forms.PhoneInput>

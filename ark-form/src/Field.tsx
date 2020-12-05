@@ -19,6 +19,7 @@ export const Field = <ET extends HTMLElement & { value: string } = HTMLInputElem
     formState.valid,
     formState.dirty,
     formState.changed,
+    formState.configuration.fieldsData,
     // <Field> must only concern about its initialValue, validate props change,
     // there's no value in changing other 'configurational' props and event handlers, such as 'name', 'validateOnChange', etc...
     props.initialValue,
@@ -67,25 +68,8 @@ const _Field = <ET extends HTMLElement & { value: string } = HTMLInputElement>(
   }: _FieldInterface<ET> = props;
   const { dispatch } = formContext;
 
-  // const [state, dispatch] = useReducer(fieldReducer, { ...defaultFieldState }, state => {
-  //   state.configuration = {
-  //     validateOnChange: validateOnChange ?? formContext.configuration.validateOnChange,
-  //     validateOnBlur: formContext.configuration.validateOnBlur,
-  //     validate,
-  //     name,
-  //   };
-  //   state.value = initialValue?.toString() ?? '';
-  //   state.filled = !!state.value;
-  //   return state;
-  // });
-
   const inputRef = useRef<ET>();
   const didMountRef = useRef(false);
-
-  // useEffect(() => {
-  //   if (!didMountRef.current) return;
-  //   dispatch({ type: 'blur', configuration: { validateOnBlur: true } });
-  // }, [formContext.state.blurred]);
 
   useEffect(() => {
     if (!didMountRef.current) return;
@@ -125,7 +109,6 @@ const _Field = <ET extends HTMLElement & { value: string } = HTMLInputElement>(
   };
   const _onBlur = (event: React.SyntheticEvent<ET>) => {
     onBlur(event);
-    // if (!formContext.state.configuration.validateOnBlur || state.changed === 0) return;
     dispatch({
       type: 'blur',
       fieldState: fieldReducer(state, { type: 'blur' }),
