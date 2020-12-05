@@ -1,22 +1,18 @@
-import React, { useRef, useEffect, useMemo, useReducer, useState } from 'react';
-import { ValidityStateInterface, FieldInterface, FormContextInterface, FormConfiguration } from './types';
+import React, { useRef, useEffect, useMemo } from 'react';
+import { ValidityStateInterface, FieldInterface, FormContextInterface, FormConfiguration, FieldState } from './types';
 import { useFormContext } from './FormContext';
 import { fieldReducer, defaultFieldState } from './fieldReducer';
-
-const defaultValidity: ValidityStateInterface = {
-  valid: true,
-};
-
-const getValidity = () => defaultValidity;
 
 export const Field = <ET extends HTMLElement & { value: string } = HTMLInputElement>(
   props: FieldInterface<ET>
 ): JSX.Element => {
   const formContext = useFormContext();
   const formState = formContext.state;
-  const field = formContext.fieldsData.get(props.name);
-  return <_Field {...props} formContext={formContext}></_Field>;
-  return useMemo(() => <_Field {...props} formContext={formContext}></_Field>, [
+  const fieldState =
+    formContext.state.configuration.fieldsData.get(props.name) ??
+    initializeFieldState(props, formContext.state.configuration);
+
+  return useMemo(() => <_Field {...props} formContext={formContext} state={fieldState}></_Field>, [
     // list all state props manually, since form context generates new state obj each time(immutable)
     formState.blurred, // blurred - used to signal when using autocomplete(fill-up) on entire form with validateOnChange=false
     formState.submitted,
@@ -27,16 +23,23 @@ export const Field = <ET extends HTMLElement & { value: string } = HTMLInputElem
     // there's no value in changing other 'configurational' props and event handlers, such as 'name', 'validateOnChange', etc...
     props.initialValue,
     props.validate,
-    field?.changed,
+    fieldState?.changed,
   ]);
 };
 
 type _FieldInterface<ET> = FieldInterface<ET> & {
   formContext: FormContextInterface;
+  state: FieldState;
 };
 
+const defaultValidity: ValidityStateInterface = {
+  valid: true,
+};
+
+const getValidity = () => defaultValidity;
+
 const initializeFieldState = <ET extends HTMLElement & { value: string } = HTMLInputElement>(
-  fieldProps: _FieldInterface<ET>,
+  fieldProps: FieldInterface<ET>,
   formConfiguration: FormConfiguration
 ) => {
   const value = fieldProps.initialValue?.toString() ?? '';
@@ -49,20 +52,21 @@ const initializeFieldState = <ET extends HTMLElement & { value: string } = HTMLI
   };
   return newState;
 };
+
 const _Field = <ET extends HTMLElement & { value: string } = HTMLInputElement>(
   props: _FieldInterface<ET>
 ): JSX.Element => {
   const {
-    name,
     initialValue,
     onChange = () => void 0,
     onFocus = () => void 0,
     onBlur = () => void 0,
     children,
     formContext,
+    state,
   }: _FieldInterface<ET> = props;
   const { dispatch } = formContext;
-  const [state] = useState(initializeFieldState(props, formContext.state.configuration));
+
   // const [state, dispatch] = useReducer(fieldReducer, { ...defaultFieldState }, state => {
   //   state.configuration = {
   //     validateOnChange: validateOnChange ?? formContext.configuration.validateOnChange,

@@ -51,9 +51,16 @@ export const TextInput = ({
       {...rest}
     >
       {({ fieldProps, fieldState, formContext }) => {
-        const id = (formContext.configuration.name || '') + '-' + name;
+        const id = (formContext.state.configuration.name || '') + '-' + name;
         if (process.env.NODE_ENV !== 'production') {
-          console.log('field', name, fieldProps.value, fieldState, formContext.state, formContext.fieldsData);
+          console.log(
+            'field',
+            name,
+            fieldProps.value,
+            fieldState,
+            formContext.state,
+            formContext.state.configuration.fieldsData
+          );
         }
         return (
           <div className={classnames(styles['txo-input'], className)}>

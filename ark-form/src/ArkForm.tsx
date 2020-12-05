@@ -11,20 +11,26 @@ import {
 import { FormProvider } from './FormContext';
 import { fieldReducer } from './fieldReducer';
 
+const handleSubmit = (state: FormState, action: FormAction): FormState => {
+  return { ...state, ...handleValidation(state, action), submitted: true };
+};
+
 const handleBlur = (state: FormState, action: FormAction): FormState => {
   let newState: FormState = { ...state, blurred: state.blurred + 1 };
-  if (action.configuration.validateOnBlur && state.changed) {
+  const fieldState = action.fieldState;
+  newState.configuration.fieldsData.set(fieldState.configuration.name, fieldState);
+  if (state.configuration.validateOnBlur && state.changed) {
     newState.dirty = true;
     newState.pristine = false;
     newState = handleValidation(newState, action);
   }
   return newState;
 };
-const handleSubmit = (state: FormState, action: FormAction): FormState => {
-  return { ...state, ...handleValidation(state, action), submitted: true };
-};
+
 const handleChange = (state: FormState, action: FormAction): FormState => {
   let newState: FormState = { ...state, changed: true };
+  const fieldState = action.fieldState;
+  newState.configuration.fieldsData.set(fieldState.configuration.name, fieldState);
   if (state.configuration.validateOnChange) {
     newState.dirty = true;
     newState.pristine = false;
@@ -34,7 +40,7 @@ const handleChange = (state: FormState, action: FormAction): FormState => {
 };
 
 const handleValidation = (state: FormState, action: FormAction): FormState => {
-  const valid = isValid(action.fieldsData);
+  const valid = isValid(state.configuration.fieldsData);
   return { ...state, invalid: !valid, valid: valid };
 };
 
@@ -49,11 +55,10 @@ const unregisterField = (state: FormState, action: FormAction): FormState => {
   return { ...state };
 };
 
-const isValid = (fieldsData: Map<string, FieldData>) => {
+const isValid = (fieldsData: Map<string, FieldState>) => {
   if (!fieldsData) return false;
-  for (const [, field] of fieldsData) {
-    field.state = fieldReducer(field.state, { type: 'validate' });
-    if (!field.state.validity.valid) {
+  for (const [, fieldState] of fieldsData) {
+    if (!fieldState.validity.valid) {
       return false;
     }
   }
