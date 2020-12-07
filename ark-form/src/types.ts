@@ -12,7 +12,7 @@ export interface FormConfiguration {
 
 export type FormAction = {
   type: 'blur' | 'submit' | 'change' | 'validate' | 'registerField' | 'unregisterField';
-  fieldState: FieldState;
+  fieldState?: FieldState;
 };
 export interface FormState {
   dirty: boolean;

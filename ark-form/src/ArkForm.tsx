@@ -11,47 +11,48 @@ import {
 import { FormProvider } from './FormContext';
 import { fieldReducer } from './fieldReducer';
 
-const handleSubmit = (state: FormState, action: FormAction): FormState => {
-  return { ...state, ...handleValidation(state, action), submitted: true };
+const handleSubmit = (state: FormState): FormState => {
+  return { ...state, ...handleValidation(state), submitted: true };
 };
 
 const handleBlur = (state: FormState, action: FormAction): FormState => {
   let newState: FormState = { ...state, blurred: state.blurred + 1 };
-  const fieldState = action.fieldState;
+  const fieldState = action.fieldState!;
   newState.configuration.fieldsData.set(fieldState.configuration.name, fieldState);
   if (state.configuration.validateOnBlur && state.changed) {
     newState.dirty = true;
     newState.pristine = false;
-    newState = handleValidation(newState, action);
+    newState = handleValidation(newState);
   }
   return newState;
 };
 
 const handleChange = (state: FormState, action: FormAction): FormState => {
   let newState: FormState = { ...state, changed: true };
-  const fieldState = action.fieldState;
+  const fieldState = action.fieldState!;
   newState.configuration.fieldsData.set(fieldState.configuration.name, fieldState);
   if (state.configuration.validateOnChange) {
     newState.dirty = true;
     newState.pristine = false;
-    newState = handleValidation(newState, action);
+    newState = handleValidation(newState);
   }
   return newState;
 };
 
-const handleValidation = (state: FormState, action: FormAction): FormState => {
+const handleValidation = (state: FormState): FormState => {
   const valid = isValid(state.configuration.fieldsData);
   return { ...state, invalid: !valid, valid: valid };
 };
 
 const registerField = (state: FormState, action: FormAction): FormState => {
   state.configuration.fieldsData = new Map<string, FieldState>(state.configuration.fieldsData);
-  state.configuration.fieldsData.set(action.fieldState.configuration.name, action.fieldState);
+  const fieldState = action.fieldState!;
+  state.configuration.fieldsData.set(fieldState.configuration.name, fieldState);
   return { ...state };
 };
 const unregisterField = (state: FormState, action: FormAction): FormState => {
   state.configuration.fieldsData = new Map<string, FieldState>(state.configuration.fieldsData);
-  state.configuration.fieldsData.delete(action.fieldState.configuration.name);
+  state.configuration.fieldsData.delete(action.fieldState!.configuration.name);
   return { ...state };
 };
 
@@ -68,13 +69,13 @@ const isValid = (fieldsData: Map<string, FieldState>) => {
 const formReducer = (state: FormState, action: FormAction) => {
   switch (action.type) {
     case 'submit':
-      return handleSubmit(state, action);
+      return handleSubmit(state);
     case 'change':
       return handleChange(state, action);
     case 'blur':
       return handleBlur(state, action);
     case 'validate':
-      return handleValidation(state, action);
+      return handleValidation(state);
     case 'registerField':
       return registerField(state, action);
     case 'unregisterField':
@@ -125,13 +126,10 @@ export const ArkForm = ({
     );
   }
 
-  useEffect(() => {
-    // dispatch({ type: 'validate', fieldsData: fieldsData.current });
-  }, []);
   const _onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // dispatch({ type: 'submit', fieldsData: fieldsData.current });
-    // if (state.valid) onSubmit(event, fieldsData.current);
+    dispatch({ type: 'submit' });
+    if (state.valid) onSubmit(event, state.configuration.fieldsData);
   };
 
   const formProps = { name, onSubmit: _onSubmit };
