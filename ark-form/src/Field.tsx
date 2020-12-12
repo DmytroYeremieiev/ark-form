@@ -88,7 +88,7 @@ const _Field = <ET extends HTMLElement & { value: string } = HTMLInputElement>(
     didMountRef.current = true;
     dispatch({
       type: 'registerField',
-      fieldState: state,
+      fieldState: fieldReducer(state, { type: 'validate' }),
     });
     return () => {
       dispatch({
