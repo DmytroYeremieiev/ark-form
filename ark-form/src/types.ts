@@ -1,6 +1,6 @@
 export interface FormContextInterface {
   state: FormState;
-  registerField: (name: string, newState: Partial<FieldState>) => void;
+  registerFieldState: (name: string, newState: DeepPartial<FieldState>) => void;
   setFieldValidator: (name: string, validate: (value?: string) => ValidityStateInterface) => void;
   setFieldValue: (name: string, value: string) => void;
   dispatch: React.Dispatch<FormAction>;
@@ -63,6 +63,11 @@ export interface FieldState {
   validity: ValidityStateInterface;
   configuration: FieldConfiguration;
 }
+
+export type DeepPartial<T> = {
+  [P in keyof T]?: Partial<T[P]>;
+};
+
 export type FieldAction = {
   type: 'change' | 'blur' | 'validate' | 'dirty';
   configuration?: Partial<FieldConfiguration>;

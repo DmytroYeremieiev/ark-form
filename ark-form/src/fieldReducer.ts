@@ -1,4 +1,4 @@
-import { ValidityStateInterface, FieldAction, FieldState } from './types';
+import { ValidityStateInterface, FieldAction, FieldState, DeepPartial } from './types';
 
 const defaultValidity: ValidityStateInterface = {
   valid: true,
@@ -52,6 +52,15 @@ const handleValidation = (state: FieldState, action: FieldAction): FieldState =>
   const validate = action.configuration?.validate ?? state.configuration.validate;
   const validity = validate(state.value);
   return { ...state, validity };
+};
+
+export const mergeState = (prevState: FieldState, newState: DeepPartial<FieldState>): FieldState => {
+  const result: Omit<FieldState, 'configuration' | 'validity'> = { ...prevState, ...newState };
+  return {
+    ...result,
+    configuration: { ...prevState.configuration, ...newState.configuration },
+    validity: { ...prevState.validity, ...newState.validity },
+  };
 };
 
 export const fieldReducer = (state: FieldState, action: FieldAction) => {
