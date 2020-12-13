@@ -7,15 +7,28 @@ const handleSubmit = (state: FormState): FormState => {
   return { ...state, ...handleValidation(state), submitted: true };
 };
 
+const setFieldsDirty = (state: FormState): FormState => {
+  const newState: FormState = { ...state };
+  newState.fieldsData.forEach((fieldState, fieldName) => {
+    if (fieldState.changed !== 0 && !fieldState.dirty) {
+      newState.fieldsData.set(
+        fieldName,
+        fieldReducer(fieldReducer(fieldState, { type: 'dirty' }), { type: 'validate' })
+      );
+    }
+  });
+  return newState;
+};
+
 const handleBlur = (state: FormState, action: FormAction): FormState => {
   let newState: FormState = { ...state, blurred: state.blurred + 1 };
   const fieldState = action.fieldState!;
   newState.fieldsData.set(fieldState.configuration.name, fieldState);
-  if (state.configuration.validateOnBlur && state.changed) {
-    newState.dirty = true;
-    newState.pristine = false;
-    newState = handleValidation(newState);
-  }
+  if (!state.configuration.validateOnBlur || !state.changed) return newState;
+  newState.dirty = true;
+  newState.pristine = false;
+  newState = setFieldsDirty(newState);
+  newState = handleValidation(newState);
   return newState;
 };
 

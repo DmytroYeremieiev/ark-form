@@ -52,6 +52,7 @@ export interface FieldData {
 }
 export interface FieldState {
   changed: number;
+  blurred: boolean;
   dirty: boolean;
   pristine: boolean;
   filled: boolean;
@@ -60,7 +61,7 @@ export interface FieldState {
   configuration: FieldConfiguration;
 }
 export type FieldAction = {
-  type: 'change' | 'blur' | 'validate';
+  type: 'change' | 'blur' | 'validate' | 'dirty';
   configuration?: Partial<FieldConfiguration>;
   value?: string;
 };

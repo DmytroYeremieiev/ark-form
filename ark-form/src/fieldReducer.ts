@@ -36,12 +36,15 @@ const handleChange = (state: FieldState, action: FieldAction): FieldState => {
 };
 
 const handleBlur = (state: FieldState, action: FieldAction): FieldState => {
-  const validateOnChange = action.configuration?.validateOnChange ?? state.configuration.validateOnChange;
   const validateOnBlur = action.configuration?.validateOnBlur ?? state.configuration.validateOnBlur;
   const validate = action.configuration?.validate ?? state.configuration.validate;
-  if (!validateOnBlur || validateOnChange || state.changed === 0) return state;
+  if (!validateOnBlur || state.changed === 0) return { ...state, blurred: true };
   const validity = validate(state.value);
-  return { ...state, dirty: true, pristine: false, validity };
+  return { ...state, dirty: true, pristine: false, blurred: true, validity };
+};
+
+const setDirty = (state: FieldState): FieldState => {
+  return { ...state, dirty: true, pristine: false };
 };
 
 const handleValidation = (state: FieldState, action: FieldAction): FieldState => {
@@ -56,6 +59,8 @@ export const fieldReducer = (state: FieldState, action: FieldAction) => {
       return handleChange(state, action);
     case 'blur':
       return handleBlur(state, action);
+    case 'dirty':
+      return setDirty(state);
     case 'validate':
       return handleValidation(state, action);
     default:

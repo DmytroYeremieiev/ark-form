@@ -22,7 +22,12 @@ export const Field = <ET extends HTMLElement & { value: string } = HTMLInputElem
     // there's no value in changing other 'configurational' props and event handlers, such as 'name', 'validateOnChange', etc...
     props.initialValue,
     props.validate,
+    //
     fieldState?.changed,
+    fieldState?.blurred,
+    fieldState?.dirty,
+    fieldState?.pristine,
+    fieldState?.filled,
   ]);
 };
 
