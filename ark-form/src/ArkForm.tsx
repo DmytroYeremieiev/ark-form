@@ -7,17 +7,12 @@ const handleSubmit = (state: FormState): FormState => {
   return { ...state, ...handleValidation(state), submitted: true };
 };
 
-const setFieldsDirty = (state: FormState): FormState => {
-  const newState: FormState = { ...state };
-  newState.fieldsData.forEach((fieldState, fieldName) => {
-    if (fieldState.changed !== 0 && !fieldState.dirty) {
-      newState.fieldsData.set(
-        fieldName,
-        fieldReducer(fieldReducer(fieldState, { type: 'dirty' }), { type: 'validate' })
-      );
+const setFieldsDirty = (fieldsData: Map<string, FieldState>) => {
+  fieldsData.forEach((fieldState, fieldName) => {
+    if (fieldState.filled && !fieldState.dirty && !fieldState.configuration.validateOnChange) {
+      fieldsData.set(fieldName, fieldReducer(fieldReducer(fieldState, { type: 'dirty' }), { type: 'validate' }));
     }
   });
-  return newState;
 };
 
 const handleBlur = (state: FormState, action: FormAction): FormState => {
@@ -27,7 +22,7 @@ const handleBlur = (state: FormState, action: FormAction): FormState => {
   if (!state.configuration.validateOnBlur || !state.changed) return newState;
   newState.dirty = true;
   newState.pristine = false;
-  newState = setFieldsDirty(newState);
+  setFieldsDirty(newState.fieldsData);
   newState = handleValidation(newState);
   return newState;
 };
