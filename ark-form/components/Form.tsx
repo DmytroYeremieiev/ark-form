@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArkForm, Form as FormElem } from '../src/';
+import { ArkForm } from '../src/';
 import classnames from 'classnames';
 
 export interface FormInterface {
@@ -35,7 +35,7 @@ export const Form = ({
           // console.log('<ArkForm/>', state);
         }
         return (
-          <FormElem
+          <form
             name={name}
             className={classnames({
               [ClassNames.dirty]: state.dirty,
@@ -47,7 +47,7 @@ export const Form = ({
             {...formProps}
           >
             {children}
-          </FormElem>
+          </form>
         );
       }}
     </ArkForm>
