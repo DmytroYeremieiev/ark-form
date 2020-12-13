@@ -70,7 +70,7 @@ export const TextInput = ({
                   [FieldStateClassNames.valid]: fieldState.validity.valid,
                   [FieldStateClassNames.forceValidation]: forceValidation,
                 },
-                { [fieldState.validity.className]: !fieldState.validity.valid }
+                { [fieldState.validity.className]: fieldState.validity.className && !fieldState.validity.valid }
               )}`}
             >
               <input id={id} type='text' readOnly={readOnly} {...fieldProps} value={transformInput(fieldProps.value)} />
@@ -82,23 +82,26 @@ export const TextInput = ({
                 <span className='error'>{fieldState.validity.errorMessage}</span>
               )}
             <div className='test-suit'>
-              <button
-                type='button'
-                onClick={() => formContext.setFieldValidator(name, () => ({ ...fieldState.validity, valid: true }))}
-              >
+              <button type='button' onClick={() => formContext.registerFieldState(name, { validity: { valid: true } })}>
                 Set valid
               </button>
               <button
                 type='button'
-                onClick={() => formContext.setFieldValidator(name, () => ({ ...fieldState.validity, valid: false }))}
+                onClick={() => formContext.registerFieldState(name, { validity: { valid: false } })}
               >
                 Set Invalid
               </button>
               <br></br>
-              <button type='button' onClick={() => formContext.registerField(name, { dirty: true, pristine: false })}>
+              <button
+                type='button'
+                onClick={() => formContext.registerFieldState(name, { dirty: true, pristine: false })}
+              >
                 Set Dirty
               </button>
-              <button type='button' onClick={() => formContext.registerField(name, { dirty: false, pristine: true })}>
+              <button
+                type='button'
+                onClick={() => formContext.registerFieldState(name, { dirty: false, pristine: true })}
+              >
                 Set Pristine
               </button>
               <br></br>
@@ -114,7 +117,7 @@ export const TextInput = ({
               >
                 Set Required
               </button>
-              <button type='button' onClick={() => formContext.registerField(name, defaultFieldState)}>
+              <button type='button' onClick={() => formContext.registerFieldState(name, defaultFieldState)}>
                 RESET
               </button>
               <div className='test-suit-set-value'>

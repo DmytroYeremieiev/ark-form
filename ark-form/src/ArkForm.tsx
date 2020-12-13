@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from 'react';
+import React, { useReducer } from 'react';
 import {
   FormConfiguration,
   FormState,
@@ -7,9 +7,10 @@ import {
   FormAction,
   FieldState,
   ValidityStateInterface,
+  DeepPartial,
 } from './types';
 import { FormProvider } from './FormContext';
-import { fieldReducer } from './fieldReducer';
+import { fieldReducer, mergeState } from './fieldReducer';
 
 const handleSubmit = (state: FormState): FormState => {
   return { ...state, ...handleValidation(state), submitted: true };
@@ -132,27 +133,24 @@ export const ArkForm = ({
     if (!fieldState) throw 'field name is incorrect';
     return fieldState;
   };
-  const registerField = (name: string, newState: Partial<FieldState>) => {
+  const registerFieldState = (name: string, newState: DeepPartial<FieldState>) => {
+    const mergedState = mergeState(getFieldState(name), newState);
+    const validatedState = fieldReducer(mergedState, { type: 'validate' });
     dispatch({
       type: 'registerField',
-      fieldState: { ...getFieldState(name), ...newState },
+      fieldState: validatedState,
     });
   };
   const setFieldValidator = (name: string, validate: (value?: string) => ValidityStateInterface) => {
-    const fieldState = getFieldState(name);
-    const newFieldState = fieldReducer(
-      {
-        ...fieldState,
-        configuration: {
-          ...fieldState.configuration,
-          validate: validate,
-        },
+    const mergedState = mergeState(getFieldState(name), {
+      configuration: {
+        validate: validate,
       },
-      { type: 'validate' }
-    );
+    });
+    const validatedState = fieldReducer(mergedState, { type: 'validate' });
     dispatch({
       type: 'registerField',
-      fieldState: newFieldState,
+      fieldState: validatedState,
     });
   };
   const setFieldValue = (name: string, value: string) => {
@@ -178,7 +176,7 @@ export const ArkForm = ({
   const formProps = { name, onSubmit: _onSubmit };
   const formContext = {
     state,
-    registerField,
+    registerFieldState,
     setFieldValidator,
     setFieldValue,
     dispatch,
