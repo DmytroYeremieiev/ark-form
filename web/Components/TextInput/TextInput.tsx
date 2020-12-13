@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Field } from 'ark-forms/src';
+import { Field, fieldReducer, defaultFieldState } from 'ark-forms/src';
 import { TextInputInterface, FieldStateClassNames } from '../../types';
 import { ValidityStateInterface } from 'ark-forms/src';
 
@@ -70,7 +70,7 @@ export const TextInput = ({
                   [FieldStateClassNames.valid]: fieldState.validity.valid,
                   [FieldStateClassNames.forceValidation]: forceValidation,
                 },
-                fieldState.validity.className
+                { [fieldState.validity.className]: !fieldState.validity.valid }
               )}`}
             >
               <input id={id} type='text' readOnly={readOnly} {...fieldProps} value={transformInput(fieldProps.value)} />
@@ -82,14 +82,41 @@ export const TextInput = ({
                 <span className='error'>{fieldState.validity.errorMessage}</span>
               )}
             <div className='test-suit'>
-              <button type='button'>Set valid</button>
-              <button type='button'>Set Invalid</button>
+              <button
+                type='button'
+                onClick={() => formContext.setFieldValidator(name, () => ({ ...fieldState.validity, valid: true }))}
+              >
+                Set valid
+              </button>
+              <button
+                type='button'
+                onClick={() => formContext.setFieldValidator(name, () => ({ ...fieldState.validity, valid: false }))}
+              >
+                Set Invalid
+              </button>
               <br></br>
-              <button type='button'>Set Dirty</button>
-              <button type='button'>Set Pristine</button>
+              <button type='button' onClick={() => formContext.registerField(name, { dirty: true, pristine: false })}>
+                Set Dirty
+              </button>
+              <button type='button' onClick={() => formContext.registerField(name, { dirty: false, pristine: true })}>
+                Set Pristine
+              </button>
               <br></br>
-              <button type='button'>Set Non-required</button>
-              <button type='button'>Set Required</button>
+              <button
+                type='button'
+                onClick={() => formContext.setFieldValidator(name, value => checkValidity(value, pattern, false))}
+              >
+                Set Non-required
+              </button>
+              <button
+                type='button'
+                onClick={() => formContext.setFieldValidator(name, value => checkValidity(value, pattern, true))}
+              >
+                Set Required
+              </button>
+              <button type='button' onClick={() => formContext.registerField(name, defaultFieldState)}>
+                RESET
+              </button>
               <div className='test-suit-set-value'>
                 <input
                   id={id + 'test'}
@@ -97,7 +124,9 @@ export const TextInput = ({
                   value={testSuiteValue}
                   onChange={event => setTestSuiteValue(event.target.value)}
                 />
-                <button type='button'>Set value</button>
+                <button type='button' onClick={() => formContext.setFieldValue(name, testSuiteValue)}>
+                  Set value
+                </button>
               </div>
             </div>
           </div>

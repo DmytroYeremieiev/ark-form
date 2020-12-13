@@ -1,5 +1,8 @@
 export interface FormContextInterface {
   state: FormState;
+  registerField: (name: string, newState: Partial<FieldState>) => void;
+  setFieldValidator: (name: string, validate: (value?: string) => ValidityStateInterface) => void;
+  setFieldValue: (name: string, value: string) => void;
   dispatch: React.Dispatch<FormAction>;
 }
 export interface FormConfiguration {

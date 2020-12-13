@@ -1,5 +1,13 @@
-import React, { useReducer } from 'react';
-import { FormConfiguration, FormState, defaultFormState, FormContextInterface, FormAction, FieldState } from './types';
+import React, { useEffect, useReducer } from 'react';
+import {
+  FormConfiguration,
+  FormState,
+  defaultFormState,
+  FormContextInterface,
+  FormAction,
+  FieldState,
+  ValidityStateInterface,
+} from './types';
 import { FormProvider } from './FormContext';
 import { fieldReducer } from './fieldReducer';
 
@@ -48,12 +56,12 @@ const registerField = (state: FormState, action: FormAction): FormState => {
   state.fieldsData = new Map<string, FieldState>(state.fieldsData);
   const fieldState = action.fieldState!;
   state.fieldsData.set(fieldState.configuration.name, fieldState);
-  return { ...state };
+  return handleValidation(state);
 };
 const unregisterField = (state: FormState, action: FormAction): FormState => {
   state.fieldsData = new Map<string, FieldState>(state.fieldsData);
   state.fieldsData.delete(action.fieldState!.configuration.name);
-  return { ...state };
+  return handleValidation(state);
 };
 
 const isValid = (fieldsData: Map<string, FieldState>) => {
@@ -119,13 +127,48 @@ export const ArkForm = ({
     };
     return state;
   });
-  // if (process.env.NODE_ENV !== 'production') {
-  //   console.log(
-  //     'Form:',
-  //     `dirty ${state.dirty},  pristine: ${state.pristine}, submitted: ${state.submitted}, blurred: ${state.blurred}, invalid: ${state.invalid}, valid: ${state.valid}, changed: ${state.changed}`
-  //   );
-  // }
-
+  const getFieldState = (name: string) => {
+    const fieldState = state.fieldsData.get(name);
+    if (!fieldState) throw 'field name is incorrect';
+    return fieldState;
+  };
+  const registerField = (name: string, newState: Partial<FieldState>) => {
+    dispatch({
+      type: 'registerField',
+      fieldState: { ...getFieldState(name), ...newState },
+    });
+  };
+  const setFieldValidator = (name: string, validate: (value?: string) => ValidityStateInterface) => {
+    const fieldState = getFieldState(name);
+    const newFieldState = fieldReducer(
+      {
+        ...fieldState,
+        configuration: {
+          ...fieldState.configuration,
+          validate: validate,
+        },
+      },
+      { type: 'validate' }
+    );
+    dispatch({
+      type: 'registerField',
+      fieldState: newFieldState,
+    });
+  };
+  const setFieldValue = (name: string, value: string) => {
+    const newFieldState = fieldReducer(getFieldState(name), {
+      value: value,
+      type: 'change',
+      configuration: { validateOnChange: true },
+    });
+    dispatch({
+      type: 'change',
+      fieldState: newFieldState,
+    });
+    dispatch({
+      type: 'validate',
+    });
+  };
   const _onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     dispatch({ type: 'submit' });
@@ -135,6 +178,9 @@ export const ArkForm = ({
   const formProps = { name, onSubmit: _onSubmit };
   const formContext = {
     state,
+    registerField,
+    setFieldValidator,
+    setFieldValue,
     dispatch,
   };
   return <FormProvider value={formContext}>{children({ ...formContext, formProps })}</FormProvider>;

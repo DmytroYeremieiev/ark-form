@@ -8,6 +8,7 @@ const getValidity = () => defaultValidity;
 
 export const defaultFieldState: FieldState = {
   changed: 0,
+  blurred: false,
   dirty: false,
   pristine: true,
   filled: false,
