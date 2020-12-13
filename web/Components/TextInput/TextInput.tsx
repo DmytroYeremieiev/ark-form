@@ -82,42 +82,63 @@ export const TextInput = ({
                 <span className='error'>{fieldState.validity.errorMessage}</span>
               )}
             <div className='test-suit'>
-              <button type='button' onClick={() => formContext.registerFieldState(name, { validity: { valid: true } })}>
+              <button
+                type='button'
+                onClick={() =>
+                  formContext.setFieldState(name, {
+                    configuration: {
+                      validate: value => ({ ...checkValidity(value, pattern, required), valid: true }),
+                    },
+                  })
+                }
+              >
                 Set valid
               </button>
               <button
                 type='button'
-                onClick={() => formContext.registerFieldState(name, { validity: { valid: false } })}
+                onClick={() =>
+                  formContext.setFieldState(name, {
+                    configuration: {
+                      validate: value => ({ ...checkValidity(value, pattern, required), valid: false }),
+                    },
+                  })
+                }
               >
                 Set Invalid
               </button>
               <br></br>
-              <button
-                type='button'
-                onClick={() => formContext.registerFieldState(name, { dirty: true, pristine: false })}
-              >
+              <button type='button' onClick={() => formContext.setFieldState(name, { dirty: true, pristine: false })}>
                 Set Dirty
               </button>
-              <button
-                type='button'
-                onClick={() => formContext.registerFieldState(name, { dirty: false, pristine: true })}
-              >
+              <button type='button' onClick={() => formContext.setFieldState(name, { dirty: false, pristine: true })}>
                 Set Pristine
               </button>
               <br></br>
               <button
                 type='button'
-                onClick={() => formContext.setFieldValidator(name, value => checkValidity(value, pattern, false))}
+                onClick={() =>
+                  formContext.setFieldState(name, {
+                    configuration: {
+                      validate: value => checkValidity(value, pattern, false),
+                    },
+                  })
+                }
               >
                 Set Non-required
               </button>
               <button
                 type='button'
-                onClick={() => formContext.setFieldValidator(name, value => checkValidity(value, pattern, true))}
+                onClick={() =>
+                  formContext.setFieldState(name, {
+                    configuration: {
+                      validate: value => checkValidity(value, pattern, true),
+                    },
+                  })
+                }
               >
                 Set Required
               </button>
-              <button type='button' onClick={() => formContext.registerFieldState(name, defaultFieldState)}>
+              <button type='button' onClick={() => formContext.setFieldState(name, defaultFieldState)}>
                 RESET
               </button>
               <div className='test-suit-set-value'>

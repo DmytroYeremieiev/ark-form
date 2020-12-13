@@ -59,6 +59,11 @@ const registerField = (state: FormState, action: FormAction): FormState => {
   state.fieldsData.set(fieldState.configuration.name, fieldState);
   return handleValidation(state);
 };
+const setField = (state: FormState, action: FormAction): FormState => {
+  const fieldState = action.fieldState!;
+  state.fieldsData.set(fieldState.configuration.name, fieldState);
+  return handleValidation(state);
+};
 const unregisterField = (state: FormState, action: FormAction): FormState => {
   state.fieldsData = new Map<string, FieldState>(state.fieldsData);
   state.fieldsData.delete(action.fieldState!.configuration.name);
@@ -87,6 +92,8 @@ const formReducer = (state: FormState, action: FormAction) => {
       return handleValidation(state);
     case 'registerField':
       return registerField(state, action);
+    case 'setField':
+      return setField(state, action);
     case 'unregisterField':
       return unregisterField(state, action);
     default:
@@ -133,23 +140,11 @@ export const ArkForm = ({
     if (!fieldState) throw 'field name is incorrect';
     return fieldState;
   };
-  const registerFieldState = (name: string, newState: DeepPartial<FieldState>) => {
+  const setFieldState = (name: string, newState: DeepPartial<FieldState>) => {
     const mergedState = mergeState(getFieldState(name), newState);
     const validatedState = fieldReducer(mergedState, { type: 'validate' });
     dispatch({
-      type: 'registerField',
-      fieldState: validatedState,
-    });
-  };
-  const setFieldValidator = (name: string, validate: (value?: string) => ValidityStateInterface) => {
-    const mergedState = mergeState(getFieldState(name), {
-      configuration: {
-        validate: validate,
-      },
-    });
-    const validatedState = fieldReducer(mergedState, { type: 'validate' });
-    dispatch({
-      type: 'registerField',
+      type: 'setField',
       fieldState: validatedState,
     });
   };
@@ -176,8 +171,7 @@ export const ArkForm = ({
   const formProps = { name, onSubmit: _onSubmit };
   const formContext = {
     state,
-    registerFieldState,
-    setFieldValidator,
+    setFieldState,
     setFieldValue,
     dispatch,
   };

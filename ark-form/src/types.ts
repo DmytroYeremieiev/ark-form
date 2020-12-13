@@ -1,7 +1,6 @@
 export interface FormContextInterface {
   state: FormState;
-  registerFieldState: (name: string, newState: DeepPartial<FieldState>) => void;
-  setFieldValidator: (name: string, validate: (value?: string) => ValidityStateInterface) => void;
+  setFieldState: (name: string, newState: DeepPartial<FieldState>) => void;
   setFieldValue: (name: string, value: string) => void;
   dispatch: React.Dispatch<FormAction>;
 }
@@ -13,7 +12,7 @@ export interface FormConfiguration {
 }
 
 export type FormAction = {
-  type: 'blur' | 'submit' | 'change' | 'validate' | 'registerField' | 'unregisterField';
+  type: 'blur' | 'submit' | 'change' | 'validate' | 'registerField' | 'unregisterField' | 'setField';
   fieldState?: FieldState;
 };
 export interface FormState {

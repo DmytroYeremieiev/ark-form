@@ -24,6 +24,7 @@ export const Field = <ET extends HTMLElement & { value: string } = HTMLInputElem
     props.validate,
     //
     fieldState?.changed,
+    fieldState?.validity,
     fieldState?.blurred,
     fieldState?.dirty,
     fieldState?.pristine,
