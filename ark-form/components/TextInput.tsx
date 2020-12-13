@@ -51,7 +51,7 @@ export const TextInput = ({
         statesRef.current = props;
         const { fieldProps, fieldState, formContext } = props;
         const id = (formContext.state.configuration.name || '') + '-' + name;
-        // console.log('field', name, fieldProps.value, fieldState, formContext.state);
+        console.log('field', name, fieldProps.value, fieldState, formContext.state);
         return (
           <div>
             <div

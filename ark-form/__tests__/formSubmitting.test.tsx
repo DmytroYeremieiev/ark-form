@@ -278,7 +278,7 @@ describe('Submitting validation with ONLY ON BLUR validation', () => {
       ])
     ).toBeTruthy();
 
-    fireEvent.blur(form);
+    fireEvent.blur(zipCodeInput);
 
     const zipCodeErrorMessage = screen.queryByText(ValidationMessages.zipCode.patternMismatch);
     expect(zipCodeErrorMessage).toBeInTheDocument();

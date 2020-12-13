@@ -111,12 +111,12 @@ export const ArkForm = ({
     };
     return state;
   });
-  if (process.env.NODE_ENV !== 'production') {
-    console.log(
-      'Form:',
-      `dirty ${state.dirty},  pristine: ${state.pristine}, submitted: ${state.submitted}, blurred: ${state.blurred}, invalid: ${state.invalid}, valid: ${state.valid}, changed: ${state.changed}`
-    );
-  }
+  // if (process.env.NODE_ENV !== 'production') {
+  //   console.log(
+  //     'Form:',
+  //     `dirty ${state.dirty},  pristine: ${state.pristine}, submitted: ${state.submitted}, blurred: ${state.blurred}, invalid: ${state.invalid}, valid: ${state.valid}, changed: ${state.changed}`
+  //   );
+  // }
 
   const _onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

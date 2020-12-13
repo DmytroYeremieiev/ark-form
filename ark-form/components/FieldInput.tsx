@@ -21,7 +21,7 @@ export const FieldInput = ({
       {props => {
         statesRef.current = props;
         const { fieldProps, fieldState, formContext } = props;
-        const id = (formContext.configuration.name || '') + '-' + name;
+        const id = (formContext.state.configuration.name || '') + '-' + name;
         // console.log('field', name, fieldProps.value, fieldState, formContext);
         return (
           <div>
