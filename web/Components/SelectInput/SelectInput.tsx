@@ -51,9 +51,9 @@ export const SelectInput = ({
       validateOnChange={true}
     >
       {({ fieldProps, fieldState, formContext }) => {
-        const id = (formContext.configuration.name || '') + '-' + name;
+        const id = (formContext.state.configuration.name || '') + '-' + name;
         if (process.env.NODE_ENV !== 'production') {
-          console.log('field', name, fieldProps.value, fieldState, formContext.state, formContext.fieldsData);
+          console.log('field', name, fieldProps.value, fieldState, formContext.state, formContext.state.fieldsData);
         }
         return (
           <div className={classnames(styles['select-input'], txoInputStyles['txo-input'], className)}>

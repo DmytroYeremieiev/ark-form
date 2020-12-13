@@ -23,9 +23,9 @@ export const CheckboxInput = ({
   return (
     <Field name={name} initialValue={initialValue} {...props} validateOnChange={true}>
       {({ fieldProps, fieldState, formContext }) => {
-        const id = formContext.configuration.name + '-' + name;
+        const id = formContext.state.configuration.name + '-' + name;
         if (process.env.NODE_ENV !== 'production') {
-          console.log('field', name, fieldProps.value, fieldState, formContext.state, formContext.fieldsData);
+          console.log('field', name, fieldProps.value, fieldState, formContext.state, formContext.state.fieldsData);
         }
         const value = transformation(fieldProps);
         return (

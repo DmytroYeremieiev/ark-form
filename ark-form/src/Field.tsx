@@ -8,8 +8,7 @@ export const Field = <ET extends HTMLElement & { value: string } = HTMLInputElem
 ): JSX.Element => {
   const formContext = useFormContext();
   const formState = formContext.state;
-  const { configuration: formConfig } = formState;
-  const fieldState = formConfig.fieldsData.get(props.name) ?? initializeFieldState(props, formConfig);
+  const fieldState = formState.fieldsData.get(props.name) ?? initializeFieldState(props, formState.configuration);
 
   return useMemo(() => <_Field {...props} formContext={formContext} state={fieldState}></_Field>, [
     // list all state props manually, since form context generates new state obj each time(immutable)
@@ -18,7 +17,7 @@ export const Field = <ET extends HTMLElement & { value: string } = HTMLInputElem
     formState.valid,
     formState.dirty,
     formState.changed,
-    formConfig.fieldsData,
+    formState.fieldsData,
     // <Field> must only concern about its initialValue, validate props change,
     // there's no value in changing other 'configurational' props and event handlers, such as 'name', 'validateOnChange', etc...
     props.initialValue,

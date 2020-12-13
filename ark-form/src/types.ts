@@ -7,7 +7,6 @@ export interface FormConfiguration {
   validateOnBlur: boolean;
   forceValidation?: boolean;
   name: string;
-  fieldsData: Map<string, FieldState>;
 }
 
 export type FormAction = {
@@ -22,6 +21,7 @@ export interface FormState {
   valid: boolean;
   changed: boolean;
   blurred: number;
+  fieldsData: Map<string, FieldState>;
   configuration: FormConfiguration;
 }
 export const defaultFormState: FormState = {
@@ -32,11 +32,11 @@ export const defaultFormState: FormState = {
   submitted: false,
   changed: false,
   blurred: 0,
+  fieldsData: new Map<string, FieldState>(),
   configuration: {
     name: '',
     validateOnBlur: true,
     validateOnChange: false,
-    fieldsData: new Map<string, FieldState>(),
   },
 };
 

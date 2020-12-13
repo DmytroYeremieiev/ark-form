@@ -31,6 +31,7 @@ export const Form = ({
   return (
     <ArkForm name={name} onSubmit={onSubmit} validateOnChange={validateOnChange} validateOnBlur={validateOnBlur}>
       {({ state, formProps }) => {
+        console.log('<ArkForm/>', state);
         return (
           <FormElem
             name={name}

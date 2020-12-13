@@ -1,13 +1,5 @@
-import React, { useReducer, useRef, useEffect } from 'react';
-import {
-  FormConfiguration,
-  FormState,
-  defaultFormState,
-  FormContextInterface,
-  FormAction,
-  FieldState,
-  FieldData,
-} from './types';
+import React, { useReducer } from 'react';
+import { FormConfiguration, FormState, defaultFormState, FormContextInterface, FormAction, FieldState } from './types';
 import { FormProvider } from './FormContext';
 import { fieldReducer } from './fieldReducer';
 
@@ -18,7 +10,7 @@ const handleSubmit = (state: FormState): FormState => {
 const handleBlur = (state: FormState, action: FormAction): FormState => {
   let newState: FormState = { ...state, blurred: state.blurred + 1 };
   const fieldState = action.fieldState!;
-  newState.configuration.fieldsData.set(fieldState.configuration.name, fieldState);
+  newState.fieldsData.set(fieldState.configuration.name, fieldState);
   if (state.configuration.validateOnBlur && state.changed) {
     newState.dirty = true;
     newState.pristine = false;
@@ -30,7 +22,7 @@ const handleBlur = (state: FormState, action: FormAction): FormState => {
 const handleChange = (state: FormState, action: FormAction): FormState => {
   let newState: FormState = { ...state, changed: true };
   const fieldState = action.fieldState!;
-  newState.configuration.fieldsData.set(fieldState.configuration.name, fieldState);
+  newState.fieldsData.set(fieldState.configuration.name, fieldState);
   if (state.configuration.validateOnChange) {
     newState.dirty = true;
     newState.pristine = false;
@@ -40,19 +32,19 @@ const handleChange = (state: FormState, action: FormAction): FormState => {
 };
 
 const handleValidation = (state: FormState): FormState => {
-  const valid = isValid(state.configuration.fieldsData);
+  const valid = isValid(state.fieldsData);
   return { ...state, invalid: !valid, valid: valid };
 };
 
 const registerField = (state: FormState, action: FormAction): FormState => {
-  state.configuration.fieldsData = new Map<string, FieldState>(state.configuration.fieldsData);
+  state.fieldsData = new Map<string, FieldState>(state.fieldsData);
   const fieldState = action.fieldState!;
-  state.configuration.fieldsData.set(fieldState.configuration.name, fieldState);
+  state.fieldsData.set(fieldState.configuration.name, fieldState);
   return { ...state };
 };
 const unregisterField = (state: FormState, action: FormAction): FormState => {
-  state.configuration.fieldsData = new Map<string, FieldState>(state.configuration.fieldsData);
-  state.configuration.fieldsData.delete(action.fieldState!.configuration.name);
+  state.fieldsData = new Map<string, FieldState>(state.fieldsData);
+  state.fieldsData.delete(action.fieldState!.configuration.name);
   return { ...state };
 };
 
@@ -111,11 +103,11 @@ export const ArkForm = ({
   validateOnBlur = true,
 }: FormInterface): JSX.Element => {
   const [state, dispatch] = useReducer(formReducer, defaultFormState, state => {
+    state.fieldsData = new Map<string, FieldState>();
     state.configuration = {
       validateOnChange,
       validateOnBlur,
       name,
-      fieldsData: new Map<string, FieldState>(),
     };
     return state;
   });
@@ -129,7 +121,7 @@ export const ArkForm = ({
   const _onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     dispatch({ type: 'submit' });
-    if (state.valid) onSubmit(event, state.configuration.fieldsData);
+    if (state.valid) onSubmit(event, state.fieldsData);
   };
 
   const formProps = { name, onSubmit: _onSubmit };
