@@ -2,6 +2,20 @@
   display: block;
   min-width: 300px;
   margin: 0 0 16px 0;
+  .test-suit {
+    button {
+      width: auto;
+      margin: 2px 2px 2px 0;
+      color: #000;
+    }
+    .test-suit-set-value {
+      input {
+        min-height: auto;
+        color: #000;
+      }
+    }
+  }
+
   &,
   input,
   select {

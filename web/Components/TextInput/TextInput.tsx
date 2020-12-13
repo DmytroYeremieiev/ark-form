@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Field } from 'ark-forms/src';
 import { TextInputInterface, FieldStateClassNames } from '../../types';
 import { ValidityStateInterface } from 'ark-forms/src';
@@ -43,6 +43,8 @@ export const TextInput = ({
   transformInput = value => value,
   ...rest
 }: TextInputInterface): JSX.Element => {
+  const [testSuiteValue, setTestSuiteValue] = useState('');
+
   return (
     <Field
       name={name}
@@ -79,6 +81,25 @@ export const TextInput = ({
               (fieldState.dirty || formContext.state.submitted) && (
                 <span className='error'>{fieldState.validity.errorMessage}</span>
               )}
+            <div className='test-suit'>
+              <button type='button'>Set valid</button>
+              <button type='button'>Set Invalid</button>
+              <br></br>
+              <button type='button'>Set Dirty</button>
+              <button type='button'>Set Pristine</button>
+              <br></br>
+              <button type='button'>Set Non-required</button>
+              <button type='button'>Set Required</button>
+              <div className='test-suit-set-value'>
+                <input
+                  id={id + 'test'}
+                  type='text'
+                  value={testSuiteValue}
+                  onChange={event => setTestSuiteValue(event.target.value)}
+                />
+                <button type='button'>Set value</button>
+              </div>
+            </div>
           </div>
         );
       }}
