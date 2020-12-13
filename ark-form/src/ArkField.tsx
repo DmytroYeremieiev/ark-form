@@ -1,16 +1,16 @@
 import React, { useRef, useEffect, useMemo } from 'react';
 import { ValidityStateInterface, FieldInterface, FormContextInterface, FormConfiguration, FieldState } from './types';
-import { useFormContext } from './FormContext';
+import { useFormContext } from './formContext';
 import { fieldReducer, defaultFieldState } from './fieldReducer';
 
-export const Field = <ET extends HTMLElement & { value: string } = HTMLInputElement>(
+export const ArkField = <ET extends HTMLElement & { value: string } = HTMLInputElement>(
   props: FieldInterface<ET>
 ): JSX.Element => {
   const formContext = useFormContext();
   const formState = formContext.state;
   const fieldState = formState.fieldsData.get(props.name) ?? initializeFieldState(props, formState.configuration);
 
-  return useMemo(() => <_Field {...props} formContext={formContext} state={fieldState}></_Field>, [
+  return useMemo(() => <_ArkField {...props} formContext={formContext} state={fieldState}></_ArkField>, [
     // list all state props manually, since form context generates new state obj each time(immutable)
     formState.blurred, // blurred - used to signal when using autocomplete(fill-up) on entire form with validateOnChange=false
     formState.submitted,
@@ -58,7 +58,7 @@ const initializeFieldState = <ET extends HTMLElement & { value: string } = HTMLI
   return newState;
 };
 
-const _Field = <ET extends HTMLElement & { value: string } = HTMLInputElement>(
+const _ArkField = <ET extends HTMLElement & { value: string } = HTMLInputElement>(
   props: _FieldInterface<ET>
 ): JSX.Element => {
   const {

@@ -1,6 +1,6 @@
 import React from 'react';
-import { Field } from 'ark-forms/src';
-import { TextInputInterface, FieldStateClassNames } from './types';
+import { ArkField } from 'ark-forms/src';
+import { TextInputInterface, FieldStateClassNames } from '../types';
 import { ValidityStateInterface } from 'ark-forms/src';
 
 import classnames from 'classnames';
@@ -41,7 +41,7 @@ export const TextInput = ({
   ...rest
 }: TextInputInterface): JSX.Element => {
   return (
-    <Field
+    <ArkField
       name={name}
       validate={value => checkValidity(value, pattern, required)}
       initialValue={initialValue}
@@ -79,6 +79,6 @@ export const TextInput = ({
           </div>
         );
       }}
-    </Field>
+    </ArkField>
   );
 };

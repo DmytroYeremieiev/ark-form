@@ -1,5 +1,5 @@
 import React from 'react';
-import { Field } from 'ark-forms/src';
+import { ArkField } from 'ark-forms/src';
 import { InputInterface } from '../../types';
 import classnames from 'classnames';
 
@@ -21,7 +21,7 @@ export const CheckboxInput = ({
   ...props
 }: InputInterface): JSX.Element => {
   return (
-    <Field name={name} initialValue={initialValue} {...props} validateOnChange={true}>
+    <ArkField name={name} initialValue={initialValue} {...props} validateOnChange={true}>
       {({ fieldProps, fieldState, formContext }) => {
         const id = formContext.state.configuration.name + '-' + name;
         if (process.env.NODE_ENV !== 'production') {
@@ -37,6 +37,6 @@ export const CheckboxInput = ({
           </div>
         );
       }}
-    </Field>
+    </ArkField>
   );
 };

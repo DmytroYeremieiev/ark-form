@@ -1,6 +1,6 @@
 import React from 'react';
-import { Field } from 'ark-forms/src';
-import { FieldInputInterface } from './types';
+import { ArkField } from 'ark-forms/src';
+import { FieldInputInterface } from '../types';
 import { ValidityStateInterface } from 'ark-forms/src';
 
 const checkValidity = (): ValidityStateInterface => {
@@ -17,7 +17,7 @@ export const FieldInput = ({
   ...rest
 }: FieldInputInterface): JSX.Element => {
   return (
-    <Field name={name} validate={value => validate(value)} initialValue={initialValue} {...rest}>
+    <ArkField name={name} validate={value => validate(value)} initialValue={initialValue} {...rest}>
       {props => {
         statesRef.current = props;
         const { fieldProps, fieldState, formContext } = props;
@@ -30,6 +30,6 @@ export const FieldInput = ({
           </div>
         );
       }}
-    </Field>
+    </ArkField>
   );
 };

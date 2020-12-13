@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Field, fieldReducer, defaultFieldState } from 'ark-forms/src';
+import { ArkField, defaultFieldState } from 'ark-forms/src';
 import { TextInputInterface, FieldStateClassNames } from '../../types';
 import { ValidityStateInterface } from 'ark-forms/src';
 
@@ -46,7 +46,7 @@ export const TextInput = ({
   const [testSuiteValue, setTestSuiteValue] = useState('');
 
   return (
-    <Field
+    <ArkField
       name={name}
       validate={value => checkValidity(value, pattern, required)}
       initialValue={initialValue}
@@ -156,6 +156,6 @@ export const TextInput = ({
           </div>
         );
       }}
-    </Field>
+    </ArkField>
   );
 };

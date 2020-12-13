@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import { Field } from 'ark-forms/src';
+import { ArkField } from 'ark-forms/src';
 import { InputInterface, FieldStateClassNames } from '../../types';
 import { ValidityStateInterface } from 'ark-forms/src';
 
@@ -44,7 +44,7 @@ export const SelectInput = ({
   const _options = options.map(o => <option label={o.label} value={o.value} key={o.value}></option>);
   _options.unshift(defaultOption);
   return (
-    <Field<HTMLSelectElement>
+    <ArkField<HTMLSelectElement>
       name={name}
       validate={value => checkValidity(value, required)}
       {...rest}
@@ -79,6 +79,6 @@ export const SelectInput = ({
           </div>
         );
       }}
-    </Field>
+    </ArkField>
   );
 };
