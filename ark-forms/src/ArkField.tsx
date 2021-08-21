@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useMemo } from 'react';
 import { ValidityStateInterface, FieldInterface, FormContextInterface, FormConfiguration, FieldState } from './types';
-import { useFormContext } from './formContext';
+import { useFormContext } from './FormContext';
 import { fieldReducer, defaultFieldState } from './fieldReducer';
 
 export const ArkField = <ET extends HTMLElement & { value: string } = HTMLInputElement>(

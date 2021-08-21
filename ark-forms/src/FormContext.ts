@@ -1,18 +1,11 @@
 import { createContext, useContext } from 'react';
-import { FormContextInterface, defaultFormState, FieldData } from './types';
+import { FormContextInterface, defaultFormState } from './types';
 
 export const FormContext = createContext<FormContextInterface>({
   state: defaultFormState,
-  setFieldData: () => void 0,
-  deleteFieldData: () => void 0,
-  fieldsData: new Map<string, FieldData>(),
+  setFieldState: () => void 0,
+  setFieldValue: () => void 0,
   dispatch: () => void 0,
-  configuration: {
-    validateOnChange: true,
-    validateOnBlur: true,
-    forceValidation: false,
-    name: '',
-  },
 });
 
 export const FormProvider = FormContext.Provider;
