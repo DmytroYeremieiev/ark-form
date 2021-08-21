@@ -1,7 +1,7 @@
 import React from 'react';
-import { ArkField } from 'ark-forms/src';
+import { ArkField } from '../src';
 import { FieldInputInterface } from '../types';
-import { ValidityStateInterface } from 'ark-forms/src';
+import { ValidityStateInterface } from '../src';
 
 const checkValidity = (): ValidityStateInterface => {
   const result: ValidityStateInterface = {

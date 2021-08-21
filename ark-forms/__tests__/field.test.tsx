@@ -3,11 +3,11 @@ import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
-import { FieldOuterProps } from 'ark-forms/src';
-import { Form } from 'ark-forms/components/Form';
+import { FieldOuterProps } from '../src';
+import { Form } from '../components/Form';
 
-import { FieldInput } from 'ark-forms/components/FieldInput';
-import { FieldInputInterface } from 'ark-forms/types';
+import { FieldInput } from '../components/FieldInput';
+import { FieldInputInterface } from '../types';
 
 const onSubmit = (event, data) => void 0;
 

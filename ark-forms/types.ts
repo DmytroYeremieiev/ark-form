@@ -1,4 +1,4 @@
-import { BasicInput, FieldOuterProps } from 'ark-forms/src';
+import { BasicInput, FieldOuterProps } from './src';
 
 export interface FieldInputInterface<ET = HTMLInputElement> extends BasicInput<ET> {
   statesRef: { current?: FieldOuterProps<ET> };
