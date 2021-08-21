@@ -11,7 +11,7 @@ import { ZipCodeInput } from '@components/ZipCodeInput/ZipCodeInput';
 import { DatePicker } from '@components/DatePicker/DatePicker';
 
 import { Button } from '@components/Button/Button';
-import { ArkForm, Form } from 'ark-forms/src';
+import { ArkForm } from 'ark-forms/src';
 
 export enum ClassNames {
   dirty = 'form-dirty',
@@ -45,7 +45,7 @@ const IndexPage = (): JSX.Element => {
         {({ state, formProps, setFieldData }) => {
           console.log('<ArkForm/>', state);
           return (
-            <Form
+            <form
               {...formProps}
               className={classnames({
                 [ClassNames.dirty]: state.dirty,
@@ -82,7 +82,7 @@ const IndexPage = (): JSX.Element => {
                 required
               ></SelectInput> */}
               <Button type='submit'>SUBMIT</Button>
-            </Form>
+            </form>
           );
         }}
       </ArkForm>

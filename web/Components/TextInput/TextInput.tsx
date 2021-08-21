@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ArkField, defaultFieldState } from 'ark-forms/src';
-import { TextInputInterface, FieldStateClassNames } from '../../types';
+import { TextInputInterface, FieldStateClassNames } from 'types';
 import { ValidityStateInterface } from 'ark-forms/src';
 
 import classnames from 'classnames';
