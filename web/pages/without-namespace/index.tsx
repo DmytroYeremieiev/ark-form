@@ -42,7 +42,7 @@ const IndexPage = (): JSX.Element => {
   return (
     <div className={styles['page-content']}>
       <ArkForm name='tempForm' onSubmit={onSubmit} validateOnChange={false}>
-        {({ state, formProps, setFieldData }) => {
+        {({ state, formProps, setFieldState }) => {
           console.log('<ArkForm/>', state);
           return (
             <form
@@ -67,7 +67,11 @@ const IndexPage = (): JSX.Element => {
               <DatePicker name='date' label='SELECT DATE *' onChange={onDateSelected} required></DatePicker>
               <Button
                 onClick={() => {
-                  setFieldData('date', null, { valid: true });
+                  setFieldState('date', {
+                    configuration: {
+                      validate: value => ({ valid: false }),
+                    },
+                  });
                 }}
               >
                 SET DATA VALID
