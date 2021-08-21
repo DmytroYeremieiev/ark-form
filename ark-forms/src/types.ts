@@ -5,8 +5,8 @@ export interface FormContextInterface {
   dispatch: React.Dispatch<FormAction>;
 }
 export interface FormConfiguration {
-  validateOnChange: boolean;
-  validateOnBlur: boolean;
+  validateOnChange?: boolean;
+  validateOnBlur?: boolean;
   forceValidation?: boolean;
   name: string;
 }
