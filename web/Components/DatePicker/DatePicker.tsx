@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import classnames from 'classnames';
 import DayPicker from 'react-day-picker';
 import { TextInputInterface } from '../../types';
-import {TextInput} from '../TextInput/TextInput';
+import { TextInput } from '../TextInput/TextInput';
 import styles from './DatePicker.module.scss';
 
 export const DatePicker = ({ className, ...rest }: TextInputInterface): JSX.Element => {
@@ -16,7 +16,7 @@ export const DatePicker = ({ className, ...rest }: TextInputInterface): JSX.Elem
   const onFocus = () => {
     setShowCalendar(true);
   };
-  const onBlur = (event) => {
+  const onBlur = event => {
     if (!event.relatedTarget) {
       setShowCalendar(false);
     }

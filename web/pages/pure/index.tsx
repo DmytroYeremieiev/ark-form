@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Field, Form, ValidityStateInterface } from 'ark-form/src';
+import { ArkField, ValidityStateInterface } from 'ark-forms/src';
 import { Button } from '@components/Button/Button';
+import { Form } from '@components/Form';
 
 import styles from './index.module.scss';
 import fieldStyles from '@components/txoInput.module.scss';
@@ -42,9 +43,10 @@ const IndexPage = (): JSX.Element => {
   return (
     <div className={styles['page-content']}>
       <Form name='tempForm' onSubmit={onSubmit} validateOnChange={false}>
-        <Field name={name} validate={value => checkValidity(value, pattern, true)} initialValue={''}>
-          {({ field, fieldState, formState }) => {
-            const id = formState.name + '-' + name;
+        <ArkField name={name} validate={value => checkValidity(value, pattern, true)} initialValue={''}>
+          {({ fieldProps, formContext, fieldState }) => {
+            const formState = formContext.state;
+            const id = formState.configuration.name + '-' + name;
             return (
               <div className={fieldStyles['txo-input']}>
                 <div
@@ -60,7 +62,7 @@ const IndexPage = (): JSX.Element => {
                     fieldState.validity.className
                   )}`}
                 >
-                  <input id={id} type='text' readOnly={false} {...field} />
+                  <input id={id} type='text' readOnly={false} {...fieldProps} />
                   <label htmlFor={id}>Field 1</label>
                 </div>
                 {fieldState.validity.errorMessage &&
@@ -71,7 +73,7 @@ const IndexPage = (): JSX.Element => {
               </div>
             );
           }}
-        </Field>
+        </ArkField>
         <Button type='submit'>SUBMIT</Button>
       </Form>
     </div>

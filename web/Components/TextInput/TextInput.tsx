@@ -42,7 +42,7 @@ export const TextInput = ({
   readOnly,
   transformInput = value => value,
   ...rest
-}: TextInputInterface): JSX.Element => {
+}: TextInputInterface & { transformInput?: (any) => any }): JSX.Element => {
   const [testSuiteValue, setTestSuiteValue] = useState('');
 
   return (
