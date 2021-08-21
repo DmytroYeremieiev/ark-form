@@ -8,7 +8,7 @@
   "private": true,
   "workspaces": {
     "packages": [
-      "ark-form",
+      "ark-forms",
       "web"
     ]
   },
@@ -23,6 +23,7 @@
     "export": "yarn workspace web export",
     "export-debug": "yarn workspace web export-debug",
     "test": "jest",
+    "clean": "find . -name 'node_modules' -type d -prune -exec rm -rf '{}' +",
     "check-types": "yarn workspace web check-types & yarn workspace shared check-types"
   },
   "devDependencies": {
