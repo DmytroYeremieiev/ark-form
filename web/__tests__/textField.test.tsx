@@ -5,9 +5,8 @@ import '@testing-library/jest-dom';
 
 import { doesElemHaveExactClassList, doesFormFieldHaveExactClassList } from '../utils/formTestHelper';
 
-import { Form } from 'ark-form/src';
-import { ClassNames as FormClassNames } from 'ark-form/src';
-import { FieldStateClassNames as FieldClassNames } from '../types';
+import { Form } from '../components/Form';
+import { FieldStateClassNames as FieldClassNames, FormStateClassNames as FormClassNames } from '../types';
 
 import { ValidationMessages, Patterns } from '../constants';
 import { TextInput } from '../components/TextInput/TextInput';

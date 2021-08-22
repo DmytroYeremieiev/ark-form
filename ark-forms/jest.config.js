@@ -1,7 +1,7 @@
 module.exports = {
-  name: 'ark-form',
+  name: 'ark-forms',
   displayName: {
-    name: 'ark-form',
+    name: 'ark-forms',
     color: 'orange',
   },
   roots: ['<rootDir>'],
@@ -11,10 +11,7 @@ module.exports = {
   transform: {
     '^.+\\.(ts|tsx)$': 'babel-jest',
   },
-  watchPlugins: [
-    'jest-watch-typeahead/filename',
-    'jest-watch-typeahead/testname',
-  ],
+  watchPlugins: ['jest-watch-typeahead/filename', 'jest-watch-typeahead/testname'],
   moduleNameMapper: {
     '\\.(css|less|sass|scss)$': 'identity-obj-proxy',
     '\\.(gif|ttf|eot|svg|png)$': '<rootDir>/test/__mocks__/fileMock.js',

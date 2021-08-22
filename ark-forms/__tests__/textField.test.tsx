@@ -5,12 +5,10 @@ import '@testing-library/jest-dom';
 
 import { doesElemHaveExactClassList, doesFormFieldHaveExactClassList } from 'ark-forms/utils/formTestHelper';
 
-import { Form, ClassNames as FormClassNames } from 'ark-forms/components/Form';
-
-import { FieldStateClassNames as FieldClassNames } from 'ark-forms/types';
+import { Form, FormStateClassNames as FormClassNames } from 'ark-forms/components/Form';
 
 import { ValidationMessages, Patterns } from '../constants';
-import { TextInput } from 'ark-forms/components/TextInput';
+import { TextInput, FieldStateClassNames as FieldClassNames } from 'ark-forms/components/TextInput';
 
 const onSubmit = (event, data) => void 0;
 
