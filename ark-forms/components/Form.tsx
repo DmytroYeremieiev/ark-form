@@ -13,7 +13,7 @@ export interface FormInterface {
   forceValidation?: boolean;
 }
 
-export enum ClassNames {
+export enum FormStateClassNames {
   dirty = 'form-dirty',
   submitted = 'form-submitted',
   pristine = 'form-pristine',
@@ -38,11 +38,11 @@ export const Form = ({
           <form
             name={name}
             className={classnames({
-              [ClassNames.dirty]: state.dirty,
-              [ClassNames.submitted]: state.submitted,
-              [ClassNames.pristine]: state.pristine,
-              [ClassNames.invalid]: state.invalid,
-              [ClassNames.valid]: state.valid,
+              [FormStateClassNames.dirty]: state.dirty,
+              [FormStateClassNames.submitted]: state.submitted,
+              [FormStateClassNames.pristine]: state.pristine,
+              [FormStateClassNames.invalid]: state.invalid,
+              [FormStateClassNames.valid]: state.valid,
             })}
             {...formProps}
           >

@@ -1,7 +1,18 @@
 import React from 'react';
 import { ArkField } from '../src';
-import { TextInputInterface, FieldStateClassNames } from '../types';
+import { TextInputInterface } from '../types';
 import { ValidityStateInterface } from '../src';
+
+export enum FieldStateClassNames {
+  filled = 'field-filled',
+  pristine = 'field-pristine',
+  dirty = 'field-dirty',
+  valid = 'field-valid',
+  invalid = 'field-invalid',
+  requiredError = 'required-error',
+  patternError = 'pattern-error',
+  forceValidation = 'force-validation',
+}
 
 import classnames from 'classnames';
 
@@ -51,7 +62,9 @@ export const TextInput = ({
         statesRef.current = props;
         const { fieldProps, fieldState, formContext } = props;
         const id = (formContext.state.configuration.name || '') + '-' + name;
-        console.log('field', name, fieldProps.value, fieldState, formContext.state);
+        if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test') {
+          console.log('field', name, fieldProps.value, fieldState, formContext.state, formContext.state.fieldsData);
+        }
         return (
           <div>
             <div

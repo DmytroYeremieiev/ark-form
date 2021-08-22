@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ArkField, defaultFieldState } from 'ark-forms/src';
-import { TextInputInterface, FieldStateClassNames } from 'types';
+import { TextInputInterface, FieldStateClassNames } from '../../types';
 import { ValidityStateInterface } from 'ark-forms/src';
 
 import classnames from 'classnames';
@@ -54,7 +54,7 @@ export const TextInput = ({
     >
       {({ fieldProps, fieldState, formContext }) => {
         const id = (formContext.state.configuration.name || '') + '-' + name;
-        if (process.env.NODE_ENV !== 'production') {
+        if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test') {
           console.log('field', name, fieldProps.value, fieldState, formContext.state, formContext.state.fieldsData);
         }
         return (

@@ -12,6 +12,7 @@ import { DatePicker } from '@components/DatePicker/DatePicker';
 
 import { Button } from '@components/Button/Button';
 import { ArkForm } from 'ark-forms/src';
+import { FormStateClassNames } from '@root/types';
 
 export enum ClassNames {
   dirty = 'form-dirty',
@@ -48,11 +49,11 @@ const IndexPage = (): JSX.Element => {
             <form
               {...formProps}
               className={classnames({
-                [ClassNames.dirty]: state.dirty,
-                [ClassNames.submitted]: state.submitted,
-                [ClassNames.pristine]: state.pristine,
-                [ClassNames.invalid]: state.invalid,
-                [ClassNames.valid]: state.valid,
+                [FormStateClassNames.dirty]: state.dirty,
+                [FormStateClassNames.submitted]: state.submitted,
+                [FormStateClassNames.pristine]: state.pristine,
+                [FormStateClassNames.invalid]: state.invalid,
+                [FormStateClassNames.valid]: state.valid,
               })}
             >
               {/* <FullNameInput name='fullName' initialValue='' label='FULL NAME *' required></FullNameInput>
