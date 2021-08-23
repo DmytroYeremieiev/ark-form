@@ -10,26 +10,29 @@ export const ArkField = <ET extends HTMLElement & { value: string } = HTMLInputE
   const formState = formContext.state;
   const fieldState = formState.fieldsData.get(props.name) ?? initializeFieldState(props, formState.configuration);
 
-  return useMemo(() => <_ArkField {...props} formContext={formContext} state={fieldState}></_ArkField>, [
-    // list all state props manually, since form context generates new state obj each time(immutable)
-    formState.blurred, // blurred - used to signal when using autocomplete(fill-up) on entire form with validateOnChange=false
-    formState.submitted,
-    formState.valid,
-    formState.dirty,
-    formState.changed,
-    formState.fieldsData,
-    // <Field> must only concern about its initialValue, validate props change,
-    // there's no value in changing other 'configurational' props and event handlers, such as 'name', 'validateOnChange', etc...
-    props.initialValue,
-    props.validate,
-    //
-    fieldState?.changed,
-    fieldState?.validity,
-    fieldState?.blurred,
-    fieldState?.dirty,
-    fieldState?.pristine,
-    fieldState?.filled,
-  ]);
+  return useMemo(
+    () => <_ArkField {...props} formContext={formContext} state={fieldState}></_ArkField>,
+    [
+      // list all state props manually, since form context generates new state obj each time(immutable)
+      formState.blurred, // blurred - used to signal when using autocomplete(fill-up) on entire form with validateOnChange=false
+      formState.submitted,
+      formState.valid,
+      formState.dirty,
+      formState.changed,
+      formState.fieldsData,
+      // <Field> must only concern about its initialValue, validate props change,
+      // there's no value in changing other 'configurational' props and event handlers, such as 'name', 'validateOnChange', etc...
+      props.initialValue,
+      props.validate,
+      //
+      fieldState?.changed,
+      fieldState?.validity,
+      fieldState?.blurred,
+      fieldState?.dirty,
+      fieldState?.pristine,
+      fieldState?.filled,
+    ]
+  );
 };
 
 type _FieldInterface<ET> = FieldInterface<ET> & {
@@ -50,8 +53,8 @@ const initializeFieldState = <ET extends HTMLElement & { value: string } = HTMLI
   const value = fieldProps.initialValue?.toString() ?? '';
   const newState = { ...defaultFieldState, value, filled: !!value };
   newState.configuration = {
-    validateOnChange: fieldProps.validateOnChange ?? formConfiguration.validateOnChange,
-    validateOnBlur: formConfiguration.validateOnBlur,
+    validateOnChange: fieldProps.validateOnChange ?? formConfiguration.validateOnChange ?? true,
+    validateOnBlur: formConfiguration.validateOnBlur ?? false,
     validate: fieldProps.validate ?? getValidity,
     name: fieldProps.name,
   };
