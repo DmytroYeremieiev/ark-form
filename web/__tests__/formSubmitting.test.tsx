@@ -251,7 +251,7 @@ describe('Submitting validation with ONLY ON BLUR validation', () => {
       ])
     ).toBeTruthy();
 
-    fireEvent.blur(form);
+    fireEvent.blur(zipCodeInput); // any single field blur, will trigger whole form validation
 
     const zipCodeErrorMessage = screen.queryByText(ValidationMessages.zipCode.patternMismatch);
     expect(zipCodeErrorMessage).toBeInTheDocument();
