@@ -6,7 +6,7 @@ import classnames from 'classnames';
 
 import styles from '../txoInput.module.scss';
 
-const TestSuit = ({ name, pattern, required }: TextInputInterface) => {
+const TestSuit = ({ name, pattern, required, validateOnChange }: TextInputInterface) => {
   const [testSuiteValue, setTestSuiteValue] = useState('');
   const formContext = useFormContext();
   return (
@@ -74,6 +74,8 @@ const TestSuit = ({ name, pattern, required }: TextInputInterface) => {
             ...defaultFieldState,
             configuration: {
               name,
+              validateOnChange: validateOnChange,
+              validateOnBlur: formContext.state.configuration.validateOnBlur,
               validate: value => checkValidity(value, pattern, required),
             },
           })

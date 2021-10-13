@@ -91,6 +91,7 @@ export type InputType = string | number | boolean | undefined;
 export interface BasicInput<ET> {
   name: string;
   initialValue?: InputType;
+  validateOnChange?: boolean;
   validate?: (value?: string) => ValidityStateInterface;
   onChange?: (event: React.ChangeEvent<ET>, value?: InputType) => void;
   onBlur?: (even: React.SyntheticEvent<ET>, value?: InputType) => void;
@@ -105,5 +106,4 @@ export interface FieldOuterProps<ET> {
 
 export interface FieldInterface<ET> extends BasicInput<ET> {
   children: ({ fieldProps, formContext, fieldState }: FieldOuterProps<ET>) => JSX.Element;
-  validateOnChange?: boolean;
 }
