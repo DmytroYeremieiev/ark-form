@@ -45,7 +45,6 @@ export const ArkForm = ({
   };
   const setFieldState = (name: string, newState: DeepPartial<FieldState>) => {
     const mergedState = mergeState(getFieldState(name), newState);
-    mergedState.configuration.name = name;
     const validatedState = fieldReducer(mergedState, { type: 'validate' });
     dispatch({
       type: 'setField',

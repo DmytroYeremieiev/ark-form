@@ -72,12 +72,6 @@ const TestSuit = ({ name, pattern, required, validateOnChange }: TextInputInterf
         onClick={() =>
           formContext.setFieldState(name, {
             ...defaultFieldState,
-            configuration: {
-              name,
-              validateOnChange: validateOnChange,
-              validateOnBlur: formContext.state.configuration.validateOnBlur,
-              validate: value => checkValidity(value, pattern, required),
-            },
           })
         }
       >

@@ -49,14 +49,18 @@ const getValidity = () => defaultValidity;
 const initializeFieldState = <ET extends HTMLElement & { value: string } = HTMLInputElement>(
   fieldProps: FieldInterface<ET>,
   formConfiguration: FormConfiguration
-) => {
+): FieldState => {
   const value = fieldProps.initialValue?.toString() ?? '';
-  const newState = { ...defaultFieldState, value, filled: !!value };
-  newState.configuration = {
-    validateOnChange: fieldProps.validateOnChange ?? formConfiguration.validateOnChange ?? true,
-    validateOnBlur: formConfiguration.validateOnBlur ?? false,
-    validate: fieldProps.validate ?? getValidity,
-    name: fieldProps.name,
+  const newState: FieldState = {
+    ...defaultFieldState,
+    value,
+    filled: !!value,
+    configuration: {
+      validateOnChange: fieldProps.validateOnChange ?? formConfiguration.validateOnChange ?? true,
+      validateOnBlur: formConfiguration.validateOnBlur ?? false,
+      validate: fieldProps.validate ?? getValidity,
+      name: fieldProps.name,
+    },
   };
   return newState;
 };

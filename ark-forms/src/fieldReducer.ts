@@ -1,12 +1,6 @@
-import { ValidityStateInterface, FieldAction, FieldState, DeepPartial } from './types';
+import { FieldAction, FieldState, DeepPartial } from './types';
 
-const defaultValidity: ValidityStateInterface = {
-  valid: true,
-};
-
-const getValidity = () => defaultValidity;
-
-export const defaultFieldState: FieldState = {
+export const defaultFieldState: Omit<FieldState, 'configuration'> = {
   changed: 0,
   blurred: false,
   dirty: false,
@@ -15,12 +9,6 @@ export const defaultFieldState: FieldState = {
   value: '',
   validity: {
     valid: false,
-  },
-  configuration: {
-    validateOnChange: false,
-    validateOnBlur: true,
-    validate: getValidity,
-    name: '',
   },
 };
 
