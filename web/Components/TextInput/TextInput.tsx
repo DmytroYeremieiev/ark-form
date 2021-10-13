@@ -1,29 +1,14 @@
 import React, { useState } from 'react';
 import { TextInputInterface, FieldStateClassNames } from '../../types';
-import { ArkField, defaultFieldState, FormContextInterface, ValidityStateInterface } from 'ark-forms/src';
+import { ArkField, defaultFieldState, useFormContext, ValidityStateInterface } from 'ark-forms/src';
 
 import classnames from 'classnames';
 
 import styles from '../txoInput.module.scss';
 
-const TestSuit = ({
-  formContext,
-  id,
-  name,
-  pattern,
-  required,
-}: {
-  formContext: FormContextInterface;
-  id: string;
-  pattern?: {
-    regexp: RegExp;
-    message?: string;
-  };
-  name: string;
-  required?: boolean;
-}) => {
+const TestSuit = ({ name, pattern, required }: TextInputInterface) => {
   const [testSuiteValue, setTestSuiteValue] = useState('');
-
+  const formContext = useFormContext();
   return (
     <div className='test-suit'>
       <button
@@ -82,12 +67,23 @@ const TestSuit = ({
       >
         Set Required
       </button>
-      <button type='button' onClick={() => formContext.setFieldState(name, defaultFieldState)}>
+      <button
+        type='button'
+        onClick={() =>
+          formContext.setFieldState(name, {
+            ...defaultFieldState,
+            configuration: {
+              name,
+              validate: value => checkValidity(value, pattern, required),
+            },
+          })
+        }
+      >
         RESET
       </button>
       <div className='test-suit-set-value'>
         <input
-          id={id + 'test'}
+          id={name + 'test'}
           type='text'
           value={testSuiteValue}
           onChange={event => setTestSuiteValue(event.target.value)}
@@ -123,18 +119,19 @@ const checkValidity = (
   }
   return result;
 };
-export const TextInput = ({
-  initialValue = '',
-  forceValidation,
-  name,
-  label,
-  className,
-  pattern,
-  required,
-  readOnly,
-  transformInput = value => value,
-  ...rest
-}: TextInputInterface & { transformInput?: (any) => any }): JSX.Element => {
+export const TextInput = (props: TextInputInterface & { transformInput?: (any) => any }): JSX.Element => {
+  const {
+    initialValue = '',
+    forceValidation,
+    name,
+    label,
+    className,
+    pattern,
+    required,
+    readOnly,
+    transformInput = value => value,
+    ...rest
+  } = props;
   return (
     <ArkField
       name={name}
@@ -172,7 +169,7 @@ export const TextInput = ({
               (fieldState.dirty || formContext.state.submitted) && (
                 <span className='error'>{fieldState.validity.errorMessage}</span>
               )}
-            {_debug && <TestSuit formContext={formContext} id={id} pattern={pattern} name={name} required={required} />}
+            {_debug && <TestSuit {...props} />}
           </div>
         );
       }}
