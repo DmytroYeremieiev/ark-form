@@ -1,6 +1,22 @@
 import { FormState, FormAction, FieldState } from './types';
 import { fieldReducer } from './fieldReducer';
 
+export const defaultFormState: FormState = {
+  dirty: false,
+  pristine: true,
+  invalid: true,
+  valid: false,
+  submitted: false,
+  changed: false,
+  blurred: 0,
+  fieldsData: new Map<string, FieldState>(),
+  configuration: {
+    name: '',
+    validateOnBlur: true,
+    validateOnChange: false,
+  },
+};
+
 const handleSubmit = (state: FormState): FormState => {
   return { ...state, ...handleValidation(state), submitted: true };
 };

@@ -1,8 +1,8 @@
 import React, { useReducer } from 'react';
-import { FormConfiguration, defaultFormState, FormContextInterface, FieldState, DeepPartial } from './types';
+import { FormConfiguration, FormContextInterface, FieldState, DeepPartial } from './types';
 import { FormProvider } from './FormContext';
 import { fieldReducer, mergeState } from './fieldReducer';
-import { formReducer } from './formReducer';
+import { formReducer, defaultFormState } from './formReducer';
 
 interface FormProps {
   name: string;

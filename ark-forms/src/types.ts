@@ -26,21 +26,6 @@ export interface FormState {
   fieldsData: Map<string, FieldState>;
   configuration: FormConfiguration;
 }
-export const defaultFormState: FormState = {
-  dirty: false,
-  pristine: true,
-  invalid: true,
-  valid: false,
-  submitted: false,
-  changed: false,
-  blurred: 0,
-  fieldsData: new Map<string, FieldState>(),
-  configuration: {
-    name: '',
-    validateOnBlur: true,
-    validateOnChange: false,
-  },
-};
 
 export interface FieldConfiguration {
   validateOnChange: boolean;

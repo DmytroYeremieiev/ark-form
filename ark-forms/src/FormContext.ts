@@ -1,5 +1,6 @@
 import { createContext, useContext } from 'react';
-import { FormContextInterface, defaultFormState } from './types';
+import { FormContextInterface } from './types';
+import { defaultFormState } from './formReducer';
 
 export const FormContext = createContext<FormContextInterface>({
   state: defaultFormState,
