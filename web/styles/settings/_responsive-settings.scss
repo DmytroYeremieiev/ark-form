@@ -1,3 +1,5 @@
+@use "sass:math";
+
 $rem-base: 16px !default;
 
 // RANGES
@@ -19,11 +21,11 @@ $rem-base: 16px !default;
 // STRIP UNIT
 // It strips the unit of measure and returns it
 @function strip-unit($num) {
-  @return $num / ($num * 0 + 1);
+  @return math.div($num, $num * 0 + 1);
 }
 
 @function convert-to-rem($value, $base-value: $rem-base) {
-  $value: strip-unit($value) / strip-unit($base-value) * 1rem;
+  $value: math.div(strip-unit($value), strip-unit($base-value)) * 1rem;
   @if $value == 0rem {
     $value: 0;
   }
