@@ -8,7 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
-    "ark-forms": "2.0.0",
+    "ark-forms": "link:../ark-forms/src",
     "next": "11.1.2",
     "next-transpile-modules": "^8.0.0",
     "sass": "^1.38.1",

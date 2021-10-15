@@ -154,7 +154,10 @@ export const TextInput = (props: TextInputInterface & { transformInput?: (any) =
                   [FieldStateClassNames.valid]: fieldState.validity.valid,
                   [FieldStateClassNames.forceValidation]: forceValidation,
                 },
-                { [fieldState.validity.className]: fieldState.validity.className && !fieldState.validity.valid }
+                {
+                  [fieldState.validity.className]:
+                    fieldState.validity.className && fieldState.dirty && !fieldState.validity.valid,
+                }
               )}`}
             >
               <input id={id} type='text' readOnly={readOnly} {...fieldProps} value={transformInput(fieldProps.value)} />
