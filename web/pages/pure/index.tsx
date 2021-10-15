@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ArkField, ValidityStateInterface } from 'ark-forms/src';
+import { ArkField, ValidityStateInterface } from 'ark-forms';
 import { Button } from '@components/Button/Button';
 import { Form } from '@components/Form';
 

@@ -11,7 +11,7 @@ import { ZipCodeInput } from '@components/ZipCodeInput/ZipCodeInput';
 import { DatePicker } from '@components/DatePicker/DatePicker';
 
 import { Button } from '@components/Button/Button';
-import { ArkForm } from 'ark-forms/src';
+import { ArkForm } from 'ark-forms';
 import { FormStateClassNames } from '@root/types';
 
 export enum ClassNames {

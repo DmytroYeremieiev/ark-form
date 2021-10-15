@@ -1,14 +1,16 @@
+@use "sass:math";
+
 $designers-mobile-width: 640;
 $real-mobile-width: 375;
 $em-base: 16;
 
 @function scalePixelsDownToMobile($pixels, $width: $real-mobile-width) {
-  @return #{$pixels / $designers-mobile-width * $width}px;
+  @return #{math.div($pixels, $designers-mobile-width) * $width}px;
 }
 
 
 @function scalePixelsDownToMobileInEm($pixels, $width: $real-mobile-width, $base: $em-base) {
-  @return #{$pixels / $designers-mobile-width * $width / $base}em;
+  @return #{math.div(math.div($pixels, $designers-mobile-width) * $width, $base)}em;
 }
 @function scaleToMobE($pixels, $width: $real-mobile-width, $base: $em-base) {
   @return scalePixelsDownToMobileInEm($pixels, $width, $base);
@@ -16,7 +18,7 @@ $em-base: 16;
 
 
 @function scalePixelsDownToMobileInVW($pixels) {
-  @return #{$pixels / $designers-mobile-width * 100}vw;
+  @return #{math.div($pixels, $designers-mobile-width) * 100}vw;
 }
 @function scaleToMobVW($pixels) {
   @return scalePixelsDownToMobileInVW($pixels);

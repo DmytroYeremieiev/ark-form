@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArkField } from 'ark-forms/src';
+import { ArkField } from 'ark-forms';
 import { InputInterface } from 'types';
 import classnames from 'classnames';
 

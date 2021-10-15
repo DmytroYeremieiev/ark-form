@@ -1,4 +1,3 @@
-const withTM = require('next-transpile-modules')(['ark-forms']);
 const path = require('path');
 
 const baseConfig = {
@@ -8,5 +7,5 @@ const baseConfig = {
 };
 
 module.exports = phase => {
-  return withTM(baseConfig);
+  return baseConfig;
 };
