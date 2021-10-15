@@ -3,10 +3,10 @@
 - small and ultra fast;
 - no external dependencies;
 - fully written in `typescript`;
-- 1.3 kb minified & gzipped;
-- no async validators support yet.
+- 2.6 kb minified & gzipped;
 
-[Codesandbox playground with examples..]( https://codesandbox.io/s/arkforms-react-app-fn01c?file=/src/App.tsx)
+[Codesandbox nextjs template playground with examples..]( https://codesandbox.io/s/arkforms-nextjs-react-sandbox-s2z8o?file=/pages/index.tsx)
+[Codesandbox plain react template playground with examples..]( https://codesandbox.io/s/arkforsm-react-sandbox-k3oul?file=/src/App.tsx)
 
 ## Motivation:
 Why not use `formik`? 

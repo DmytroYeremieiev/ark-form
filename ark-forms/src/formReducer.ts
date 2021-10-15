@@ -23,7 +23,7 @@ const handleSubmit = (state: FormState): FormState => {
 
 const setFieldsDirty = (fieldsData: Map<string, FieldState>) => {
   fieldsData.forEach((fieldState, fieldName) => {
-    if (fieldState.filled && !fieldState.dirty && !fieldState.configuration.validateOnChange) {
+    if (fieldState.changed && !fieldState.dirty && !fieldState.configuration.validateOnChange) {
       fieldsData.set(fieldName, fieldReducer(fieldReducer(fieldState, { type: 'dirty' }), { type: 'validate' }));
     }
   });
