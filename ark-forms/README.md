@@ -6,7 +6,8 @@
 - 2.6 kb minified & gzipped;
 
 [Codesandbox nextjs template playground with examples..]( https://codesandbox.io/s/arkforms-nextjs-react-sandbox-s2z8o?file=/pages/index.tsx)
-[Codesandbox plain react template playground with examples..]( https://codesandbox.io/s/arkforsm-react-sandbox-k3oul?file=/src/App.tsx)
+
+[Codesandbox plain react template playground with examples..]( https://codesandbox.io/s/arkforsm-react-sandbox-pu54w?file=/src/App.tsx)
 
 ## Motivation:
 Why not use `formik`? 
