@@ -6,7 +6,7 @@
 - 1.3 kb minified & gzipped;
 - no async validators support yet.
 
-[Codesandbox playground with examples..]( https://codesandbox.io/s/arkforms-react-app-fn01c?file=/src/App.tsx)
+[Codesandbox playground with examples..]( https://codesandbox.io/s/arkforms-sandbox-s2z8o?file=/pages/index.tsx)
 
 ## Motivation:
 Why not use `formik`? 
