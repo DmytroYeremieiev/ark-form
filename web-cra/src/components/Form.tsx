@@ -1,6 +1,6 @@
-import React from "react";
-import { ArkForm } from "ark-forms/src";
-import classnames from "classnames";
+import React from 'react';
+import { ArkForm } from 'ark-forms';
+import classnames from 'classnames';
 
 export interface FormInterface {
   name: string;
@@ -14,11 +14,11 @@ export interface FormInterface {
 }
 
 export enum ClassNames {
-  dirty = "form-dirty",
-  submitted = "form-submitted",
-  pristine = "form-pristine",
-  invalid = "form-invalid",
-  valid = "form-valid"
+  dirty = 'form-dirty',
+  submitted = 'form-submitted',
+  pristine = 'form-pristine',
+  invalid = 'form-invalid',
+  valid = 'form-valid',
 }
 
 export const Form = ({
@@ -26,28 +26,22 @@ export const Form = ({
   onSubmit,
   children,
   validateOnChange = false,
-  validateOnBlur = true
+  validateOnBlur = true,
 }: FormInterface): JSX.Element => {
   return (
-    <ArkForm
-      name={name}
-      onSubmit={onSubmit}
-      validateOnChange={validateOnChange}
-      validateOnBlur={validateOnBlur}
-    >
+    <ArkForm name={name} onSubmit={onSubmit} validateOnChange={validateOnChange} validateOnBlur={validateOnBlur}>
       {({ state, formProps }) => {
-        if (process.env.NODE_ENV !== "production") {
+        if (process.env.NODE_ENV !== 'production') {
           // console.log('<ArkForm/>', state);
         }
         return (
           <form
-            name={name}
             className={classnames({
               [ClassNames.dirty]: state.dirty,
               [ClassNames.submitted]: state.submitted,
               [ClassNames.pristine]: state.pristine,
               [ClassNames.invalid]: state.invalid,
-              [ClassNames.valid]: state.valid
+              [ClassNames.valid]: state.valid,
             })}
             {...formProps}
           >
