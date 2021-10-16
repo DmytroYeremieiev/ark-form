@@ -3,7 +3,7 @@ import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
-import { doesElemHaveExactClassList, doesFormFieldHaveExactClassList } from '../utils/formTestHelper';
+import { doesElemHaveExactClassList, doesFormFieldHaveExactClassList, getClassList } from '../utils/formTestHelper';
 
 import { Form } from '../components/Form';
 import { FieldStateClassNames as FieldClassNames, FormStateClassNames as FormClassNames } from '../types';
@@ -212,13 +212,9 @@ describe('Submitting validation with ONLY ON BLUR validation', () => {
     expect(
       doesElemHaveExactClassList(form, [FormClassNames.submitted, FormClassNames.invalid, FormClassNames.pristine])
     ).toBeTruthy();
-    expect(
-      doesFormFieldHaveExactClassList(zipCodeField, [
-        FieldClassNames.invalid,
-        FieldClassNames.requiredError,
-        FieldClassNames.pristine,
-      ])
-    ).toBeTruthy();
+    expect(getClassList(zipCodeField).sort()).toEqual(
+      [FieldClassNames.default, FieldClassNames.invalid, FieldClassNames.requiredError, FieldClassNames.pristine].sort()
+    );
     expect(
       doesFormFieldHaveExactClassList(fullNameField, [
         FieldClassNames.invalid,

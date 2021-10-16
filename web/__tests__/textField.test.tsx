@@ -3,7 +3,7 @@ import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
-import { doesElemHaveExactClassList, doesFormFieldHaveExactClassList } from '../utils/formTestHelper';
+import { doesElemHaveExactClassList, doesFormFieldHaveExactClassList, getClassList } from '../utils/formTestHelper';
 
 import { Form } from '../components/Form';
 import { FieldStateClassNames as FieldClassNames, FormStateClassNames as FormClassNames } from '../types';
@@ -65,13 +65,9 @@ describe('Zip Code - text field validation', () => {
     const zipCodeInput = screen.getByLabelText('zip', { exact: false, selector: 'input' }) as HTMLInputElement;
     const zipCodeField = screen.getByTitle('zip field') as HTMLInputElement;
     fireEvent.change(zipCodeInput, { target: { value: '' } });
-    expect(
-      doesFormFieldHaveExactClassList(zipCodeField, [
-        FieldClassNames.dirty,
-        FieldClassNames.invalid,
-        FieldClassNames.requiredError,
-      ])
-    ).toBeTruthy();
+    expect(getClassList(zipCodeField).sort()).toEqual(
+      [FieldClassNames.default, FieldClassNames.dirty, FieldClassNames.invalid, FieldClassNames.requiredError].sort()
+    );
   });
 
   test(`erasing input will result in FORM having next classes: ${[

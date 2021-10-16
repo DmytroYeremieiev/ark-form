@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "test": "NODE_ENV=test jest"
   },
   "dependencies": {
     "ark-forms": "link:../ark-forms/src",

@@ -82,7 +82,8 @@
     }
   }
   .txo-input-container.required-error.field-dirty,
-  .txo-input-container.required-error.force-validation {
+  .txo-input-container.required-error.force-validation,
+  .txo-input-container.force-validation {
     input,
     select {
       border: 0;

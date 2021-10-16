@@ -19,6 +19,9 @@ const defaultFieldClass = 'txo-input-container';
 export const doesFormFieldHaveExactClassList = (elem: HTMLElement, classesToInclude: Array<string> = []): boolean => {
   return doesElemHaveExactClassList(elem, [defaultFieldClass, ...classesToInclude]);
 };
+export const getClassList = (elem: HTMLElement): string[] => {
+  return [...elem.classList];
+};
 export const doesElemHaveExactClassList = (elem: HTMLElement, classesToInclude: Array<string> = []): boolean => {
   const classList = elem.classList;
   if (classList.length !== classesToInclude.length) {
@@ -70,11 +73,11 @@ export const doesFormHaveClassList = (
   return doesElemHaveClassList(getFormElement(container), classesToInclude, classesToExclude);
 };
 
-export const getFieldWrapperElement = (container: HTMLElement, elemId: string): HTMLElement  => {
+export const getFieldWrapperElement = (container: HTMLElement, elemId: string): HTMLElement => {
   return container.querySelector(`#${elemId}`)!.parentElement!;
 };
 
-export const getFormElement = (container: HTMLElement): HTMLElement  => {
+export const getFormElement = (container: HTMLElement): HTMLElement => {
   return container.querySelector('form')!;
 };
 

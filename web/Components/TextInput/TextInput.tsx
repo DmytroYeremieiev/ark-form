@@ -155,8 +155,7 @@ export const TextInput = (props: TextInputInterface & { transformInput?: (any) =
                   [FieldStateClassNames.forceValidation]: forceValidation,
                 },
                 {
-                  [fieldState.validity.className]:
-                    fieldState.validity.className && fieldState.dirty && !fieldState.validity.valid,
+                  [fieldState.validity.className]: fieldState.validity.className && !fieldState.validity.valid,
                 }
               )}`}
             >

@@ -32,6 +32,7 @@ export enum FormStateClassNames {
 }
 
 export enum FieldStateClassNames {
+  default = 'txo-input-container',
   filled = 'field-filled',
   pristine = 'field-pristine',
   dirty = 'field-dirty',
