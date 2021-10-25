@@ -84,7 +84,14 @@ const TestSuit = ({ name, pattern, required, validateOnChange }: TextInputInterf
           value={testSuiteValue}
           onChange={event => setTestSuiteValue(event.target.value)}
         />
-        <button type='button' onClick={() => formContext.setFieldValue(name, testSuiteValue)}>
+        <button
+          type='button'
+          onClick={() =>
+            formContext.setFieldValue(name, testSuiteValue, {
+              validate: value => checkValidity(value, pattern, required),
+            })
+          }
+        >
           Set value
         </button>
       </div>

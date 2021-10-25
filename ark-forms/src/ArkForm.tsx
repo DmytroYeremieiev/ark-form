@@ -1,5 +1,5 @@
 import React, { useReducer } from 'react';
-import { FormConfiguration, FormContextInterface, FieldState, DeepPartial } from './types';
+import { FormConfiguration, FormContextInterface, FieldState, DeepPartial, FieldConfiguration } from './types';
 import { FormProvider } from './FormContext';
 import { fieldReducer, mergeState } from './fieldReducer';
 import { formReducer, defaultFormState } from './formReducer';
@@ -51,11 +51,12 @@ export const ArkForm = ({
       fieldState: validatedState,
     });
   };
-  const setFieldValue = (name: string, value: string) => {
-    const newFieldState = fieldReducer(getFieldState(name), {
+  const setFieldValue = (name: string, value: string, configuration: Partial<FieldConfiguration>) => {
+    const state = getFieldState(name);
+    const newFieldState = fieldReducer(state, {
       value: value,
       type: 'change',
-      configuration: { validateOnChange: true },
+      configuration: { ...state.configuration, ...configuration, validateOnChange: true },
     });
     dispatch({
       type: 'change',
