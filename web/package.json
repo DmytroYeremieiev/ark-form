@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "export": "NODE_ENV=export next build && next export",
     "start": "next start",
     "test": "NODE_ENV=test jest"
   },

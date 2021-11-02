@@ -23,6 +23,7 @@
     "start": "yarn workspace web start",
     "export": "yarn workspace web export",
     "export-debug": "yarn workspace web export-debug",
+    "copy": "rsync  -av --progress  ./web/out/ ./docs/",
     "test": "NODE_ENV=test jest",
     "update": "yarn upgrade-interactive --latest",
     "clean": "find . -name 'node_modules' -type d -prune -exec rm -rf '{}' +",

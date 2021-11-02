@@ -1,15 +1,18 @@
-# ark form
+# Ark Form - form validation library
 ## Overview:
 - small and ultra fast;
 - no external dependencies;
 - fully written in `typescript`;
 - 2.6 kb minified & gzipped;
+- compatible with `React v16.8+`;
 
-[Codesandbox nextjs template playground with examples..]( https://codesandbox.io/s/arkforms-nextjs-react-sandbox-s2z8o?file=/pages/index.tsx)
+### Codesandbox demos with examples: 
 
-[Codesandbox plain react template playground with examples..]( https://codesandbox.io/s/arkforsm-react-sandbox-pu54w?file=/src/App.tsx)
+- [nextjs template]( https://codesandbox.io/s/arkforms-nextjs-react-sandbox-s2z8o?file=/pages/index.tsx)
 
-## Motivation:
+- [plain react template]( https://codesandbox.io/s/arkforsm-react-sandbox-pu54w?file=/src/App.tsx)
+
+### Motivation:
 Why not use `formik`? 
 - no dirty/pristine native concept support;
 - extra re-renders, one field value changes, all fields under same form are getting re-rendered;
@@ -17,24 +20,34 @@ Why not use `formik`?
 
 ## Installation:
 
+ `npm install ark-form --save` or `yarn add ark-form`
 
- `npm install ark-form --save`
+## Top-level architecture
 
- or 
+`ark-from` library is based on several components:
 
- `yarn add ark-form`
+![General](https://dmytroyeremieiev.github.io/ark-form/images/ArkForms-General.png)
+
+**The general data flow**:
+
+1. `change` or `blur` event happens to the `input` wrapped in a field component `<ArkField/>`;
+2. Calculate new field state with `fieldReducer`;
+3. Dispatch new field state to `formReducer` and trigger form state re-evaluation;
+4. Propagate new form & field states using `FormContext`;
+
+**Field state evaluation logic when a `change` event occurs:**
+
+![General](https://dmytroyeremieiev.github.io/ark-form/images/ArkForms-Field-Changed.png)
+
+**Field state evaluation logic when a `blur` event occurs:**
+
+![General](https://dmytroyeremieiev.github.io/ark-form/images/ArkForms-Field-Blurred.png)
 
 
-, `ark-form` is compatible with `React v16.8+`.
-
-
-## Top-level architecture:
-`ark-from` based on 2 main entities: `<ArkForm/>` & `<Field>`:
-
-### `<ArkForm/>` component:
+#### `<ArkForm/>` component:
 - holds inner `<form/>` element & `<Field>` components;
 - manages form state, configuration, creates `<FormContext/>`
-- distributes it through `<FormContext/>` between inner `<Field>` components.  
+- distributes it through `<FormContext/>` between inner `<ArkField>` components.  
 
 Hooking-up managed state with `<form/>` elem happens through setting-up `name`, `onSubmit`, `onChange`, `onBlur` props on your elem. However there's shortcut, through spread operator `{...formProps}`: 
 ```
@@ -58,7 +71,7 @@ Hooking-up managed state with `<form/>` elem happens through setting-up `name`, 
 | validateOnChange   | Runs fields validation on change          | false      |
 <br>
 
-### `<Field/>` component:
+#### `<ArkField/>` component:
 
 - encapsulates input field state
 - uses children render prop technique in order to share managed state with user's components

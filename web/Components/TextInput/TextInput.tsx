@@ -144,10 +144,11 @@ export const TextInput = (props: TextInputInterface & { transformInput?: (any) =
     >
       {({ fieldProps, fieldState, formContext }) => {
         const id = (formContext.state.configuration.name || '') + '-' + name;
-        const _debug = process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test';
+        const _debug = process.env['NODE' + '_ENV'] !== 'production' && process.env['NODE' + '_ENV'] !== 'test';
         if (_debug) {
           console.log('field', name, fieldProps.value, fieldState, formContext.state, formContext.state.fieldsData);
         }
+
         return (
           <div className={classnames(styles['txo-input'], className)}>
             <div

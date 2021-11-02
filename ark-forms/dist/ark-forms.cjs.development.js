@@ -492,13 +492,14 @@ var ArkForm = function ArkForm(_ref) {
     });
   };
 
-  var setFieldValue = function setFieldValue(name, value) {
-    var newFieldState = fieldReducer(getFieldState(name), {
+  var setFieldValue = function setFieldValue(name, value, configuration) {
+    var state = getFieldState(name);
+    var newFieldState = fieldReducer(state, {
       value: value,
       type: 'change',
-      configuration: {
+      configuration: _extends({}, state.configuration, configuration, {
         validateOnChange: true
-      }
+      })
     });
     dispatch({
       type: 'change',

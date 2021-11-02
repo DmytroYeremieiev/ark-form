@@ -2,7 +2,7 @@
 export interface FormContextInterface {
     state: FormState;
     setFieldState: (name: string, newState: DeepPartial<FieldState>) => void;
-    setFieldValue: (name: string, value: string) => void;
+    setFieldValue: (name: string, value: string, configuration?: Partial<FieldConfiguration>) => void;
     dispatch: React.Dispatch<FormAction>;
 }
 export interface FormConfiguration {
