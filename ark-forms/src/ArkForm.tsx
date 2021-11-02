@@ -51,7 +51,7 @@ export const ArkForm = ({
       fieldState: validatedState,
     });
   };
-  const setFieldValue = (name: string, value: string, configuration: Partial<FieldConfiguration>) => {
+  const setFieldValue = (name: string, value: string, configuration?: Partial<FieldConfiguration>) => {
     const state = getFieldState(name);
     const newFieldState = fieldReducer(state, {
       value: value,
