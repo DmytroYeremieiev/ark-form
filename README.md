@@ -1,26 +1,38 @@
 # Ark Form - form validation library
-## Overview:
+
+## Overview
+
 - small and ultra fast;
 - no external dependencies;
 - fully written in `typescript`;
 - 2.6 kb minified & gzipped;
 - compatible with `React v16.8+`;
 
-### Codesandbox demos with examples: 
+### Codesandbox demos with examples
 
 - [nextjs template]( https://codesandbox.io/s/arkforms-nextjs-react-sandbox-s2z8o?file=/pages/index.tsx)
 
 - [plain react template]( https://codesandbox.io/s/arkforsm-react-sandbox-pu54w?file=/src/App.tsx)
 
-### Motivation:
-Why not use `formik`? 
+## Motivation
+
+Why not use `formik`?
+
 - no dirty/pristine native concept support;
 - extra re-renders, one field value changes, all fields under same form are getting re-rendered;
 - no form state(e.g. validity status) is calculated before user interacts with a form.
 
-## Installation:
+## Installation
 
  `npm install ark-form --save` or `yarn add ark-form`
+
+## Collaboration
+
+Library source files are located at `./ark-forms/src`.
+
+Tests reside at `./ark-forms/__tests__` and `./web/__tests__`.
+
+`web` - next.js and `web-cra` - cra projects are sandboxes of real-world use.
 
 ## Top-level architecture
 
@@ -43,14 +55,15 @@ Why not use `formik`?
 
 ![General](https://dmytroyeremieiev.github.io/ark-form/images/ArkForms-Field-Blurred.png)
 
+### `<ArkForm/>` component
 
-#### `<ArkForm/>` component:
 - holds inner `<form/>` element & `<Field>` components;
 - manages form state, configuration, creates `<FormContext/>`
 - distributes it through `<FormContext/>` between inner `<ArkField>` components.  
 
 Hooking-up managed state with `<form/>` elem happens through setting-up `name`, `onSubmit`, `onChange`, `onBlur` props on your elem. However there's shortcut, through spread operator `{...formProps}`: 
-```
+
+```jsx
     <ArkForm>
       {({ state, formProps }) => (
         <form name={name} {...formProps}>
@@ -69,9 +82,8 @@ Hooking-up managed state with `<form/>` elem happens through setting-up `name`, 
 | onChange   | onchange event handler, <br>called on any inner field change        | none      |
 | validateOnBlur   | Runs fields validation on blur       | true      |
 | validateOnChange   | Runs fields validation on change          | false      |
-<br>
 
-#### `<ArkField/>` component:
+### `<ArkField/>` component
 
 - encapsulates input field state
 - uses children render prop technique in order to share managed state with user's components
@@ -79,7 +91,7 @@ Hooking-up managed state with `<form/>` elem happens through setting-up `name`, 
 
 Hooking-up managed state with html input elem happens through setting-up `value`, `ref`, `onChange`, `onBlur`, `onFocus` props on your input elem:
 
-```
+```jsx
 <Field>
   {({ fieldProps, fieldState, formContext }) => {
     return (
@@ -102,4 +114,3 @@ Hooking-up managed state with html input elem happens through setting-up `value`
 | onFocus      | onfocus event handler        | none    |
 | onBlur       | onblur event handler         | none    |
 | validate     | your own validator callback  | none    |
-<br>
