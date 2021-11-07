@@ -16,7 +16,10 @@ const TestSuit = ({ name, pattern, required, validateOnChange }: TextInputInterf
         onClick={() =>
           formContext.setFieldState(name, oldState => ({
             configuration: {
-              validate: value => ({ ...oldState.configuration.validate(value), valid: true }),
+              validate: value => ({
+                ...oldState.configuration.validate(value),
+                valid: true,
+              }),
             },
           }))
         }
@@ -28,7 +31,11 @@ const TestSuit = ({ name, pattern, required, validateOnChange }: TextInputInterf
         onClick={() =>
           formContext.setFieldState(name, oldState => ({
             configuration: {
-              validate: value => ({ ...oldState.configuration.validate(value), valid: false }),
+              validate: value => ({
+                ...oldState.configuration.validate(value),
+                valid: false,
+                className: 'red-border',
+              }),
             },
           }))
         }
