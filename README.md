@@ -92,7 +92,7 @@ Hooking-up managed state with `<form/>` elem happens through setting-up `name`, 
 Hooking-up managed state with html input elem happens through setting-up `value`, `ref`, `onChange`, `onBlur`, `onFocus` props on your input elem:
 
 ```jsx
-<Field>
+<ArkField>
   {({ fieldProps, fieldState, formContext }) => {
     return (
       <div>
@@ -101,10 +101,10 @@ Hooking-up managed state with html input elem happens through setting-up `value`
       </div>
     );
   }}
-</Field>
+</ArkField>
 ```
 
-**\<Field/> props:**
+**\<ArkField/> props:**
 
 | Prop         | Description                  | Default |
 |--------------|------------------------------|---------|
@@ -114,3 +114,35 @@ Hooking-up managed state with html input elem happens through setting-up `value`
 | onFocus      | onfocus event handler        | none    |
 | onBlur       | onblur event handler         | none    |
 | validate     | your own validator callback  | none    |
+
+### How manually set the field state
+
+When you need to hook up to a form context
+
+```javascript
+export interface FormContextInterface {
+  state: FormState;
+  dispatch: React.Dispatch<FormAction>;
+  setFieldState: (name: string, setState: (currState: FieldState) => DeepPartial<FieldState>) => void;
+  setFieldValue: (name: string, value: string, configuration?: Partial<FieldConfiguration>) => void;
+}
+```
+
+within `<ArkForm/>`, you can call for the form context:  
+
+```javascript
+  const formContext = useFormContext();
+```
+
+, or outside of `<ArkForm/>` by passing ref obj:
+
+```jsx
+    const ref = useRef();
+    return <ArkForm formContextRef={}>
+      {({ state, formProps }) => (
+        <form name={name} {...formProps}>
+          {children}
+        </form>
+      )}
+    </ArkForm>
+```

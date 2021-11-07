@@ -12,6 +12,7 @@ interface FormProps {
 }
 export interface FormInterface extends FormConfiguration {
   name: string;
+  formContextRef: React.Ref<FormContextInterface>;
   onSubmit: (event: React.FormEvent<HTMLFormElement>, data: Map<string, FieldState>) => void;
   onChange?: (event: React.FormEvent<HTMLFormElement>, data: Map<string, FieldState>) => void;
   onBlur?: (event: React.FormEvent<HTMLFormElement>, data: Map<string, FieldState>) => void;
