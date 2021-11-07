@@ -43,9 +43,10 @@ export const ArkForm = ({
     if (!fieldState) throw 'field name is incorrect';
     return fieldState;
   };
-  const setFieldState = (name: string, newState: DeepPartial<FieldState>) => {
-    const mergedState = mergeState(getFieldState(name), newState);
-    const validatedState = fieldReducer(mergedState, { type: 'validate' });
+  const setFieldState: FormContextInterface['setFieldState'] = (name, setNewState) => {
+    const newState = setNewState(getFieldState(name));
+    const mergedNewState = mergeState(getFieldState(name), newState);
+    const validatedState = fieldReducer(mergedNewState, { type: 'validate' });
     dispatch({
       type: 'setField',
       fieldState: validatedState,
