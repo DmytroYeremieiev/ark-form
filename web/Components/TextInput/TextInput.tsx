@@ -14,11 +14,11 @@ const TestSuit = ({ name, pattern, required, validateOnChange }: TextInputInterf
       <button
         type='button'
         onClick={() =>
-          formContext.setFieldState(name, {
+          formContext.setFieldState(name, oldState => ({
             configuration: {
-              validate: value => ({ ...checkValidity(value, pattern, required), valid: true }),
+              validate: value => ({ ...oldState.configuration.validate(value), valid: true }),
             },
-          })
+          }))
         }
       >
         Set valid
@@ -26,31 +26,31 @@ const TestSuit = ({ name, pattern, required, validateOnChange }: TextInputInterf
       <button
         type='button'
         onClick={() =>
-          formContext.setFieldState(name, {
+          formContext.setFieldState(name, oldState => ({
             configuration: {
-              validate: value => ({ ...checkValidity(value, pattern, required), valid: false }),
+              validate: value => ({ ...oldState.configuration.validate(value), valid: false }),
             },
-          })
+          }))
         }
       >
         Set Invalid
       </button>
       <br></br>
-      <button type='button' onClick={() => formContext.setFieldState(name, { dirty: true, pristine: false })}>
+      <button type='button' onClick={() => formContext.setFieldState(name, () => ({ dirty: true, pristine: false }))}>
         Set Dirty
       </button>
-      <button type='button' onClick={() => formContext.setFieldState(name, { dirty: false, pristine: true })}>
+      <button type='button' onClick={() => formContext.setFieldState(name, () => ({ dirty: false, pristine: true }))}>
         Set Pristine
       </button>
       <br></br>
       <button
         type='button'
         onClick={() =>
-          formContext.setFieldState(name, {
+          formContext.setFieldState(name, () => ({
             configuration: {
               validate: value => checkValidity(value, pattern, false),
             },
-          })
+          }))
         }
       >
         Set Non-required
@@ -58,11 +58,11 @@ const TestSuit = ({ name, pattern, required, validateOnChange }: TextInputInterf
       <button
         type='button'
         onClick={() =>
-          formContext.setFieldState(name, {
+          formContext.setFieldState(name, () => ({
             configuration: {
               validate: value => checkValidity(value, pattern, true),
             },
-          })
+          }))
         }
       >
         Set Required
@@ -70,9 +70,9 @@ const TestSuit = ({ name, pattern, required, validateOnChange }: TextInputInterf
       <button
         type='button'
         onClick={() =>
-          formContext.setFieldState(name, {
+          formContext.setFieldState(name, () => ({
             ...defaultFieldState,
-          })
+          }))
         }
       >
         RESET
