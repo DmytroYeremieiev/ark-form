@@ -63,9 +63,6 @@ export const ArkForm = ({
       type: 'change',
       fieldState: newFieldState,
     });
-    dispatch({
-      type: 'validate',
-    });
   };
   const _onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
