@@ -75,13 +75,13 @@ Hooking-up managed state with `<form/>` elem happens through setting-up `name`, 
 
 **\<ArkForm/> props:**
 
-| Props      | Description | Default Value     |
-| :---        |    :----   |          ---: |
-| name      | <form\/> name       | none   |
-| onSubmit   | onsubmit event handler        | none      |
-| onChange   | onchange event handler, <br>called on any inner field change        | none      |
-| validateOnBlur   | Runs fields validation on blur       | true      |
-| validateOnChange   | Runs fields validation on change          | false      |
+| Props            | Description                                                  | Default Value |
+| :--------------- | :----------------------------------------------------------- | ------------: |
+| name             | <form\/> name                                                |          none |
+| onSubmit         | onsubmit event handler                                       |          none |
+| onChange         | onchange event handler, <br>called on any inner field change |          none |
+| validateOnBlur   | Runs fields validation on blur                               |          true |
+| validateOnChange | Runs fields validation on change                             |         false |
 
 ### `<ArkField/>` component
 
@@ -93,27 +93,25 @@ Hooking-up managed state with html input elem happens through setting-up `value`
 
 ```jsx
 <ArkField>
-  {({ fieldProps, fieldState, formContext }) => {
-    return (
+  {({ fieldProps, fieldState, formContext }) => (
       <div>
           <input id='field1' type='text' {...fieldProps} />
           <label htmlFor='field1'>Field 1</label>
       </div>
-    );
-  }}
+  )}
 </ArkField>
 ```
 
 **\<ArkField/> props:**
 
-| Prop         | Description                  | Default |
-|--------------|------------------------------|---------|
-| name         | Field name                   | none    |
-| initialValue | Field initial value          | none    |
-| onChange     | onchange event handler       | none    |
-| onFocus      | onfocus event handler        | none    |
-| onBlur       | onblur event handler         | none    |
-| validate     | your own validator callback  | none    |
+| Prop         | Description                 | Default |
+| ------------ | --------------------------- | ------- |
+| name         | Field name                  | none    |
+| initialValue | Field initial value         | none    |
+| onChange     | onchange event handler      | none    |
+| onFocus      | onfocus event handler       | none    |
+| onBlur       | onblur event handler        | none    |
+| validate     | your own validator callback | none    |
 
 ### How manually set the field state
 
