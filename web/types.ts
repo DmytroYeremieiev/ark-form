@@ -1,4 +1,4 @@
-import { BasicInput, FieldOuterProps } from 'ark-forms';
+import { BasicInput, FieldOuterProps, ValidityStateInterface } from 'ark-forms';
 export * from 'ark-forms';
 
 export interface FieldInputInterface<ET = HTMLInputElement> extends BasicInput<ET> {
@@ -22,6 +22,14 @@ export interface TextInputInterface<ET = HTMLInputElement> extends InputInterfac
 export interface DateInputInterface<ET = HTMLInputElement> extends InputInterface<ET> {
   required?: boolean;
 }
+export type CheckValidityType = (
+  value?: string,
+  pattern?: {
+    regexp: RegExp;
+    message?: string;
+  },
+  required?: boolean
+) => ValidityStateInterface;
 
 export enum FormStateClassNames {
   dirty = 'form-dirty',

@@ -1,110 +1,13 @@
-import React, { useState } from 'react';
-import { TextInputInterface, FieldStateClassNames } from '../../types';
-import { ArkField, defaultFieldState, useFormContext, ValidityStateInterface } from 'ark-forms';
+import React from 'react';
+import { TextInputInterface, FieldStateClassNames } from '@root/types';
+import { _debug } from '@root/constants';
+import TestSuit from 'components/TestSuit';
+import { ArkField, ValidityStateInterface } from 'ark-forms';
 
 import classnames from 'classnames';
 
 import styles from '../txoInput.module.scss';
 
-const TestSuit = ({ name, pattern, required, validateOnChange }: TextInputInterface) => {
-  const [testSuiteValue, setTestSuiteValue] = useState('');
-  const formContext = useFormContext();
-  return (
-    <div className='test-suit'>
-      <button
-        type='button'
-        onClick={() =>
-          formContext.setFieldState(name, oldState => ({
-            configuration: {
-              validate: value => ({
-                ...oldState.configuration.validate(value),
-                valid: true,
-              }),
-            },
-          }))
-        }
-      >
-        Set valid
-      </button>
-      <button
-        type='button'
-        onClick={() =>
-          formContext.setFieldState(name, oldState => ({
-            configuration: {
-              validate: value => ({
-                ...oldState.configuration.validate(value),
-                valid: false,
-                className: 'red-border',
-              }),
-            },
-          }))
-        }
-      >
-        Set Invalid
-      </button>
-      <br></br>
-      <button type='button' onClick={() => formContext.setFieldState(name, () => ({ dirty: true, pristine: false }))}>
-        Set Dirty
-      </button>
-      <button type='button' onClick={() => formContext.setFieldState(name, () => ({ dirty: false, pristine: true }))}>
-        Set Pristine
-      </button>
-      <br></br>
-      <button
-        type='button'
-        onClick={() =>
-          formContext.setFieldState(name, () => ({
-            configuration: {
-              validate: value => checkValidity(value, pattern, false),
-            },
-          }))
-        }
-      >
-        Set Non-required
-      </button>
-      <button
-        type='button'
-        onClick={() =>
-          formContext.setFieldState(name, () => ({
-            configuration: {
-              validate: value => checkValidity(value, pattern, true),
-            },
-          }))
-        }
-      >
-        Set Required
-      </button>
-      <button
-        type='button'
-        onClick={() =>
-          formContext.setFieldState(name, () => ({
-            ...defaultFieldState,
-          }))
-        }
-      >
-        RESET
-      </button>
-      <div className='test-suit-set-value'>
-        <input
-          id={name + 'test'}
-          type='text'
-          value={testSuiteValue}
-          onChange={event => setTestSuiteValue(event.target.value)}
-        />
-        <button
-          type='button'
-          onClick={() =>
-            formContext.setFieldValue(name, testSuiteValue, {
-              validate: value => checkValidity(value, pattern, required),
-            })
-          }
-        >
-          Set value
-        </button>
-      </div>
-    </div>
-  );
-};
 const checkValidity = (
   value?: string,
   pattern?: {
@@ -151,7 +54,6 @@ export const TextInput = (props: TextInputInterface & { transformInput?: (any) =
     >
       {({ fieldProps, fieldState, formContext }) => {
         const id = (formContext.state.configuration.name || '') + '-' + name;
-        const _debug = process.env['NODE' + '_ENV'] !== 'production' && process.env['NODE' + '_ENV'] !== 'test';
         if (_debug) {
           console.log('field', name, fieldProps.value, fieldState, formContext.state, formContext.state.fieldsData);
         }
@@ -182,7 +84,7 @@ export const TextInput = (props: TextInputInterface & { transformInput?: (any) =
               (fieldState.dirty || formContext.state.submitted) && (
                 <span className='error'>{fieldState.validity.errorMessage}</span>
               )}
-            {_debug && <TestSuit {...props} />}
+            {_debug && <TestSuit {...props} formContext={formContext} checkValidity={checkValidity} />}
           </div>
         );
       }}

@@ -1,3 +1,5 @@
+export const _debug = process.env['NODE' + '_ENV'] !== 'production' && process.env['NODE' + '_ENV'] !== 'test';
+
 export const Patterns = {
   phone: /^[0-9]{3}[-]{0,1}[0-9]{3}[-]{0,1}[0-9]{4}$/,
   zipCode: /(^\d{5}$)/,

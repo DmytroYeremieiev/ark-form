@@ -81,9 +81,7 @@
       -webkit-text-fill-color: #000 !important;
     }
   }
-  .txo-input-container.required-error.field-dirty,
-  .txo-input-container.required-error.force-validation,
-  .txo-input-container.red-border,
+  .txo-input-container.field-dirty.field-invalid,
   .txo-input-container.force-validation {
     input,
     select {

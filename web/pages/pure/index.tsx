@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
-import { ArkField, ValidityStateInterface } from 'ark-forms';
+import { ArkField, ValidityStateInterface, FormContextInterface } from 'ark-forms';
 import { Button } from '@components/Button/Button';
 import { Form } from '@components/Form';
 
@@ -8,6 +8,8 @@ import styles from './index.module.scss';
 import fieldStyles from '@components/txoInput.module.scss';
 
 import classnames from 'classnames';
+import TestSuit from '@components/TestSuit';
+import { _debug } from '@root/constants';
 
 const checkValidity = (
   value?: string,
@@ -39,10 +41,10 @@ const IndexPage = (): JSX.Element => {
   };
   const pattern = { regexp: /(^\d{5}$)/, message: 'field code must be 5 digits only' };
   const name = 'Field 1';
-
+  const contextRef = useRef<FormContextInterface>();
   return (
     <div className={styles['page-content']}>
-      <Form name='tempForm' onSubmit={onSubmit} validateOnChange={false}>
+      <Form name='tempForm' onSubmit={onSubmit} contextRef={contextRef} validateOnChange={false}>
         <ArkField name={name} validate={value => checkValidity(value, pattern, true)} initialValue={''}>
           {({ fieldProps, formContext, fieldState }) => {
             const formState = formContext.state;
@@ -76,6 +78,15 @@ const IndexPage = (): JSX.Element => {
         </ArkField>
         <Button type='submit'>SUBMIT</Button>
       </Form>
+      {_debug && (
+        <TestSuit
+          name={name}
+          pattern={pattern}
+          label={name}
+          formContext={contextRef.current}
+          checkValidity={checkValidity}
+        />
+      )}
     </div>
   );
 };
