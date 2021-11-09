@@ -12,7 +12,7 @@ interface FormProps {
 }
 export interface FormInterface extends FormConfiguration {
   name: string;
-  formContextRef: React.Ref<FormContextInterface>;
+  formContextRef?: React.MutableRefObject<FormContextInterface>;
   onSubmit: (event: React.FormEvent<HTMLFormElement>, data: Map<string, FieldState>) => void;
   onChange?: (event: React.FormEvent<HTMLFormElement>, data: Map<string, FieldState>) => void;
   onBlur?: (event: React.FormEvent<HTMLFormElement>, data: Map<string, FieldState>) => void;
@@ -29,6 +29,7 @@ export const ArkForm = ({
   children,
   validateOnChange = false,
   validateOnBlur = true,
+  formContextRef,
 }: FormInterface): JSX.Element => {
   const [state, dispatch] = useReducer(formReducer, defaultFormState, state => {
     state.fieldsData = new Map<string, FieldState>();
@@ -78,5 +79,6 @@ export const ArkForm = ({
     setFieldValue,
     dispatch,
   };
+  if (formContextRef) formContextRef.current = formContext;
   return <FormProvider value={formContext}>{children({ ...formContext, formProps })}</FormProvider>;
 };

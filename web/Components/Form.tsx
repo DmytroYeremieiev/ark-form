@@ -1,10 +1,11 @@
 import React from 'react';
-import { ArkForm } from 'ark-forms';
+import { ArkForm, FormContextInterface } from 'ark-forms';
 import classnames from 'classnames';
 
 export interface FormInterface {
   name: string;
   initialValues?;
+  contextRef?: React.MutableRefObject<FormContextInterface>;
   onSubmit: (event: React.FormEvent<HTMLFormElement>, data) => void;
   onChange?: () => void;
   children: React.ReactChild | React.ReactChild[];
