@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArkForm, FormContextInterface } from 'ark-forms';
 import classnames from 'classnames';
+import { _debug } from '@root/constants';
 
 export interface FormInterface {
   name: string;
@@ -32,8 +33,8 @@ export const Form = ({
   return (
     <ArkForm name={name} onSubmit={onSubmit} validateOnChange={validateOnChange} validateOnBlur={validateOnBlur}>
       {({ state, formProps }) => {
-        if (process.env.NODE_ENV !== 'production') {
-          // console.log('<ArkForm/>', state);
+        if (_debug) {
+          console.log('<ArkForm/>', state);
         }
         return (
           <form

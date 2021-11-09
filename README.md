@@ -135,8 +135,8 @@ within `<ArkForm/>`, you can call for the form context:
 , or outside of `<ArkForm/>` by passing ref obj:
 
 ```jsx
-    const ref = useRef();
-    return <ArkForm formContextRef={}>
+    const contextRef = useRef();
+    return <ArkForm formContextRef={contextRef}>
       {({ state, formProps }) => (
         <form name={name} {...formProps}>
           {children}
