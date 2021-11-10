@@ -187,10 +187,7 @@ Setting field valid:
 ```javascript
 formContext.setFieldState(name, () => ({
   configuration: {
-    validate: value => ({
-      ...checkValidity(value, pattern, required),
-      valid: true,
-    }),
+    validate: value => ({valid: true}),
   },
 }))
 ```
@@ -208,8 +205,55 @@ Setting field pristine:
 formContext.setFieldState(name, () => ({ dirty: false, pristine: true }))
 }))
 ```
+Consider you having some custom and complex validation logic described at
 
-Setting field non-required:
+```javascript
+const checkValidity = (
+  value?: string,
+  pattern?: {
+    regexp: RegExp;
+    message?: string;
+  },
+  required?: boolean
+): ValidityStateInterface => {
+  const result: ValidityStateInterface = {
+    valid: true,
+  };
+  if (required && !value) {
+    result.className = FieldStateClassNames.requiredError;
+    result.valid = false;
+    return result;
+  }
+  if (pattern && value && !pattern.regexp.test(value)) {
+    result.className = FieldStateClassNames.patternError;
+    result.valid = false;
+    result.errorMessage = pattern.message || 'Invalid value';
+    return result;
+  }
+  return result;
+};
+<ArkField name={name} validate={value => checkValidity(value, pattern, required)}>
+  {({ fieldProps, fieldState, formContext }) => {
+    let ErrorMessage = null;
+    if (
+      fieldState.validity.errorMessage &&
+      !fieldState.validity.valid &&
+      (fieldState.dirty || formContext.state.submitted)
+    ) {
+      ErrorMessage = <span className='error'>{fieldState.validity.errorMessage}</span>;
+    }
+    return (
+      <div className={fieldState.validity.className}>
+        <input id='field1' type='text' {...fieldProps} />
+        <label htmlFor='field1'>Field 1</label>
+        {ErrorMessage}
+      </div>
+    );
+  }}
+</ArkField>
+```
+
+, then in order to maintain all existing validation rules except mandatory requirement rule you will just need to  update your custom validator `checkValidity` arguments:
 
 ```javascript
 formContext.setFieldState(name, () => ({

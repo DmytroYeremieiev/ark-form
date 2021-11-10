@@ -57,6 +57,14 @@ export const TextInput = (props: TextInputInterface & { transformInput?: (any) =
         if (_debug) {
           console.log('field', name, fieldProps.value, fieldState, formContext.state, formContext.state.fieldsData);
         }
+        let ErrorMessage = null;
+        if (
+          fieldState.validity.errorMessage &&
+          !fieldState.validity.valid &&
+          (fieldState.dirty || formContext.state.submitted)
+        ) {
+          ErrorMessage = <span className='error'>{fieldState.validity.errorMessage}</span>;
+        }
 
         return (
           <div className={classnames(styles['txo-input'], className)}>
@@ -79,11 +87,7 @@ export const TextInput = (props: TextInputInterface & { transformInput?: (any) =
               <input id={id} type='text' readOnly={readOnly} {...fieldProps} value={transformInput(fieldProps.value)} />
               <label htmlFor={id}>{label}</label>
             </div>
-            {fieldState.validity.errorMessage &&
-              !fieldState.validity.valid &&
-              (fieldState.dirty || formContext.state.submitted) && (
-                <span className='error'>{fieldState.validity.errorMessage}</span>
-              )}
+            {ErrorMessage}
             {_debug && <TestSuit {...props} formContext={formContext} checkValidity={checkValidity} />}
           </div>
         );
