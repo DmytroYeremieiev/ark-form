@@ -32,19 +32,19 @@ export const Form = ({
 }: FormInterface): JSX.Element => {
   return (
     <ArkForm name={name} onSubmit={onSubmit} validateOnChange={validateOnChange} validateOnBlur={validateOnBlur}>
-      {({ state, formProps }) => {
+      {({ formContext, formProps }) => {
         if (_debug) {
-          console.log('<ArkForm/>', state);
+          console.log('<ArkForm/>', formContext.state);
         }
         return (
           <form
             name={name}
             className={classnames({
-              [ClassNames.dirty]: state.dirty,
-              [ClassNames.submitted]: state.submitted,
-              [ClassNames.pristine]: state.pristine,
-              [ClassNames.invalid]: state.invalid,
-              [ClassNames.valid]: state.valid,
+              [ClassNames.dirty]: formContext.state.dirty,
+              [ClassNames.submitted]: formContext.state.submitted,
+              [ClassNames.pristine]: formContext.state.pristine,
+              [ClassNames.invalid]: formContext.state.invalid,
+              [ClassNames.valid]: formContext.state.valid,
             })}
             {...formProps}
           >

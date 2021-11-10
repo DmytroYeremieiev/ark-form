@@ -16,11 +16,10 @@ export interface FormInterface extends FormConfiguration {
   onSubmit: (event: React.FormEvent<HTMLFormElement>, data: Map<string, FieldState>) => void;
   onChange?: (event: React.FormEvent<HTMLFormElement>, data: Map<string, FieldState>) => void;
   onBlur?: (event: React.FormEvent<HTMLFormElement>, data: Map<string, FieldState>) => void;
-  children: (
-    props: FormContextInterface & {
-      formProps: FormProps;
-    }
-  ) => React.ReactChild | React.ReactChild[];
+  children: (props: {
+    formContext: FormContextInterface;
+    formProps: FormProps;
+  }) => React.ReactChild | React.ReactChild[];
 }
 
 export const ArkForm = ({
@@ -80,5 +79,5 @@ export const ArkForm = ({
     dispatch,
   };
   if (formContextRef) formContextRef.current = formContext;
-  return <FormProvider value={formContext}>{children({ ...formContext, formProps })}</FormProvider>;
+  return <FormProvider value={formContext}>{children({ formContext, formProps })}</FormProvider>;
 };

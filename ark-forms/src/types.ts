@@ -7,7 +7,6 @@ export interface FormContextInterface {
 export interface FormConfiguration {
   validateOnChange?: boolean;
   validateOnBlur?: boolean;
-  forceValidation?: boolean;
   name: string;
 }
 
