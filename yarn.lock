@@ -2378,9 +2378,8 @@ aria-query@^4.2.2:
     "@babel/runtime" "^7.10.2"
     "@babel/runtime-corejs3" "^7.10.2"
 
-"ark-forms@link:ark-forms/src":
-  version "0.0.0"
-  uid ""
+"ark-forms@link:ark-forms":
+  version "2.0.2"
 
 arr-diff@^4.0.0:
   version "4.0.0"

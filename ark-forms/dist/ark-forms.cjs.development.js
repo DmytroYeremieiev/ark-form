@@ -461,7 +461,8 @@ var ArkForm = function ArkForm(_ref) {
       _ref$validateOnChange = _ref.validateOnChange,
       validateOnChange = _ref$validateOnChange === void 0 ? false : _ref$validateOnChange,
       _ref$validateOnBlur = _ref.validateOnBlur,
-      validateOnBlur = _ref$validateOnBlur === void 0 ? true : _ref$validateOnBlur;
+      validateOnBlur = _ref$validateOnBlur === void 0 ? true : _ref$validateOnBlur,
+      formContextRef = _ref.formContextRef;
 
   var _useReducer = React.useReducer(formReducer, defaultFormState, function (state) {
     state.fieldsData = new Map();
@@ -481,9 +482,10 @@ var ArkForm = function ArkForm(_ref) {
     return fieldState;
   };
 
-  var setFieldState = function setFieldState(name, newState) {
-    var mergedState = mergeState(getFieldState(name), newState);
-    var validatedState = fieldReducer(mergedState, {
+  var setFieldState = function setFieldState(name, setNewState) {
+    var newState = setNewState(getFieldState(name));
+    var mergedNewState = mergeState(getFieldState(name), newState);
+    var validatedState = fieldReducer(mergedNewState, {
       type: 'validate'
     });
     dispatch({
@@ -505,9 +507,6 @@ var ArkForm = function ArkForm(_ref) {
       type: 'change',
       fieldState: newFieldState
     });
-    dispatch({
-      type: 'validate'
-    });
   };
 
   var _onSubmit = function _onSubmit(event) {
@@ -528,11 +527,13 @@ var ArkForm = function ArkForm(_ref) {
     setFieldValue: setFieldValue,
     dispatch: dispatch
   };
+  if (formContextRef) formContextRef.current = formContext;
   return React__default.createElement(FormProvider, {
     value: formContext
-  }, children(_extends({}, formContext, {
+  }, children({
+    formContext: formContext,
     formProps: formProps
-  })));
+  }));
 };
 
 exports.ArkField = ArkField;

@@ -24,7 +24,7 @@
     "export": "yarn workspace web export",
     "export-debug": "yarn workspace web export-debug",
     "copy": "rsync  -av --progress  ./web/out/ ./docs/",
-    "test": "NODE_ENV=test jest",
+    "test": "NODE_ENV=test yarn workspace web test && yarn workspace ark-forms test",
     "update": "yarn upgrade-interactive --latest",
     "clean": "find . -name 'node_modules' -type d -prune -exec rm -rf '{}' +",
     "check-types": "yarn workspace web check-types & yarn workspace shared check-types"

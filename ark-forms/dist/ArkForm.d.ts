@@ -8,12 +8,14 @@ interface FormProps {
 }
 export interface FormInterface extends FormConfiguration {
     name: string;
+    formContextRef?: React.MutableRefObject<FormContextInterface>;
     onSubmit: (event: React.FormEvent<HTMLFormElement>, data: Map<string, FieldState>) => void;
     onChange?: (event: React.FormEvent<HTMLFormElement>, data: Map<string, FieldState>) => void;
     onBlur?: (event: React.FormEvent<HTMLFormElement>, data: Map<string, FieldState>) => void;
-    children: (props: FormContextInterface & {
+    children: (props: {
+        formContext: FormContextInterface;
         formProps: FormProps;
     }) => React.ReactChild | React.ReactChild[];
 }
-export declare const ArkForm: ({ name, onSubmit, children, validateOnChange, validateOnBlur, }: FormInterface) => JSX.Element;
+export declare const ArkForm: ({ name, onSubmit, children, validateOnChange, validateOnBlur, formContextRef, }: FormInterface) => JSX.Element;
 export {};

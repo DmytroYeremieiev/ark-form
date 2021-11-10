@@ -1,7 +1,7 @@
 import React from 'react';
 import { TextInputInterface, FieldStateClassNames } from '@root/types';
 import { _debug } from '@root/constants';
-import TestSuit from 'components/TestSuit';
+import TestSuit from '@components/TestSuit';
 import { ArkField, ValidityStateInterface } from 'ark-forms';
 
 import classnames from 'classnames';

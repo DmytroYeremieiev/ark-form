@@ -10,7 +10,7 @@
     "test": "NODE_ENV=test jest"
   },
   "dependencies": {
-    "ark-forms": "link:../ark-forms/src",
+    "ark-forms": "link:../ark-forms",
     "next": "11.1.2",
     "next-transpile-modules": "^8.0.0",
     "sass": "^1.38.1",
