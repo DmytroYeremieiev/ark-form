@@ -4,6 +4,7 @@
 
 - small and ultra fast;
 - no external dependencies;
+- predictable validation flow and faster test suits
 - fully written in `typescript`;
 - 2.6 kb minified & gzipped;
 - compatible with `React v16.8+`;
@@ -16,9 +17,10 @@
 
 ## Motivation
 
-Why not use `formik`?
-
+Why not to `formik`?
+- `formik` async validation requires the use of `await` constructs: [example1](https://nancyhuynh-til.netlify.app/react-testing-library-waitFor-Formik/), [example2](https://scottsauber.com/2019/05/25/testing-formik-with-react-testing-library/), [example3](https://stackoverflow.com/questions/65753374/react-native-test-failed-when-using-formik-and-yup-as-validation-schema), [example4](https://hackernoon.com/react-forms-with-formik-and-unit-testing-with-react-testing-library-j0b32c9).
 - no dirty/pristine native concept support;
+- bigger lib size, > 12 kb minified & gzipped
 - extra re-renders, one field value changes, all fields under same form are getting re-rendered;
 - no form state(e.g. validity status) is calculated before user interacts with a form.
 
@@ -115,7 +117,7 @@ Hooking-up managed state with html input elem happens through setting-up `value`
 
 ### How manually set the field state
 
-When you need to hook up to a form context
+First, you need to hook up to a form context:
 
 ```javascript
 export interface FormContextInterface {
@@ -126,13 +128,13 @@ export interface FormContextInterface {
 }
 ```
 
-within `<ArkForm/>`, you can call for the form context:  
+Within `<ArkForm/>`, you can call for the form context:  
 
 ```javascript
   const formContext = useFormContext();
 ```
 
-, or outside of `<ArkForm/>` by passing ref obj:
+Outside of `<ArkForm/>`, pass ref obj:
 
 ```jsx
     const contextRef = useRef();
@@ -143,4 +145,93 @@ within `<ArkForm/>`, you can call for the form context:
         </form>
       )}
     </ArkForm>
+```
+
+Once you get formContext reference, you're free to use `formContext.dispatch`, method to alter the form state in any imaginative way. Internally, all components operate only through `dispatch` method and `formReducer`, `fieldReducer` reducers.
+
+Here's implementations of `setFieldState`, `setFieldValue` helper methods exposed publicly to cover most of user's needs:
+
+```javascript
+  const setFieldState: FormContextInterface['setFieldState'] = (name, setNewState) => {
+    const newState = setNewState(getFieldState(name));
+    const mergedNewState = mergeState(getFieldState(name), newState);
+    const validatedState = fieldReducer(mergedNewState, { type: 'validate' });
+    dispatch({
+      type: 'setField',
+      fieldState: validatedState,
+    });
+  };
+```
+
+```javascript
+  const setFieldValue = (name: string, value: string, configuration?: Partial<FieldConfiguration>) => {
+    const state = getFieldState(name);
+    const newFieldState = fieldReducer(state, {
+      value: value,
+      type: 'change',
+      configuration: { ...state.configuration, ...configuration, validateOnChange: true },
+    });
+    dispatch({
+      type: 'change',
+      fieldState: newFieldState,
+    });
+  };
+```
+
+### Usage
+
+You can peek `setFieldState`, `setFieldValue` usage at  `/web/components/TestSuit.tsx`
+
+Setting field valid:
+
+```javascript
+formContext.setFieldState(name, () => ({
+  configuration: {
+    validate: value => ({
+      ...checkValidity(value, pattern, required),
+      valid: true,
+    }),
+  },
+}))
+```
+
+Setting field dirty:
+
+```javascript
+formContext.setFieldState(name, () => ({ dirty: true, pristine: false }))
+}))
+```
+
+Setting field pristine:
+
+```javascript
+formContext.setFieldState(name, () => ({ dirty: false, pristine: true }))
+}))
+```
+
+Setting field non-required:
+
+```javascript
+formContext.setFieldState(name, () => ({
+  configuration: {
+    validate: value => checkValidity(value, pattern, false),
+  },
+}))
+```
+
+Resetting field state:
+
+```javascript
+formContext.setFieldState(name, () => ({
+  ...defaultFieldState,
+  configuration: {
+    validate: value => checkValidity(value, pattern, required),
+  },
+}))
+```
+
+Setting field value:
+
+```javascript
+formContext.setFieldValue(name, testSuiteValue)
 ```
