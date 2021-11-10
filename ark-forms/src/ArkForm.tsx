@@ -1,5 +1,5 @@
 import React, { useReducer } from 'react';
-import { FormConfiguration, FormContextInterface, FieldState, DeepPartial, FieldConfiguration } from './types';
+import { FormConfiguration, FormContextInterface, FieldState, FieldConfiguration } from './types';
 import { FormProvider } from './FormContext';
 import { fieldReducer, mergeState } from './fieldReducer';
 import { formReducer, defaultFormState } from './formReducer';
