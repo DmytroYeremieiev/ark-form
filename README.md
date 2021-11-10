@@ -42,18 +42,22 @@ Tests reside at `./ark-forms/__tests__` and `./web/__tests__`.
 
 ![General](https://dmytroyeremieiev.github.io/ark-form/images/ArkForms-General.png)
 
-**The general data flow**:
+### The general data flow
+
+All data flow except form submitting) flows start at `<ArkField/>` components which listen for proper event type.
 
 1. `change` or `blur` event happens to the `input` wrapped in a field component `<ArkField/>`;
-2. Calculate new field state with `fieldReducer`;
-3. Dispatch new field state to `formReducer` and trigger form state re-evaluation;
-4. Propagate new form & field states using `FormContext`;
+2. Calculating new field state with `fieldReducer`;
+3. Dispatching new field state to `formReducer`, triggering entire form state re-evaluation;
+4. Propagating new form & field states using `FormContext` downwards;
 
-**Field state evaluation logic when a `change` event occurs:**
+### Field state evaluation logic
+
+**when a `change` event occurs:**
 
 ![General](https://dmytroyeremieiev.github.io/ark-form/images/ArkForms-Field-Changed.png)
 
-**Field state evaluation logic when a `blur` event occurs:**
+**when a `blur` event occurs:**
 
 ![General](https://dmytroyeremieiev.github.io/ark-form/images/ArkForms-Field-Blurred.png)
 
@@ -137,14 +141,15 @@ Within `<ArkForm/>`, you can call for the form context:
 Outside of `<ArkForm/>`, pass ref obj:
 
 ```jsx
-    const contextRef = useRef();
-    return <ArkForm formContextRef={contextRef}>
-      {({ formContext, formProps }) => (
-        <form name={name} {...formProps}>
-          {children}
-        </form>
-      )}
-    </ArkForm>
+  ...
+  const contextRef = useRef();
+  return <ArkForm formContextRef={contextRef}>
+    {({ formContext, formProps }) => (
+      <form name={name} {...formProps}>
+        {children}
+      </form>
+    )}
+  </ArkForm>
 ```
 
 Once you get formContext reference, you're free to use `formContext.dispatch`, method to alter the form state in any imaginative way. Internally, all components operate only through `dispatch` method and `formReducer`, `fieldReducer` reducers.
@@ -161,9 +166,7 @@ Here's implementations of `setFieldState`, `setFieldValue` helper methods expose
       fieldState: validatedState,
     });
   };
-```
 
-```javascript
   const setFieldValue = (name: string, value: string, configuration?: Partial<FieldConfiguration>) => {
     const state = getFieldState(name);
     const newFieldState = fieldReducer(state, {
@@ -183,126 +186,124 @@ Here's implementations of `setFieldState`, `setFieldValue` helper methods expose
 **Setting field valid:**
 
 ```javascript
-formContext.setFieldState(name, () => ({
-  configuration: {
-    validate: value => ({valid: true}),
-  },
-}))
+  formContext.setFieldState(name, () => ({
+    configuration: {
+      validate: value => ({valid: true}),
+    },
+  }))
 ```
 
 **Setting field dirty:**
 
 ```javascript
-formContext.setFieldState(name, () => ({ dirty: true, pristine: false }))
-}))
+  formContext.setFieldState(name, () => ({ dirty: true, pristine: false }))
 ```
 
 **Setting field pristine:**
 
 ```javascript
-formContext.setFieldState(name, () => ({ dirty: false, pristine: true }))
-}))
+  formContext.setFieldState(name, () => ({ dirty: false, pristine: true }))
 ```
 
 **Consider you having some custom and complex validation logic described at:**
 
 ```javascript
-const checkValidity = (
-  value?: string,
-  pattern?: {
-    regexp: RegExp;
-    message?: string;
-  },
-  required?: boolean
-): ValidityStateInterface => {
-  const result: ValidityStateInterface = {
-    valid: true,
+  const checkValidity = (
+    value?: string,
+    pattern?: {
+      regexp: RegExp;
+      message?: string;
+    },
+    required?: boolean
+  ): ValidityStateInterface => {
+    const result: ValidityStateInterface = {
+      valid: true,
+    };
+    if (required && !value) {
+      result.className = FieldStateClassNames.requiredError;
+      result.valid = false;
+      return result;
+    }
+    if (pattern && value && !pattern.regexp.test(value)) {
+      result.className = FieldStateClassNames.patternError;
+      result.valid = false;
+      result.errorMessage = pattern.message || 'Invalid value';
+      return result;
+    }
+    return result;
   };
-  if (required && !value) {
-    result.className = FieldStateClassNames.requiredError;
-    result.valid = false;
-    return result;
-  }
-  if (pattern && value && !pattern.regexp.test(value)) {
-    result.className = FieldStateClassNames.patternError;
-    result.valid = false;
-    result.errorMessage = pattern.message || 'Invalid value';
-    return result;
-  }
-  return result;
-};
-export const TextInput = ({ initialValue = '', name, label, pattern, required, readOnly, ...rest }) => {
-  return (
-    <ArkField
-      name={name}
-      validate={value => checkValidity(value, pattern, required)}
-      initialValue={initialValue}
-      {...rest}
-    >
-      {({ fieldProps, fieldState, formContext }) => {
-        const id = (formContext.state.configuration.name || '') + '-' + name;
+  export const TextInput = ({ initialValue = '', name, label, pattern, required, readOnly, ...rest }) => {
+    return (
+      <ArkField
+        name={name}
+        validate={value => checkValidity(value, pattern, required)}
+        initialValue={initialValue}
+        {...rest}
+      >
+        {({ fieldProps, fieldState, formContext }) => {
+          const id = (formContext.state.configuration.name || '') + '-' + name;
 
-        let ErrorMessage = null;
-        if (
-          fieldState.validity.errorMessage &&
-          !fieldState.validity.valid &&
-          (fieldState.dirty || formContext.state.submitted)
-        ) {
-          ErrorMessage = <span className='error'>{fieldState.validity.errorMessage}</span>;
-        }
+          let ErrorMessage = null;
+          if (
+            fieldState.validity.errorMessage &&
+            !fieldState.validity.valid &&
+            (fieldState.dirty || formContext.state.submitted)
+          ) {
+            ErrorMessage = <span className='error'>{fieldState.validity.errorMessage}</span>;
+          }
 
-        return (
-          <div>
-            <div
-              title={`${name} field`}
-              className={`txo-input-container ${classnames(
-                {
-                  [FieldStateClassNames.filled]: fieldState.filled,
-                  [FieldStateClassNames.pristine]: fieldState.pristine,
-                  [FieldStateClassNames.dirty]: fieldState.dirty,
-                  [FieldStateClassNames.invalid]: !fieldState.validity.valid,
-                  [FieldStateClassNames.valid]: fieldState.validity.valid,
-                },
-                {
-                  [fieldState.validity.className]: fieldState.validity.className && !fieldState.validity.valid,
-                }
-              )}`}
-            >
-              <input id={id} type='text' readOnly={readOnly} {...fieldProps} />
-              <label htmlFor={id}>{label}</label>
+          return (
+            <div>
+              <div
+                title={`${name} field`}
+                className={`txo-input-container ${classnames(
+                  {
+                    [FieldStateClassNames.filled]: fieldState.filled,
+                    [FieldStateClassNames.pristine]: fieldState.pristine,
+                    [FieldStateClassNames.dirty]: fieldState.dirty,
+                    [FieldStateClassNames.invalid]: !fieldState.validity.valid,
+                    [FieldStateClassNames.valid]: fieldState.validity.valid,
+                  },
+                  {
+                    [fieldState.validity.className]: fieldState.validity.className && !fieldState.validity.valid,
+                  }
+                )}`}
+              >
+                <input id={id} type='text' readOnly={readOnly} {...fieldProps} />
+                <label htmlFor={id}>{label}</label>
+              </div>
+              {ErrorMessage}
             </div>
-            {ErrorMessage}
-          </div>
-        );
-      }}
-    </ArkField>
-  );
-};
+          );
+        }}
+      </ArkField>
+    );
+  };
 ```
 
 , then in order to maintain all existing validation rules except mandatory requirement rule you will just need to  update your custom validator `checkValidity` arguments:
 
 ```javascript
-formContext.setFieldState(name, () => ({
-  configuration: {
-    validate: value => checkValidity(value, pattern, false),
-  },
-}))
+  formContext.setFieldState(name, () => ({
+    configuration: {
+      validate: value => checkValidity(value, pattern, false),
+    },
+  }))
 ```
 
 **Resetting field state:**
 
 ```javascript
-formContext.setFieldState(name, () => ({
-  ...defaultFieldState,
-  configuration: {
-    validate: value => checkValidity(value, pattern, required),
-  },
-}))
+  formContext.setFieldState(name, () => ({
+    ...defaultFieldState,
+    configuration: {
+      validate: value => checkValidity(value, pattern, required),
+    },
+  }))
 ```
 
 **Setting field value:**
 
 ```javascript
-formContext.setFieldValue(name, 'Some new value')
+  formContext.setFieldValue(name, 'Some new value')
 ```
