@@ -43,17 +43,17 @@ const IndexPage = (): JSX.Element => {
   return (
     <div className={styles['page-content']}>
       <ArkForm name='tempForm' onSubmit={onSubmit} validateOnChange={false}>
-        {({ state, formProps, setFieldState }) => {
-          console.log('<ArkForm/>', state);
+        {({ formContext, formProps }) => {
+          console.log('<ArkForm/>', formContext.state);
           return (
             <form
               {...formProps}
               className={classnames({
-                [FormStateClassNames.dirty]: state.dirty,
-                [FormStateClassNames.submitted]: state.submitted,
-                [FormStateClassNames.pristine]: state.pristine,
-                [FormStateClassNames.invalid]: state.invalid,
-                [FormStateClassNames.valid]: state.valid,
+                [FormStateClassNames.dirty]: formContext.state.dirty,
+                [FormStateClassNames.submitted]: formContext.state.submitted,
+                [FormStateClassNames.pristine]: formContext.state.pristine,
+                [FormStateClassNames.invalid]: formContext.state.invalid,
+                [FormStateClassNames.valid]: formContext.state.valid,
               })}
             >
               {/* <FullNameInput name='fullName' initialValue='' label='FULL NAME *' required></FullNameInput>
@@ -68,11 +68,11 @@ const IndexPage = (): JSX.Element => {
               <DatePicker name='date' label='SELECT DATE *' onChange={onDateSelected} required></DatePicker>
               <Button
                 onClick={() => {
-                  setFieldState('date', {
+                  formContext.setFieldState('date', () => ({
                     configuration: {
-                      validate: value => ({ valid: false }),
+                      validate: () => ({ valid: false }),
                     },
-                  });
+                  }));
                 }}
               >
                 SET DATA VALID

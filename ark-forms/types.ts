@@ -17,5 +17,3 @@ export interface TextInputInterface<ET = HTMLInputElement> extends InputInterfac
     message?: string;
   };
 }
-
-
