@@ -1,5 +1,19 @@
 # Ark Form - form validation library
 
+## Table of Contents
+
+- [Overview](#overview)
+  - [Codesandbox demos](#codesandbox-demos)
+  - [Installation](#installation)
+- [Motivation](#motivation)
+- [Collaboration](#collaboration)
+- [Top-level architecture](#top-level-architecture)
+  - [The general data flow](#the-general-data-flow)
+  - [Field state evaluation logic](#field-state-evaluation-logic)
+  - [`<ArkForm/>` component](#arkform-component)
+  - [`<ArkField/>` component](#arkfield-component)
+  - [How manually set the field state](#how-manually-set-the-field-state)
+
 ## Overview
 
 - small and ultra fast;
@@ -9,11 +23,16 @@
 - 2.6 kb minified & gzipped;
 - compatible with `React v16.8+`;
 
-### Codesandbox demos with examples
+### Codesandbox demos
 
-- [nextjs template]( https://codesandbox.io/s/arkforms-nextjs-react-sandbox-s2z8o?file=/pages/index.tsx)
+- [NextJS template]( https://codesandbox.io/s/arkforms-nextjs-react-sandbox-s2z8o?file=/pages/index.tsx)
 
-- [plain react template]( https://codesandbox.io/s/arkforsm-react-sandbox-pu54w?file=/src/App.tsx)
+- [CRA template]( https://codesandbox.io/s/arkforsm-react-sandbox-pu54w?file=/src/App.tsx)
+
+### Installation
+
+ `npm install ark-form --save` or `yarn add ark-form`
+
 
 ## Motivation
 
@@ -24,9 +43,6 @@ Why not to `formik`?
 - extra re-renders, one field value changes, all fields under same form are getting re-rendered;
 - no form state(e.g. validity status) is calculated before user interacts with a form.
 
-## Installation
-
- `npm install ark-form --save` or `yarn add ark-form`
 
 ## Collaboration
 
@@ -181,7 +197,7 @@ Here's implementations of `setFieldState`, `setFieldValue` helper methods expose
   };
 ```
 
-### You can peek `setFieldState`, `setFieldValue` usages at  `/web/components/TestSuit.tsx`.
+> You can peek more `setFieldState`, `setFieldValue` usages examples at  `/web/components/TestSuit.tsx`.
 
 **Setting field valid:**
 
