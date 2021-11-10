@@ -232,25 +232,53 @@ const checkValidity = (
   }
   return result;
 };
-<ArkField name={name} validate={value => checkValidity(value, pattern, required)}>
-  {({ fieldProps, fieldState, formContext }) => {
-    let ErrorMessage = null;
-    if (
-      fieldState.validity.errorMessage &&
-      !fieldState.validity.valid &&
-      (fieldState.dirty || formContext.state.submitted)
-    ) {
-      ErrorMessage = <span className='error'>{fieldState.validity.errorMessage}</span>;
-    }
-    return (
-      <div className={fieldState.validity.className}>
-        <input id='field1' type='text' {...fieldProps} />
-        <label htmlFor='field1'>Field 1</label>
-        {ErrorMessage}
-      </div>
-    );
-  }}
-</ArkField>
+export const TextInput = ({ initialValue = '', name, label, pattern, required, readOnly, ...rest }) => {
+  return (
+    <ArkField
+      name={name}
+      validate={value => checkValidity(value, pattern, required)}
+      initialValue={initialValue}
+      {...rest}
+    >
+      {({ fieldProps, fieldState, formContext }) => {
+        const id = (formContext.state.configuration.name || '') + '-' + name;
+
+        let ErrorMessage = null;
+        if (
+          fieldState.validity.errorMessage &&
+          !fieldState.validity.valid &&
+          (fieldState.dirty || formContext.state.submitted)
+        ) {
+          ErrorMessage = <span className='error'>{fieldState.validity.errorMessage}</span>;
+        }
+
+        return (
+          <div>
+            <div
+              title={`${name} field`}
+              className={`txo-input-container ${classnames(
+                {
+                  [FieldStateClassNames.filled]: fieldState.filled,
+                  [FieldStateClassNames.pristine]: fieldState.pristine,
+                  [FieldStateClassNames.dirty]: fieldState.dirty,
+                  [FieldStateClassNames.invalid]: !fieldState.validity.valid,
+                  [FieldStateClassNames.valid]: fieldState.validity.valid,
+                },
+                {
+                  [fieldState.validity.className]: fieldState.validity.className && !fieldState.validity.valid,
+                }
+              )}`}
+            >
+              <input id={id} type='text' readOnly={readOnly} {...fieldProps} />
+              <label htmlFor={id}>{label}</label>
+            </div>
+            {ErrorMessage}
+          </div>
+        );
+      }}
+    </ArkField>
+  );
+};
 ```
 
 , then in order to maintain all existing validation rules except mandatory requirement rule you will just need to  update your custom validator `checkValidity` arguments:
@@ -277,5 +305,5 @@ formContext.setFieldState(name, () => ({
 Setting field value:
 
 ```javascript
-formContext.setFieldValue(name, testSuiteValue)
+formContext.setFieldValue(name, 'Some new value')
 ```
