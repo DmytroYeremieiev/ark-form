@@ -178,11 +178,9 @@ Here's implementations of `setFieldState`, `setFieldValue` helper methods expose
   };
 ```
 
-### Usage
+### You can peek `setFieldState`, `setFieldValue` usages at  `/web/components/TestSuit.tsx`.
 
-You can peek `setFieldState`, `setFieldValue` usage at  `/web/components/TestSuit.tsx`
-
-Setting field valid:
+**Setting field valid:**
 
 ```javascript
 formContext.setFieldState(name, () => ({
@@ -192,20 +190,21 @@ formContext.setFieldState(name, () => ({
 }))
 ```
 
-Setting field dirty:
+**Setting field dirty:**
 
 ```javascript
 formContext.setFieldState(name, () => ({ dirty: true, pristine: false }))
 }))
 ```
 
-Setting field pristine:
+**Setting field pristine:**
 
 ```javascript
 formContext.setFieldState(name, () => ({ dirty: false, pristine: true }))
 }))
 ```
-Consider you having some custom and complex validation logic described at
+
+**Consider you having some custom and complex validation logic described at:**
 
 ```javascript
 const checkValidity = (
@@ -291,7 +290,7 @@ formContext.setFieldState(name, () => ({
 }))
 ```
 
-Resetting field state:
+**Resetting field state:**
 
 ```javascript
 formContext.setFieldState(name, () => ({
@@ -302,7 +301,7 @@ formContext.setFieldState(name, () => ({
 }))
 ```
 
-Setting field value:
+**Setting field value:**
 
 ```javascript
 formContext.setFieldValue(name, 'Some new value')
