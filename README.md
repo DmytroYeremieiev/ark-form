@@ -10,15 +10,17 @@
 - [Top-level architecture](#top-level-architecture)
   - [The general data flow](#the-general-data-flow)
   - [Field state evaluation logic](#field-state-evaluation-logic)
+  - [Validation](#validation)
   - [`<ArkForm/>` component](#arkform-component)
   - [`<ArkField/>` component](#arkfield-component)
   - [How manually set the field state](#how-manually-set-the-field-state)
 
 ## Overview
 
-- small and ultra fast;
+- small, ultra fast and flexible;
+- predictable and synchronous validation flow, clear and fast test suits
+- allows granularly fine-tune each field validation trigger. E.g., consider you need the 1-st field to be validated after `onChange` event occurred and the second field only after `onBlur` event;
 - no external dependencies;
-- predictable validation flow and faster test suits
 - fully written in `typescript`;
 - 2.6 kb minified & gzipped;
 - compatible with `React v16.8+`;
@@ -33,16 +35,15 @@
 
  `npm install ark-form --save` or `yarn add ark-form`
 
-
 ## Motivation
 
-Why not to `formik`?
-- `formik` async validation requires the use of `await` constructs: [example1](https://nancyhuynh-til.netlify.app/react-testing-library-waitFor-Formik/), [example2](https://scottsauber.com/2019/05/25/testing-formik-with-react-testing-library/), [example3](https://stackoverflow.com/questions/65753374/react-native-test-failed-when-using-formik-and-yup-as-validation-schema), [example4](https://hackernoon.com/react-forms-with-formik-and-unit-testing-with-react-testing-library-j0b32c9).
-- no dirty/pristine native concept support;
-- bigger lib size, > 12 kb minified & gzipped
-- extra re-renders, one field value changes, all fields under same form are getting re-rendered;
-- no form state(e.g. validity status) is calculated before user interacts with a form.
+Why not [formik](https://formik.org/docs/overview)?
 
+- extra re-renders, e.g., one field value changes, all other fields within same form undergo re-render;
+- can't granularly fine-tune each field validation trigger. All fields within the form are subject to same validation trigger's rules);
+- `formik` asynchronous validation nature requires the use of `await` constructs: [example1](https://nancyhuynh-til.netlify.app/react-testing-library-waitFor-Formik/), [example2](https://scottsauber.com/2019/05/25/testing-formik-with-react-testing-library/), [example3](https://stackoverflow.com/questions/65753374/react-native-test-failed-when-using-formik-and-yup-as-validation-schema), [example4](https://hackernoon.com/react-forms-with-formik-and-unit-testing-with-react-testing-library-j0b32c9).
+- bigger lib size: > ~12kb minified & gzipped
+- no `dirty/pristine` indicators' native support for a particular field(you need to resort to custom state `fieldMeta.touched && fieldMeta.initialValue !== fieldMeta.value` constructs);
 
 ## Collaboration
 
@@ -76,6 +77,23 @@ All data flow except form submitting) flows start at `<ArkField/>` components wh
 **when a `blur` event occurs:**
 
 ![General](https://dmytroyeremieiev.github.io/ark-form/images/ArkForms-Field-Blurred.png)
+
+### Validation
+
+All validation depends on auxiliary function `validate` which executed within `Calculate field validity` stage([field state evaluation logic](#field-state-evaluation-logic)).
+
+```javascript
+    interface BasicInput<ET> {
+      // ...
+      validate?: (value?: string) => ValidityStateInterface;
+      // ...
+    }
+    interface ValidityStateInterface {
+        valid: boolean;
+        className?: string;
+        errorMessage?: string;
+    }
+```
 
 ### `<ArkForm/>` component
 

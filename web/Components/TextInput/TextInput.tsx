@@ -55,7 +55,7 @@ export const TextInput = (props: TextInputInterface & { transformInput?: (any) =
       {({ fieldProps, fieldState, formContext }) => {
         const id = (formContext.state.configuration.name || '') + '-' + name;
         if (_debug) {
-          console.log('field', name, fieldProps.value, fieldState, formContext.state, formContext.state.fieldsData);
+          console.log(`field ${name} ${fieldProps.value}`, fieldState, formContext.state, formContext.state.fieldsData);
         }
         let ErrorMessage = null;
         if (
