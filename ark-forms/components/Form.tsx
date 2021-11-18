@@ -10,7 +10,6 @@ export interface FormInterface {
   children: React.ReactChild | React.ReactChild[];
   validateOnChange?: boolean;
   validateOnBlur?: boolean;
-  forceValidation?: boolean;
 }
 
 export enum FormStateClassNames {
