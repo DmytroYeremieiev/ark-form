@@ -1,7 +1,21 @@
-.txo-input  {
+.txo-input :global {
   display: block;
   min-width: 300px;
   margin: 0 0 16px 0;
+  .test-suit {
+    button {
+      width: auto;
+      margin: 2px 2px 2px 0;
+      color: #000;
+    }
+    .test-suit-set-value {
+      input {
+        min-height: auto;
+        color: #000;
+      }
+    }
+  }
+
   &,
   input,
   select {
@@ -67,8 +81,8 @@
       -webkit-text-fill-color: #000 !important;
     }
   }
-  .txo-input-container.required-error.field-dirty,
-  .txo-input-container.required-error.force-validation {
+  .txo-input-container.field-dirty.field-invalid,
+  .txo-input-container.force-validation {
     input,
     select {
       border: 0;
@@ -87,7 +101,7 @@
     color: #fff;
   }
 }
-form.form-submitted .txo-input {
+:global(form.form-submitted) .txo-input :global {
   .txo-input-container.required-error {
     input,
     select {
@@ -95,15 +109,5 @@ form.form-submitted .txo-input {
       outline: 2px solid red;
       outline-offset: -2px;
     }
-  }
-}
-
-.test-suit{
-  button {
-    display: inline-block;
-    width: auto;
-  }
-  input {
-    min-height: auto;
   }
 }

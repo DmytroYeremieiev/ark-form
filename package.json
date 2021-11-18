@@ -9,7 +9,8 @@
   "workspaces": {
     "packages": [
       "ark-forms",
-      "web"
+      "web",
+      "web-cra"
     ]
   },
   "scripts": {
@@ -18,6 +19,7 @@
     "lint:all:fix": "yarn lint -- '**/*.{ts,tsx}' --fix",
     "info": "yarn workspaces info",
     "dev": "yarn workspace web dev",
+    "dev:cra": "yarn workspace web-cra dev",
     "build": "yarn workspace ark-forms build",
     "build:web": "yarn workspace web build",
     "start": "yarn workspace web start",
