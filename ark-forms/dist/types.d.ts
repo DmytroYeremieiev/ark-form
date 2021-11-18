@@ -60,7 +60,7 @@ interface FieldProps<ET> {
     onBlur?: (event: React.SyntheticEvent<ET>) => void;
     onFocus?: (event: React.FocusEvent<ET>) => void;
 }
-export interface ValidityStateInterface {
+export interface ValidityStateInterface extends Record<string, any> {
     valid: boolean;
     className?: string;
     errorMessage?: string;
