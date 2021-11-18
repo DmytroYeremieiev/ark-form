@@ -18,6 +18,7 @@ const checkValidity = (
 ): ValidityStateInterface => {
   const result: ValidityStateInterface = {
     valid: true,
+    someData: { count: Date.now() },
   };
   if (required && !value) {
     result.className = FieldStateClassNames.requiredError;
