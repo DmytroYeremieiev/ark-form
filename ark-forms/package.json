@@ -39,6 +39,16 @@
       "limit": "10 KB"
     }
   ],
+  "keywords": [
+    "form-validation",
+    "validation",
+    "library",
+    "forms",
+    "form",
+    "react",
+    "react-hooks",
+    "ark-forms"
+  ],
   "devDependencies": {
     "@babel/core": "^7.12.7",
     "@babel/preset-env": "^7.12.7",
