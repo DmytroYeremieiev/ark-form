@@ -30,22 +30,21 @@ const IndexPage = (): JSX.Element => {
         <Forms.FullNameInput name='fullName' initialValue='' label='FULL NAME *' required></Forms.FullNameInput>
         <Forms.ZipCodeInput name='zip' label='ZIP CODE *' required></Forms.ZipCodeInput>
         <Forms.PhoneInput name='phone' initialValue='123' label='PHONE *' required></Forms.PhoneInput>
-        {/* <Forms.CheckboxInput
-          initialValue={true}
+        <Forms.CheckboxInput
+          initialValue={false}
           name='phoneOptIn'
           onChange={onPhoneOptInChecked}
           label='Pellentesque pulvinar dolor vitae augue facilisis ultrices. Donec at tristique leo. Integer a velit pharetra risus suscipit dictum.'
         ></Forms.CheckboxInput>
-        {!role ? (
-          <Forms.DatePicker name='date' label='SELECT DATE *' onChange={onDateSelected} required></Forms.DatePicker>
-        ) : null}
+        <Forms.DatePicker name='date' label='SELECT DATE *' onChange={onDateSelected} required></Forms.DatePicker>
         <Forms.SelectInput
-          initialValue={options[0].value}
+          // initialValue={options[0].value}
           name='role'
           label='SELECT ROLE *'
           options={options}
           onChange={onRoleSelected}
-        ></Forms.SelectInput> */}
+          required
+        ></Forms.SelectInput>
         <Button type='submit'>SUBMIT</Button>
       </Forms.Form>
     </div>

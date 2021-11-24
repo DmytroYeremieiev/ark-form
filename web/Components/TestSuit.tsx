@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { TextInputInterface, CheckValidityType } from 'types';
-import { defaultFieldState, FormContextInterface } from 'ark-forms';
+import { TextInputInterface } from 'types';
+import { defaultFieldState, FormContextInterface, ValidityStateInterface } from 'ark-forms';
 
 const TestSuit = ({
   name,
@@ -8,7 +8,10 @@ const TestSuit = ({
   required,
   checkValidity,
   formContext,
-}: TextInputInterface & { formContext: FormContextInterface; checkValidity: CheckValidityType }) => {
+}: TextInputInterface & {
+  formContext: FormContextInterface;
+  checkValidity: (value, ...rest) => ValidityStateInterface;
+}) => {
   const [testSuiteValue, setTestSuiteValue] = useState('');
   return (
     <div className='test-suit'>
