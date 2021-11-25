@@ -2377,9 +2377,10 @@ arity-n@^1.0.4:
   resolved "https://registry.yarnpkg.com/arity-n/-/arity-n-1.0.4.tgz#d9e76b11733e08569c0847ae7b39b2860b30b745"
   integrity sha1-2edrEXM+CFacCEeuezmyhgswt0U=
 
-"ark-forms@link:../ark-forms/dist":
-  version "0.0.0"
-  uid ""
+ark-forms@2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/ark-forms/-/ark-forms-2.0.3.tgz#9717bbd13ca38ccd2ac220a94a1b93e2137ae1f5"
+  integrity sha512-diUOa5wQ5YMNAupV6VcQwZkyX3Mr66bmncnz2gIWBbyNFbaX9B/6NRCuaOvISWFq6JSfnc1MuHfw6I9RqPuxpQ==
 
 arr-diff@^4.0.0:
   version "4.0.0"

@@ -44,15 +44,12 @@ export const TextInput = (props: TextInputInterface & { transformInput?: (any) =
     required,
     readOnly,
     transformInput = value => value,
+    validate: _validate,
     ...rest
   } = props;
+  const validate = _validate ?? (value => checkValidity(value, pattern, required));
   return (
-    <ArkField
-      name={name}
-      validate={value => checkValidity(value, pattern, required)}
-      initialValue={initialValue}
-      {...rest}
-    >
+    <ArkField name={name} validate={validate} initialValue={initialValue} {...rest}>
       {({ fieldProps, fieldState, formContext }) => {
         const id = (formContext.state.configuration.name || '') + '-' + name;
         if (_debug) {
@@ -89,7 +86,7 @@ export const TextInput = (props: TextInputInterface & { transformInput?: (any) =
               <label htmlFor={id}>{label}</label>
             </div>
             {ErrorMessage}
-            {_debug && <TestSuit {...props} formContext={formContext} checkValidity={checkValidity} />}
+            {_debug && <TestSuit {...props} formContext={formContext} checkValidity={validate} />}
           </div>
         );
       }}

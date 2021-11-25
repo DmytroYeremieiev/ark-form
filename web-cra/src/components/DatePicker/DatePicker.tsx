@@ -1,28 +1,47 @@
 import React, { useState } from 'react';
 import classnames from 'classnames';
 import DayPicker from 'react-day-picker';
-import dayjs from 'dayjs';
+import { FieldStateClassNames, TextInputInterface, ValidityStateInterface } from '../../types';
 import { TextInput } from '../TextInput';
-import { TextInputInterface } from '../../types';
-
 import './DatePicker.scss';
+import { useFormContext } from 'ark-forms';
 
-// returns date local to central time zone
-const datePattern = /^(\d{4})-(\d{2})-(\d{2})/;
-const displayFormat = 'MMMM D, YYYY';
-
-export const format = (date: Date): string => {
-  return dayjs(date).format(displayFormat);
+const toDate = (selectedDayField: string): Date | undefined => {
+  if (!selectedDayField) return;
+  try {
+    const res = new Date(selectedDayField);
+    res.toISOString();
+    return res;
+  } catch {
+    return;
+  }
 };
-
-export const parseServerDate = (date: string): Date => {
-  const [, year, month, day] = datePattern.exec(date) ?? [];
-  return new Date(`${year}-${month}-${day}T00:00:00-06:00`);
-};
-
-export const DatePicker = ({ className, initialValue = '', ...rest }: TextInputInterface): JSX.Element => {
-  const [selectedDay, setSelectedDay] = useState<Date>(parseServerDate(initialValue.toString()));
+export const DatePicker = ({ className, required, name, ...rest }: TextInputInterface): JSX.Element => {
+  const { state, setFieldValue } = useFormContext();
+  const displayValue = state.fieldsData.get(name)?.value ?? '';
+  const selectedDay = toDate(displayValue);
+  const setSelectedDay = date => {
+    setFieldValue(name, date);
+  };
   const [showCalendar, setShowCalendar] = useState(false);
+  const validate = (date?: string): ValidityStateInterface => {
+    const result: ValidityStateInterface = {
+      valid: true,
+    };
+    if (!date) {
+      if (required) {
+        return { valid: false, className: FieldStateClassNames.requiredError };
+      } else {
+        return result;
+      }
+    }
+    try {
+      new Date(date).toISOString();
+    } catch {
+      return { valid: false, errorMessage: 'Invalid format' };
+    }
+    return result;
+  };
   const daySelected = day => {
     console.log('dat', day);
     setSelectedDay(day);
@@ -43,16 +62,18 @@ export const DatePicker = ({ className, initialValue = '', ...rest }: TextInputI
       {
         <TextInput
           {...rest}
+          name={name}
           className={classnames('date-picker-input', className)}
           readOnly
-          initialValue={selectedDay ? format(selectedDay) : ''}
+          initialValue={displayValue}
           onFocus={onFocus}
           onBlur={onBlur}
+          validate={validate}
         ></TextInput>
       }
       {showCalendar ? (
         <div className='date-picker-calendar'>
-          <DayPicker selectedDays={selectedDay} onDayClick={daySelected} showOutsideDays />
+          <DayPicker initialMonth={selectedDay} selectedDays={selectedDay} onDayClick={daySelected} showOutsideDays />
         </div>
       ) : null}
     </div>

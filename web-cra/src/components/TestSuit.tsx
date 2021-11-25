@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { TextInputInterface, CheckValidityType } from '../types';
-import { defaultFieldState, FormContextInterface } from 'ark-forms';
+import { TextInputInterface } from '../types';
+import { defaultFieldState, FormContextInterface, ValidityStateInterface } from 'ark-forms';
 
 const TestSuit = ({
   name,
@@ -8,7 +8,10 @@ const TestSuit = ({
   required,
   checkValidity,
   formContext,
-}: TextInputInterface & { formContext: FormContextInterface; checkValidity: CheckValidityType }) => {
+}: TextInputInterface & {
+  formContext: FormContextInterface;
+  checkValidity: (value, ...rest) => ValidityStateInterface;
+}) => {
   const [testSuiteValue, setTestSuiteValue] = useState('');
   return (
     <div className='test-suit'>
@@ -43,10 +46,26 @@ const TestSuit = ({
         Set Invalid
       </button>
       <br></br>
-      <button type='button' onClick={() => formContext.setFieldState(name, () => ({ dirty: true, pristine: false }))}>
+      <button
+        type='button'
+        onClick={() =>
+          formContext.setFieldState(name, () => ({
+            dirty: true,
+            pristine: false,
+          }))
+        }
+      >
         Set Dirty
       </button>
-      <button type='button' onClick={() => formContext.setFieldState(name, () => ({ dirty: false, pristine: true }))}>
+      <button
+        type='button'
+        onClick={() =>
+          formContext.setFieldState(name, () => ({
+            dirty: false,
+            pristine: true,
+          }))
+        }
+      >
         Set Pristine
       </button>
       <br></br>

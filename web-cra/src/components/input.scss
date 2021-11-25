@@ -1,4 +1,4 @@
-.txo-input :global {
+.txo-input {
   display: block;
   min-width: 300px;
   margin: 0 0 16px 0;
@@ -101,7 +101,7 @@
     color: #fff;
   }
 }
-:global(form.form-submitted) .txo-input :global {
+form.form-submitted .txo-input {
   .txo-input-container.required-error {
     input,
     select {

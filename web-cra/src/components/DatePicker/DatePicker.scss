@@ -1,7 +1,7 @@
 .date-picker-input {
   margin: auto 0;
 }
-.date-picker  {
+.date-picker {
   position: relative;
   z-index: 2;
   margin: 0 0 16px 0;
@@ -10,6 +10,7 @@
     background-color: #fff;
     left: 0;
     right: 0;
+    top: 50px;
     /* DayPicker styles */
     color: #000;
     .DayPicker {
