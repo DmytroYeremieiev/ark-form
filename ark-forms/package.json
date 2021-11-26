@@ -47,7 +47,8 @@
     "form",
     "react",
     "react-hooks",
-    "ark-forms"
+    "ark-forms",
+    "formik"
   ],
   "devDependencies": {
     "@babel/core": "^7.12.7",

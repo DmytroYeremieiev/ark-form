@@ -14,12 +14,14 @@
   - [`<ArkForm/>` component](#arkform-component)
   - [`<ArkField/>` component](#arkfield-component)
   - [How manually set the field state](#how-manually-set-the-field-state)
+- [Connecting to more complex elements](#connecting-to-more-complex-elements)
 
 ## Overview
 
 - small, ultra fast and flexible;
 - predictable and synchronous validation flow, clear and fast test suits
 - allows granularly fine-tune each field validation trigger. E.g., consider you need the 1-st field to be validated after `onChange` event occurred and the second field only after `onBlur` event;
+- similar to `formik` interface facilitate seamless migration process in most scenarios;
 - no external dependencies;
 - fully written in `typescript`;
 - 2.6 kb minified & gzipped;
@@ -341,3 +343,13 @@ Here's implementations of `setFieldState`, `setFieldValue` helper methods expose
 ```javascript
   formContext.setFieldValue(name, 'Some new value')
 ```
+
+## Connecting to more complex elements
+
+Plain and simple examples on how to create and connect with a form validation more complex input elements. Original source code is under `./web/components/**`. 
+
+- [Implement datepicker](https://codesandbox.io/s/arkforms-nextjs-react-sandbox-s2z8o?file=/components/DatePicker/DatePicker.tsx)
+
+- [Implement checkbox](https://codesandbox.io/s/arkforms-nextjs-react-sandbox-s2z8o?file=/components/CheckboxInput/CheckboxInput.tsx)
+
+- [Implement select](https://codesandbox.io/s/arkforms-nextjs-react-sandbox-s2z8o?file=/components/SelectInput/SelectInput.tsx)
