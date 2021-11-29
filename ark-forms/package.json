@@ -1,7 +1,7 @@
 {
   "name": "ark-forms",
   "author": "DmytroYeremieiev",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "license": "MIT",
   "main": "dist/index.js",
   "module": "dist/ark-forms.esm.js",
@@ -13,7 +13,7 @@
   "engines": {
     "node": ">=10"
   },
-  "repository": "DmytroYeremieiev/ark-form",
+  "repository": "https://github.com/DmytroYeremieiev/ark-form",
   "homepage": "https://github.com/DmytroYeremieiev/ark-form",
   "scripts": {
     "start": "tsdx watch",
