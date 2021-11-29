@@ -7,6 +7,9 @@
   <a aria-label="NPM version" href="https://www.npmjs.com/package/ark-forms">
     <img alt="" src="https://img.shields.io/github/v/tag/DmytroYeremieiev/ark-form?label=version">
   </a>
+  <a aria-label="NPM version" href="https://github.com/DmytroYeremieiev/ark-form/blob/main/ark-forms/dist/ark-forms.cjs.production.min.js">
+    <img alt="" src="https://img.badgesize.io/DmytroYeremieiev/ark-form/main/ark-forms/dist/ark-forms.cjs.production.min.js?compression=gzip">
+  </a>
   <a aria-label="License" href="https://github.com/DmytroYeremieiev/ark-form/blob/main/LICENSE">
     <img alt="" src="https://img.shields.io/github/license/DmytroYeremieiev/ark-form">
   </a>
