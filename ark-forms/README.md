@@ -1,4 +1,16 @@
-# Ark Form - form validation library
+<p align="center">
+  <img src="https://dmytroyeremieiev.github.io/ark-form/images/logo1.svg" height="220">
+  <h1 align="center">Ark Form validation library</h1>
+</p>
+
+<p align="center">
+  <a aria-label="NPM version" href="https://www.npmjs.com/package/ark-forms">
+    <img alt="" src="https://img.shields.io/github/v/tag/DmytroYeremieiev/ark-form?label=version">
+  </a>
+  <a aria-label="License" href="https://github.com/DmytroYeremieiev/ark-form/blob/main/LICENSE">
+    <img alt="" src="https://img.shields.io/github/license/DmytroYeremieiev/ark-form">
+  </a>
+</p>
 
 ## Table of Contents
 
@@ -18,10 +30,9 @@
 
 ## Overview
 
-- small, ultra fast and flexible;
+- small, ultra fast and flexible `react` based form validation library;
 - predictable and synchronous validation flow, clear and fast test suits
 - allows granularly fine-tune each field validation trigger. E.g., consider you need the 1-st field to be validated after `onChange` event occurred and the second field only after `onBlur` event;
-- similar to `formik` interface facilitate seamless migration process in most scenarios;
 - no external dependencies;
 - fully written in `typescript`;
 - 2.6 kb minified & gzipped;

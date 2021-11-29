@@ -1,17 +1,10 @@
 {
   "name": "ark-form-project",
-  "version": "1.0.0",
-  "main": "index.js",
-  "repository": "git@github.com:DmytroYeremieiev/ark-form.git",
-  "author": "DmytroYeremieiev <dmytro.yeremieiev@gmail.com>",
-  "license": "MIT",
   "private": true,
-  "workspaces": {
-    "packages": [
-      "ark-forms",
-      "web"
-    ]
-  },
+  "workspaces": [
+    "ark-forms",
+    "web"
+  ],
   "scripts": {
     "lint": "eslint -c .eslintrc.js --ignore-pattern '**/build/*'",
     "lint:all": "yarn lint -- '**/*.{ts,tsx}'",

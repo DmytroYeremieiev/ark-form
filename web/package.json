@@ -1,7 +1,7 @@
 {
   "name": "web",
   "version": "0.1.0",
-  "private": true,
+  "repository": "DmytroYeremieiev/ark-form",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
